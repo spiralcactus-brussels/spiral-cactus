@@ -1,0 +1,39 @@
+SPIRAL CACTUS — VERSION 2 / MODE D’EMPLOI (MAC + GITHUB)
+
+LE CONTENU
+- index.html : accueil / identité de la marque
+- discover.html : philosophie, histoire, valeurs et futur lieu (projet)
+- experiences.html : activités existantes et en développement
+- events.html : calendrier et programme artistique
+- gallery.html : affiches et visuels déjà disponibles
+- contact.html : propositions, partenaires, presse, contact
+- assets/ : logo et visuels optimisés
+- styles.css : couleurs et présentation
+- translations.js : textes français + anglais
+- script.js : bascule de langue, menu et interactions
+
+MISE À JOUR DE VOTRE SITE EXISTANT
+1. Téléchargez le ZIP et double-cliquez dessus dans le Finder.
+2. Pour une prévisualisation, ouvrez index.html dans Safari.
+3. Ouvrez votre dépôt GitHub : github.com/spiralcactus-brussels/spiral-cactus
+4. Cliquez sur Add file > Upload files.
+5. Glissez TOUS les fichiers extraits, AINSI QUE le dossier assets et son contenu (ne déposez PAS le ZIP lui-même).
+6. Validez avec Commit changes. Les fichiers homonymes doivent remplacer les anciens.
+7. Votre site GitHub Pages reste configuré sur Settings > Pages > main / (root).
+8. Patientez quelques instants, puis ouvrez :
+   https://spiralcactus-brussels.github.io/spiral-cactus/
+9. Si vous voyez encore l’ancien site : rechargez de force avec Cmd + Shift + R.
+
+ATTENTION : si l’interface Safari refuse le glisser-déposer du dossier assets,
+utilisez GitHub Desktop (gratuit) pour synchroniser un dossier complet ;
+il n’est pas nécessaire d’apprendre des commandes Git.
+
+PERSONNALISATION
+- Remplacez assets/logo-white.png par le logo final validé (en conservant son nom).
+- Adaptez --lime, --orange, --purple et --teal dans styles.css selon le futur guide graphique Drive.
+- Vérifiez le lien de billetterie avant diffusion.
+- Les formulaires d’inscription, paiements ou réservations exigent un service externe ;
+  GitHub Pages ne fournit pas de base de données ni de serveur applicatif.
+- Les activités futures, la capacité cible de 500 personnes, les workshops et la location
+  ne sont pas présentés comme actuellement opérationnels.
+- Ce site n’inclut aucun élément financier confidentiel ni contact personnel interne.
