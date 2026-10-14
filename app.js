@@ -175,7 +175,7 @@
     if(!grid||!empty)return;
     const valid=products.filter(p=>p && p.published!==false && p.name && safePaymentUrl(p.checkout));
     grid.innerHTML=valid.map(p=>{
-      const img=(typeof p.image==='string' && /^assets\\/shop\\/[a-z0-9._/-]+\\.(jpg|jpeg|png|webp|avif)$/i.test(p.image))
+      const img=(typeof p.image==='string' && p.image.startsWith('assets/shop/') && ['.jpg','.jpeg','.png','.webp','.avif'].some(ext=>p.image.toLowerCase().endsWith(ext)) && !p.image.includes('..') && !p.image.includes('"') && !p.image.includes('<'))
         ? '<img loading="lazy" src="'+esc(p.image)+'" alt="'+esc(languageVal(p.name))+'">' : '';
       return '<article class="shop-product">'+img+'<h2>'+esc(languageVal(p.name))+'</h2><p>'+esc(languageVal(p.description||''))+'</p>'
         +'<p class="shop-price">'+esc(p.price||'')+'</p><a class="btn" href="'+esc(safePaymentUrl(p.checkout))+'" rel="noopener noreferrer" target="_blank">'+esc(l('shopBuy'))+' ↗</a></article>';
