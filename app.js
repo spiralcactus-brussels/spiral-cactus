@@ -39,10 +39,10 @@
   try{current=localStorage.getItem('sc-lang') || 'en';}catch(_){current='en'}
   if(!langs.includes(current))current='en';
   document.getElementById('langselect')?.addEventListener('change',e=>changeLang(e.target.value));
-  const theme = document.getElementById('themebtn');
-  function setTheme(on){document.body.classList.toggle('light',on);theme?.setAttribute('aria-pressed',String(on));document.querySelector('meta[name="theme-color"]')?.setAttribute('content',on?'#f6f7f2':'#08090c');try{localStorage.setItem('sc-theme',on?'light':'dark')}catch(_){}}
-  try{setTheme(localStorage.getItem('sc-theme')==='light')}catch(_){}
-  theme?.addEventListener('click',()=>setTheme(!document.body.classList.contains('light')));
+  // Website permanently uses the original dark theme, regardless of old saved preference.
+  document.body.classList.remove('light');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content','#08090c');
+  try{localStorage.removeItem('sc-theme')}catch(_){}
   document.getElementById('menubtn')?.addEventListener('click',e=>{
     const links=document.getElementById('mainlinks');links.classList.toggle('opened');e.currentTarget.setAttribute('aria-expanded',String(links.classList.contains('opened')));
   });
@@ -72,8 +72,7 @@
     if(!ctx)return;
     const delta=Math.min((t-prev)/16.67||1,3);prev=t;
     ctx.clearRect(0,0,innerWidth,innerHeight);
-    const light=document.body.classList.contains('light');const lightPalette={'#b7ff22':'#245c30','#ff5722':'#a23b1b','#b394fa':'#593a8a','#c5d6ff':'#315d75'};
-    for(const d of dots){ctx.globalAlpha=light?Math.min(.9,d.a*1.7):d.a;ctx.fillStyle=light?(lightPalette[d.c]||'#264b34'):d.c;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();if(!reduced){d.y-=d.v*delta;d.x+=Math.sin(t/2500+d.y/110)*.10*delta;if(d.y<0){d.y=innerHeight;d.x=Math.random()*innerWidth;}}}
+    for(const d of dots){ctx.globalAlpha=d.a;ctx.fillStyle=d.c;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();if(!reduced){d.y-=d.v*delta;d.x+=Math.sin(t/2500+d.y/110)*.10*delta;if(d.y<0){d.y=innerHeight;d.x=Math.random()*innerWidth;}}}
     ctx.globalAlpha=1;if(!reduced&& !document.hidden)raf=requestAnimationFrame(draw);
   }
   if(ctx){sizeDots();addEventListener('resize',sizeDots,{passive:true});raf=requestAnimationFrame(draw);

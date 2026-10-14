@@ -17,9 +17,9 @@
 /* Photo archive rendered from content/gallery.json; starts empty. */
 .gallery-controls{display:flex;align-items:center;gap:15px;margin:33px 0}.gallery-controls label{font-weight:700}.gallery-controls select{max-width:450px;width:100%;font-weight:700}.gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.gallery-item{margin:0;border:1px solid var(--line);background:#111519}.gallery-open{width:100%;display:block;padding:0;border:0;background:none;cursor:zoom-in}.gallery-open img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}.gallery-item figcaption{padding:10px 14px;color:var(--muted);font-size:12px;min-height:40px}.empty-state{border:1px dashed var(--line);padding:45px 30px;color:var(--muted);min-height:150px}.photo-modal{position:fixed;z-index:100;inset:0;background:#030404ee;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:45px 25px}.photo-modal img{object-fit:contain;max-width:95vw;max-height:80vh}.photo-modal p{color:#ccc;font-size:13px}.modal-close{position:absolute;top:25px;right:25px;z-index:101}.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.blog-card a{font-weight:700;color:var(--lime)}.blog-card{min-height:270px}
 footer{max-width:100%;border-top:1px solid var(--line);padding:31px 23px;margin-top:45px;color:#8e949e;text-align:center;font-size:12px;letter-spacing:.08em}footer a:hover{color:var(--lime)}
-body.light{--bg:#eef0e9;--panel:#fff;--panel2:#fbfcf8;--line:#bcc1b9;--text:#111915;--muted:#5c645e;background:var(--bg);color:var(--text)}body.light .site-header{background:#f1f2ecf1;border-color:#b9bfb9}body.light .links a{color:#424a41}body.light .links a.active,body.light .links a:hover{color:#285916}body.light .lead,body.light .card p,body.light .archive-card p,body.light .eventbox p{color:#424a45}body.light .card,body.light .archive-card,body.light .eventbox{background:#f9faf5}body.light .mission-panel{background:#e2e9dc}body.light .manifesto{background:#dee7d6}body.light .pill{background:white;color:#151a13;border-color:#a6b0a8}body.light .btn.alt{color:#141914}body.light .contactrow input,body.light .contactrow textarea{background:#fff;color:#111}body.light .calendar-grid{background:#f9fbf4}body.light .cal-cell.has-event{background:#a2d26d19}body.light .cal-date{color:#3c493c}body.light .is-today .cal-date{color:#111}
+
 @media(max-width:1280px){nav{gap:15px}.wordmark{font-size:18px}.links{gap:10px}.links a{font-size:10px}}
-@media(max-width:1080px){.nav-menu{display:inline-flex;align-items:center;justify-content:center;margin-left:auto}.links{display:none;position:absolute;top:100%;left:0;right:0;background:#101318f8;border-bottom:1px solid var(--line);padding:15px 26px 25px;margin:0;flex-wrap:wrap;gap:8px}.links.opened{display:flex}.links a{font-size:12px;padding:12px;border:1px solid #343940;min-width:120px;text-align:center}.hero{grid-template-columns:1.1fr .9fr;gap:20px}.hero-title{font-size:clamp(62px,9vw,112px)}body.light .links{background:#f2f3ee}}
+@media(max-width:1080px){.nav-menu{display:inline-flex;align-items:center;justify-content:center;margin-left:auto}.links{display:none;position:absolute;top:100%;left:0;right:0;background:#101318f8;border-bottom:1px solid var(--line);padding:15px 26px 25px;margin:0;flex-wrap:wrap;gap:8px}.links.opened{display:flex}.links a{font-size:12px;padding:12px;border:1px solid #343940;min-width:120px;text-align:center}.hero{grid-template-columns:1.1fr .9fr;gap:20px}.hero-title{font-size:clamp(62px,9vw,112px)}}
 @media(max-width:800px){.wrap{padding:49px 22px}.hero{grid-template-columns:1fr;min-height:0}.hero-logo{max-width:420px;margin-top:5px}.grid,.gallery-grid,.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.eventbox,.vision-row,.mission-panel,.contactrow{grid-template-columns:1fr}.event-poster{max-width:460px;width:100%;margin:auto}.link-rail{grid-template-columns:1fr}.archive-card{flex-direction:column;align-items:flex-start}.archive-card .btn{align-self:flex-start}.cal-cell,.cal-blank{min-height:85px}}
 @media(max-width:560px){nav{padding:11px 15px;gap:9px}.wordmark{font-size:17px}.actions{gap:5px}.pill{min-height:37px;padding:7px}.theme-button{width:37px}.lang-select{min-width:56px}.wrap{padding:39px 17px}.hero-title{font-size:clamp(60px,15vw,90px)}h1{font-size:clamp(55px,16vw,89px)}h2{font-size:49px}.hero{gap:0}.lead{font-size:16px}.grid,.gallery-grid,.blog-grid{grid-template-columns:1fr}.eventbox{padding:17px;gap:15px}.eventbox h3{font-size:50px}.event-poster{min-height:330px}.poster-content strong{font-size:84px}.poster-lineup{font-size:16px}.sectionhead{display:block}.sectionhead h2{margin-bottom:13px}.card{min-height:170px}.calendar-toolbar{gap:7px;flex-wrap:wrap}.calendar-toolbar h2{flex-basis:50%;min-width:0;font-size:32px}.calendar-toolbar #calendar-today{margin-left:0;width:100%}.cal-weekday{font-size:10px}.cal-cell,.cal-blank{min-height:75px;padding:4px}.cal-date{font-size:11px;height:21px;width:21px}.cal-event{font-size:9px;padding:3px;line-height:1.2}.links a{width:calc(50% - 7px);min-width:0}.shop-empty{min-height:220px}.hero-logo{max-width:350px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
@@ -32,49 +32,40 @@ body.light{--bg:#eef0e9;--panel:#fff;--panel2:#fbfcf8;--line:#bcc1b9;--text:#111
 .hero-logo.is-playing .hero-logo-video{display:block}
 @media(prefers-reduced-motion:reduce){.hero-logo-video{display:none!important}.hero-logo-still{display:block!important}}
 
-/* V4.2 — accessible, coherent day/night palette. */
+/* Smooth appearance transitions for the dark theme. */
 body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .mission-panel,.contactrow input,.contactrow textarea,.shop-empty,.calendar-grid,
 .cal-cell,.link-rail a,.gallery-item,.empty-state{
   transition:background-color .25s ease,color .25s ease,border-color .25s ease;
 }
-body.light{
-  --bg:#f6f7f2;--panel:#ffffff;--panel2:#f1f4ee;--line:#acb5ac;
-  --text:#14231b;--muted:#46584c;--lime:#205b2e;--orange:#a33c1c;
-}
-body.light .eyebrow,body.light .num,body.light .cal-weekday,
-body.light .wordmark span,body.light .links a.active,body.light .links a:hover,
-body.light .manifesto span:nth-child(even){color:var(--lime)}
-body.light .btn{background:var(--lime);color:#fff;border-color:var(--lime)}
-body.light .btn:hover{background:#164323;border-color:#164323;color:#fff}
-body.light .btn.alt{background:transparent;color:#173a23;border-color:#547360}
-body.light .btn.alt:hover{background:#e0eadf;color:#12351d;border-color:var(--lime)}
-body.light .cal-event,body.light .is-today .cal-date{background:var(--lime);color:#fff}
-body.light .cal-event:hover{background:#164323;color:#fff}
-body.light .lead,body.light .card p,body.light .archive-card p,body.light .eventbox p,
-body.light .eventbox .meta{color:#344c3d}
-body.light .sectionhead p,body.light footer,body.light .note{color:#526454}
-body.light .card,body.light .archive-card,body.light .eventbox,
-body.light .gallery-item{background:#fff}
-body.light .shop-empty{background:#f6f7f2;border-color:#aab7aa}
-body.light .manifesto{background:#e4ede1}
-body.light .manifesto span{color:#153a21}
-body.light .mission-panel{background:#e3ede0}
-body.light .links{background:#f6f7f2}
-body.light .links a{color:#294735}
-body.light .pill{background:#fff;color:#183320;border-color:#708b74}
-body.light .pill:hover{border-color:var(--lime)}
-body.light .contactrow input,body.light .contactrow textarea{background:#fff;color:#152819;border-color:#839b87}
-body.light .calendar-grid{background:#fff}
-body.light .cal-cell.has-event{background:#edf5ec}
-body.light .link-rail a{background:#fff}
-body.light #particles{opacity:1}
-/* Remove fixed black panel around the logo in light mode.
-   Original image is black artwork on white; multiply drops its white background.
-   The dark mode uses the inverted, screen-blended white logo. */
-body.light .hero-logo{background:transparent;isolation:auto}
-body.light .hero-logo img{filter:grayscale(1) contrast(2.5);mix-blend-mode:multiply}
-body.light .hero-logo-video{filter:grayscale(1) invert(1) contrast(1.3);mix-blend-mode:multiply}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:30px}
 .shop-product{border:1px solid var(--line);background:var(--panel);padding:18px}
 .shop-product img{aspect-ratio:1;object-fit:cover;width:100%;display:block}
@@ -92,9 +83,8 @@ body.light .hero-logo-video{filter:grayscale(1) invert(1) contrast(1.3);mix-blen
   .calendar-grid,.cal-cell,.link-rail a,.gallery-item,.empty-state{transition:none}
 }
 
-/* Light mode: avoid a separate compositing island. Multiply blending now uses the
-   real page background instead of a white rectangle inside the logo container. */
-body.light .hero-logo-still{background:transparent}
+
+
 
 /* Preserve the August 2026 official flyer in the past-events archive. */
 .archive-poster{width:166px;max-width:100%;aspect-ratio:3/4;object-fit:cover;flex:0 0 auto;border:1px solid var(--line);background:#08090c}
