@@ -99,3 +99,43 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .contact-status[data-state="info"]{background:#c5d6ff11;border-color:#4d596c;color:#d5def0}
 .contactrow form .note{line-height:1.6;margin:0 0 8px}
 .contactrow form button:disabled{opacity:.7;cursor:wait}
+
+/* Spiral Radio — permanently dark, SoundCloud-powered guest listening room. */
+.radio-page{padding-top:75px}.radio-topline{display:flex;justify-content:space-between;gap:20px;align-items:center}
+.radio-signal{font-size:10px;letter-spacing:.15em;color:#b1b9ab;font-weight:800;display:flex;align-items:center;gap:10px}
+.radio-signal-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 15px #b7ff2260}
+.radio-heading{font-family:var(--modular);font-size:clamp(72px,12vw,162px);line-height:.86;letter-spacing:-.07em;margin:24px 0 30px;color:var(--text)}
+.radio-page>.lead{max-width:760px;margin-bottom:44px}.radio-station{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:22px;align-items:start}
+.radio-main{background:#101319;border:1px solid #363c43;padding:24px}.radio-player-head{display:grid;gap:20px}
+.radio-visual{aspect-ratio:16/7;background:radial-gradient(circle at 55% 40%,#b7ff221a,transparent 55%),#070908;position:relative;border:1px solid #273028;display:grid;place-items:center;overflow:hidden}
+.radio-visual-mark{position:absolute;left:23px;top:18px;font:800 clamp(29px,4vw,60px)/1 var(--modular);color:var(--lime);letter-spacing:-.055em}
+.radio-freq{font:700 10px Inter,Arial,sans-serif;letter-spacing:.22em;color:#a9b1a8;margin-left:9px}
+.radio-visual-bottom{position:absolute;bottom:17px;left:23px;font-size:9px;letter-spacing:.18em;color:#a7b2a4}
+.radio-wave{display:flex;justify-content:center;align-items:center;gap:6px;height:73%;width:100%;padding:20px 22px}
+.radio-wave i{display:block;flex:1;max-width:8px;border-radius:5px;background:linear-gradient(180deg,#d9ff9a,var(--lime),#386211);height:calc(12% + 75% * var(--n, .5));opacity:.79;transform-origin:center}
+.radio-wave i:nth-child(4n+1){--n:.22}.radio-wave i:nth-child(4n+2){--n:.87}.radio-wave i:nth-child(4n+3){--n:.54}.radio-wave i:nth-child(5n){--n:.97}
+.radio-main h2{font-size:clamp(34px,4.5vw,60px);margin:10px 0 6px;overflow-wrap:anywhere}
+#radio-current-artist{color:#c4cad0;font-size:12px;font-weight:750;letter-spacing:.13em;margin:0}
+.radio-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:23px}.radio-actions button:disabled{opacity:.45;cursor:not-allowed}
+.radio-embed-wrap{margin-top:24px;background:#080a0d;border:1px solid #2e343c;padding:10px}
+.radio-embed-wrap iframe{display:block;width:100%;min-height:166px;background:#101319}
+.radio-status{font-size:13px;color:#cbd6c3;margin:20px 0 8px;line-height:1.6}
+.radio-main .note{line-height:1.7}.radio-sidebar{border:1px solid #363c43;background:#12161c;padding:24px}
+.radio-side-title{display:flex;gap:15px;justify-content:space-between;align-items:center}
+.radio-number{font:700 10px var(--modular);color:#aab4a8;white-space:nowrap}
+.radio-sidebar>p{color:#b2b9bb;font-size:13px;line-height:1.7}
+.radio-sidebar>label{display:block;font-size:10px;letter-spacing:.16em;color:var(--lime);font-weight:800;margin:25px 0 10px}
+#radio-filter{width:100%;background:#0b0e12}.radio-queue{margin:24px 0 18px;display:grid;gap:8px}
+.radio-queue-item{display:flex;align-items:stretch;justify-content:space-between;border:1px solid #363b42;background:#191d24}
+.radio-queue-item.active{border-color:var(--lime);background:#1e271c}.radio-queue-item:hover{border-color:#80914a}
+.radio-choose{min-width:0;text-align:left;display:flex;align-items:center;gap:13px;flex:1;background:transparent;color:var(--text);cursor:pointer;border:0;padding:14px}
+.radio-choose:focus-visible,.radio-source:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.radio-queue-num{color:var(--lime);font:700 12px var(--modular)}
+.radio-queue-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.radio-queue-copy strong{font-size:12px;line-height:1.4;overflow-wrap:anywhere}
+.radio-queue-copy small{font-size:10px;color:#a7b3a8;line-height:1.5}
+.radio-source{padding:14px 16px;display:flex;align-items:center;border-left:1px solid #363b42;font-size:20px;color:var(--lime)}
+.radio-submit{width:100%;margin-top:10px}.radio-bottom-links{margin:42px 0 0;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.radio-bottom-links>a{font:700 12px var(--modular);letter-spacing:.09em}.radio-bottom-links>a:hover{color:var(--lime)}
+@media(max-width:900px){.radio-station{grid-template-columns:1fr}.radio-visual{aspect-ratio:16/6}.radio-heading{font-size:clamp(58px,12vw,120px)}}
+@media(max-width:530px){.radio-page{padding-top:43px}.radio-topline{align-items:flex-start;flex-direction:column;gap:8px}.radio-heading{font-size:clamp(52px,15vw,81px);margin-top:16px}.radio-main,.radio-sidebar{padding:16px}.radio-wave{gap:3px}.radio-freq{display:none}.radio-actions{flex-direction:column}.radio-actions .btn{width:100%}}

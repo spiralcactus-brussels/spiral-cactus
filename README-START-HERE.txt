@@ -89,3 +89,13 @@ CONTACT:
 LOCAL PREVIEW:
 - The photo gallery is rendered from content/gallery.json using JavaScript. View locally with a local HTTP server, not file://.
 - Other dynamic pages fetch JSON: test using a local HTTP server (e.g. python3 -m http.server 8000) rather than opening with file://.
+
+
+SPIRAL RADIO (FREE SOUNDCLOUD EMBEDS):
+- radio.html is the dedicated guest-music page. It links from every site navigation menu.
+- content/radio.json holds the selected SoundCloud tracks/sets. Valid source URLs must be https://soundcloud.com/... (or www/m.soundcloud.com). Each entry has id, artist, title, genre, description, format ('track' or 'playlist') and url.
+- Entries must correspond to genuine SpiralCactus event guests. The initial selection features Soul3d and Minopolska. Please obtain artist approval where appropriate; SoundCloud embed permission and third-party rights remain relevant.
+- An official SoundCloud iframe plays tracks; no MP3/WAV files are copied or rehosted. Clicking Start Listening is required, including for privacy and browser autoplay policies.
+- SoundCloud itself controls internal transitions in a multi-track playlist. When an individual track ends, radio.js tries to start the next selection. Browser autoplay protections may require a second press on the SoundCloud play control. Closing the page or navigating to another page will stop the stream.
+- To add future guest DJs, edit content/radio.json. Also add any additional artist names to validArtists and artist filters in radio.js/radio.html for the current implementation, or extend the filter renderer. Avoid artist impersonation or claiming this is live broadcast.
+- Music licensing: a DJ's permission alone does not necessarily clear the copyrights in underlying tracks. Prefer official artist-enabled SoundCloud embeds. Assess Belgian public streaming rights before promoting the feature as an always-on radio station.

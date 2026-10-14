@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08090c"><meta name="description" content="Listen to SpiralCactus Radio: SoundCloud mixes and music from our Brussels rave artists."><title>SpiralCactus | Radio</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
+<body data-page="radio"><canvas id="particles" aria-hidden="true"></canvas>
+<header class="site-header"><nav aria-label="Main navigation"><a class="wordmark" href="index.html" aria-label="SpiralCactus home">SPIRAL<span>CACTUS</span></a>
+<button id="menubtn" class="pill nav-menu" data-i18n-aria-label="menuLabel" aria-label="Toggle menu" aria-expanded="false">☰</button>
+<div class="links" id="mainlinks"><a data-i18n="home" href="index.html" class="" >Home</a><a data-i18n="discover" href="discover.html" class="" >Discover</a><a data-i18n="activities" href="activities.html" class="" >Experiences</a><a data-i18n="events" href="events.html" class="" >Events</a><a data-i18n="calendar" href="calendar.html" class="" >Calendar</a><a data-i18n="gallery" href="gallery.html" class="" >Gallery</a><a data-i18n="radio" href="radio.html" class="active" >Radio</a><a data-i18n="community" href="artists.html" class="" >Community</a><a data-i18n="blog" href="blog.html" class="" >Blog</a><a data-i18n="shop" href="shop.html" class="" >Shop</a><a data-i18n="contact" href="contact.html" class="" >Contact</a></div>
+<div class="actions"><label class="sr-only" for="langselect" data-i18n="langLabel">Website language</label><select class="pill lang-select" id="langselect" data-i18n-aria-label="langLabel" aria-label="Website language"><option value="en">EN</option><option value="fr">FR</option><option value="nl">NL</option></select></div></nav></header>
+<main id="main-content">
+<section class="wrap radio-page">
+  <div class="radio-topline"><span data-i18n="radioEye" class="eyebrow">THE SOUND OF THE SPIRAL</span><span class="radio-signal"><span class="radio-signal-dot"></span> CURATED GUEST FREQUENCIES</span></div>
+  <h1 data-i18n="radioHeading" class="radio-heading">SPIRAL RADIO</h1>
+  <p data-i18n="radioIntro" class="lead">Explore mixes and productions from DJs who have played SpiralCactus. Press play and keep discovering the underground.</p>
+  <div class="radio-station">
+    <div class="radio-main">
+      <div class="radio-player-head">
+        <div class="radio-visual" aria-hidden="true"><span class="radio-visual-mark">SC<span class="radio-freq">/ FREQ. 001</span></span><div class="radio-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="radio-visual-bottom">UNDERGROUND — ORGANIC — BRUSSELS</span></div>
+        <div class="radio-player-info">
+          <span data-i18n="radioPlaying" class="eyebrow">SELECTED FREQUENCY</span>
+          <h2 id="radio-current-title">Soul3d — Oldschool Waves Sessions</h2>
+          <p id="radio-current-artist">SOUL3D · OLDSCHOOL WAVES</p>
+          <div class="radio-actions">
+            <button class="btn" id="radio-start" type="button" data-i18n="radioStart">START LISTENING ▶</button>
+            <button class="btn alt" id="radio-next" type="button" data-i18n="radioNext" disabled>NEXT MIX →</button>
+          </div>
+        </div>
+      </div>
+      <div id="radio-embed-wrap" class="radio-embed-wrap" hidden>
+        <iframe id="radio-soundcloud" title="SpiralCactus Radio — SoundCloud music player" width="100%" height="190" scrolling="no" frameborder="no" allow="autoplay" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p id="radio-status" class="radio-status" aria-live="polite" data-i18n="radioBeforePlay">Choose a mix and press Start Listening to load the SoundCloud player.</p>
+      <p data-i18n="radioConsent" class="note">SoundCloud loads only after you press play. Audio is streamed by SoundCloud, not stored on this site.</p>
+      <p data-i18n="radioLimits" class="note">Your browser may require another click on the SoundCloud player. Music stops when you leave this page.</p>
+    </div>
+    <aside class="radio-sidebar">
+      <div class="radio-side-title"><span data-i18n="radioRotation" class="eyebrow">THE ROTATION</span><span id="radio-count" class="radio-number">04 / SETS</span></div>
+      <p data-i18n="radioSideIntro">Real sets and productions from artists on our lineups.</p>
+      <label for="radio-filter" data-i18n="radioFilter">FILTER BY ARTIST</label>
+      <select class="pill" id="radio-filter">
+        <option value="all" data-i18n="radioAll">All artists</option>
+        <option value="Soul3d">Soul3d</option>
+        <option value="Minopolska">Minopolska</option>
+      </select>
+      <div id="radio-queue" class="radio-queue" aria-label="SpiralCactus Radio listening queue"></div>
+      <p class="note" data-i18n="radioRecommend">Want your set featured? Contact the SpiralCactus team.</p>
+      <a href="contact.html?subject=dj" data-i18n="radioSubmit" class="btn alt radio-submit">CONTACT THE CREW ↗</a>
+    </aside>
+  </div>
+  <div class="radio-bottom-links"><span data-i18n="radioFoot" class="eyebrow">MADE FOR THE LISTENERS</span><a href="events.html" data-i18n="radioEventLink">DISCOVER OUR EVENTS ↗</a></div>
+</section>
+</main><footer><span data-i18n="footerTagline">© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIC — BRUSSELS</span> <span>·</span> <a data-i18n="footerContact" href="contact.html" class="" >CONTACT ↗</a></footer><script src="i18n.js" defer></script><script src="app.js" defer></script><script src="https://w.soundcloud.com/player/api.js" defer></script><script src="radio.js" defer></script></body></html>
