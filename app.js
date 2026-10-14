@@ -26,7 +26,8 @@
     document.documentElement.lang=current;
     document.getElementById('langselect').value=current;
     const titlePage = document.querySelector('nav a.active')?.textContent || 'SpiralCactus';
-    document.title = `SpiralCactus | ${titlePage}`;
+    const homeTitles={en:'SpiralCactus Brussels | Underground Raves & Radio',fr:'SpiralCactus Bruxelles | Raves Underground & Radio',nl:'SpiralCactus Brussel | Underground Raves & Radio'};
+    document.title=page==='index'?homeTitles[current]:`SpiralCactus Brussels | ${titlePage}`;
     document.querySelectorAll('[data-dynamic-lang]').forEach(el=>{const w=dynamic[current]?.[el.dataset.dynamicLang];if(w!==undefined)el.textContent=w;});
     document.querySelectorAll('[data-i18n-aria-label]').forEach(el=>{const w=words[el.dataset.i18nAriaLabel];if(w!==undefined)el.setAttribute('aria-label',w);});
     document.querySelectorAll('[data-i18n-title]').forEach(el=>{const w=words[el.dataset.i18nTitle];if(w!==undefined)el.title=w;});
