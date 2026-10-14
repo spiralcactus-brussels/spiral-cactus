@@ -12,7 +12,7 @@ const lang=()=>{let l='en';try{l=localStorage.getItem('sc-lang')||'en'}catch(_){
 const tr=k=>window.SC_TRANSLATIONS?.[lang()]?.[k]||window.SC_TRANSLATIONS?.en?.[k]||k;
 const validUrl=link=>{try{const u=new URL(link);return u.protocol==='https:'&&['soundcloud.com','www.soundcloud.com','m.soundcloud.com'].includes(u.hostname)&&!u.username&&!u.password}catch(_){return false}};
 const makeSrc=(url,autoplay=false)=>'https://w.soundcloud.com/player/?'+new URLSearchParams({url,color:'#b7ff22',auto_play:String(autoplay),hide_related:'true',show_comments:'false',show_user:'true',show_reposts:'false',show_artwork:'true',visual:'false'}).toString();
-let items=[],selected=0,started=false,widget=null,soundCount=1,soundIndex=0,finishBusy=false,firstReady=true;
+let items=[],selected=0,started=false,widget=null,soundCount=0,soundIndex=0,finishBusy=false,firstReady=true;
 const mark=(key)=>{status.dataset.messageKey=key;status.textContent=tr(key)};
 const current=()=>items[selected];
 function paint(){
@@ -28,13 +28,13 @@ if(!widget)return;
 const currentId=current()?.id;
 widget.getSounds(sounds=>{
  if(current()?.id!==currentId)return;
- soundCount=Math.max(1,Array.isArray(sounds)?sounds.length:1);
+ soundCount=Array.isArray(sounds)?sounds.length:0;
 });
 }
 function load(index,autoplay=false){
 if(!items.length)return;
 selected=(index+items.length)%items.length;
-soundCount=1;soundIndex=0;finishBusy=false;
+soundCount=0;soundIndex=0;finishBusy=false;
 paint();
 if(!started)return;
 const sound=current();
