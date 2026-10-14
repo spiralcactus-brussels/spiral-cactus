@@ -119,13 +119,13 @@
     if(!featured || !list)return;
     const main=events.find(e=>e.id==='acid-edition') || events[0];
     featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>${ticketEmbedHTML(main)}`:'';
-    list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
+    list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card">${e.poster?`<img class="archive-poster" src="${esc(e.poster)}" alt="${esc(languageVal(e.name))} poster" loading="lazy">`:''}<div class="archive-copy"><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
   }
   function renderArtists(){
     if(page!=='artists')return;
     for(const [id,box] of [['acid-edition','artists-current'],['first-rave','artists-past']]){
       const e=events.find(x=>x.id===id);const el=document.getElementById(box);if(!el)continue;
-      el.innerHTML=(e?.artists||[]).map(a=>`<article class="card artist-card">${a.image?`<img class="artist-image" src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy">`:""}<span class="num">${esc(e?.name?.en || '')}</span><h3>${esc(a.name)}</h3><p>${esc(a.genre||'')}</p></article>`).join('');
+      el.innerHTML=(e?.artists||[]).map(a=>`<article class="card artist-card">${a.image?`<img class="artist-image" src="${esc(a.image)}" alt="${esc(a.name)}" loading="lazy">`:""}<span class="num">${esc(e?.name?.en || '')}</span><h3>${esc(a.name)}</h3><p>${esc(a.genre||a.crew||'')}</p></article>`).join('');
     }
   }
   function renderBlog(){
