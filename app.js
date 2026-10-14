@@ -89,7 +89,10 @@
     return `<div class="event-poster poster-simple" aria-hidden="true"><span>SPIRAL<br>CACTUS</span><b>BRUSSELS<br>RAVE NIGHT</b><small>28.08.2026</small></div>`;
   }
   function eventInfo(e,small=false){
-    const ticket=e.ticket?`<a class="btn" href="${esc(e.ticket)}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'';
+    const inPageTickets=!!safePaymentUrl(e.ticketEmbed)&&!isPast(e);
+    const ticket=inPageTickets
+      ? `<button class="btn" type="button" data-open-ticketshop>${esc(l('ticketOnSite'))} ↓</button>`
+      : (e.ticket?`<a class="btn" href="${esc(e.ticket)}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'');
     return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></div>`;
   }
 
@@ -119,6 +122,16 @@
     const main=events.find(e=>e.id==='acid-edition') || events[0];
     featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>${ticketEmbedHTML(main)}`:'';
     list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card">${e.poster?`<img class="archive-poster" src="${esc(e.poster)}" alt="${esc(languageVal(e.name))} poster" loading="lazy">`:''}<div class="archive-copy"><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
+  }
+  if(page==='events'){
+    document.getElementById('featured-event')?.addEventListener('click',event=>{
+      const trigger=event.target.closest('[data-open-ticketshop]');
+      if(!trigger)return;
+      const checkout=document.querySelector('#featured-event .ticket-embed');
+      if(!checkout)return;
+      checkout.open=true;
+      checkout.scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    });
   }
   function renderArtists(){
     if(page!=='artists')return;
