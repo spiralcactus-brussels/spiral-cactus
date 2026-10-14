@@ -12,7 +12,7 @@ const lang=()=>{let l='en';try{l=localStorage.getItem('sc-lang')||'en'}catch(_){
 const tr=k=>window.SC_TRANSLATIONS?.[lang()]?.[k]||window.SC_TRANSLATIONS?.en?.[k]||k;
 const validUrl=link=>{try{const u=new URL(link);return u.protocol==='https:'&&['soundcloud.com','www.soundcloud.com','m.soundcloud.com'].includes(u.hostname)&&!u.username&&!u.password}catch(_){return false}};
 const makeSrc=(url,autoplay=false)=>'https://w.soundcloud.com/player/?'+new URLSearchParams({url,color:'#b7ff22',auto_play:String(autoplay),hide_related:'true',show_comments:'false',show_user:'true',show_reposts:'false',show_artwork:'true',visual:'false'}).toString();
-let items=[],selected=0,started=false,widget=null,changing=false;
+let items=[],selected=0,started=false,widget=null,soundCount=1,soundIndex=0,finishBusy=false,firstReady=true;
 const mark=(key)=>{status.dataset.messageKey=key;status.textContent=tr(key)};
 const current=()=>items[selected];
 function paint(){
@@ -23,15 +23,28 @@ count.textContent=String(items.length).padStart(2,'0')+' / '+tr('radioSetCount')
 const visible=items.map((t,i)=>({...t,idx:i})).filter(t=>filter.value==='all'||t.artist===filter.value);
 queue.innerHTML=visible.map(t=>'<div class="radio-queue-item'+(t.idx===selected?' active':'')+'"><button class="radio-choose" type="button" data-index="'+t.idx+'" aria-pressed="'+(t.idx===selected)+'"><span class="radio-queue-num">'+String(t.idx+1).padStart(2,'0')+'</span><span class="radio-queue-copy"><strong>'+escapeHtml(t.title)+'</strong><small>'+escapeHtml(t.artist)+' · '+escapeHtml(t.description||t.genre)+'</small></span></button><a class="radio-source" href="'+escapeHtml(t.url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+escapeHtml(tr('radioOpenSource')+' — '+t.title)+'" title="'+escapeHtml(tr('radioOpenSource'))+'">↗</a></div>').join('');
 }
+function syncPlaylistInfo(){
+if(!widget)return;
+const currentId=current()?.id;
+widget.getSounds(sounds=>{
+ if(current()?.id!==currentId)return;
+ soundCount=Math.max(1,Array.isArray(sounds)?sounds.length:1);
+});
+}
 function load(index,autoplay=false){
 if(!items.length)return;
 selected=(index+items.length)%items.length;
+soundCount=1;soundIndex=0;finishBusy=false;
 paint();
 if(!started)return;
 const sound=current();
 try{
- if(widget&&window.SC?.Widget)widget.load(sound.url,{auto_play:autoplay,color:'#b7ff22',visual:false,show_artwork:true});
- else frame.src=makeSrc(sound.url,autoplay);
+ if(widget&&window.SC?.Widget){
+   widget.load(sound.url,{
+     auto_play:autoplay,color:'#b7ff22',visual:false,show_artwork:true,
+     callback:()=>{syncPlaylistInfo();if(autoplay)widget.play();}
+   });
+ }else frame.src=makeSrc(sound.url,autoplay);
  mark('radioReady');
 }catch(_){frame.src=makeSrc(sound.url,autoplay);mark('radioReady')}
 }
@@ -68,11 +81,30 @@ start.addEventListener('click',()=>{
  mark('radioReady');
  if(window.SC?.Widget){
    widget=window.SC.Widget(frame);
-   widget.bind(window.SC.Widget.Events.READY,()=>{try{widget.play()}catch(_){}});
+   widget.bind(window.SC.Widget.Events.READY,()=>{
+     syncPlaylistInfo();
+     if(firstReady){firstReady=false;try{widget.play()}catch(_){}}
+   });
+   widget.bind(window.SC.Widget.Events.PLAY,()=>{
+     // SoundCloud automatically progresses inside an artist's playlist.
+     // Remember the last track index, so we can advance ONLY once the final
+     // track of that playlist has finished.
+     widget.getCurrentSoundIndex(index=>{
+       if(Number.isInteger(index)&&index>=0)soundIndex=index;
+     });
+   });
    widget.bind(window.SC.Widget.Events.FINISH,()=>{
-     const playing=current();if(!playing)return;
-     if(playing.format==='playlist')return; // SoundCloud manages tracks within its own multi-track playlist.
-     advance(true); // Browsers may block automatic playback; listeners can use native player controls.
+     if(finishBusy||!current())return;
+     // FINISH is fired at the end of a track, not reliably only at the end
+     // of an entire playlist. For a playlist, do not cut off its other tracks.
+     const atEnd=current().format!=='playlist'||(soundCount>0&&soundIndex>=soundCount-1);
+     if(!atEnd)return;
+     finishBusy=true;
+     advance(true); // Automatic continuation across sources is best effort:
+                    // iframe/browser autoplay permissions can still block it.
+   });
+   widget.bind(window.SC.Widget.Events.ERROR,()=>{
+     mark('radioPlaybackError');
    });
  }
 });
