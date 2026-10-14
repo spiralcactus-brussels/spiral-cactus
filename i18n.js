@@ -152,10 +152,11 @@ window.SC_TRANSLATIONS = {
     "radioEventLink": "DISCOVER OUR EVENTS ↗",
     "radioBeforePlay": "Choose a mix and press Start Listening to load the SoundCloud player.",
     "radioConsent": "SoundCloud loads only after you press play. Audio is streamed by SoundCloud, not stored on this site.",
-    "radioLimits": "Your browser may require another click on the SoundCloud player. Music stops when you leave this page.",
+    "radioLimits": "Auto DJ tries to play the next set when the current recording or playlist ends. Your browser may require another click inside SoundCloud. Music stops when you leave this page.",
     "radioReady": "SoundCloud player loaded. Press play in the player if playback has not started.",
     "radioUnavailable": "The music selection is temporarily unavailable. Please try again later.",
-    "radioOpenSource": "Open on SoundCloud"
+    "radioOpenSource": "Open on SoundCloud",
+    "radioPlaybackError": "SoundCloud couldn't load this recording. Try the Next Mix button or open the original SoundCloud link."
   },
   "fr": {
     "tagline": "UNDERGROUND — ORGANIQUE — BRUXELLES",
@@ -309,10 +310,11 @@ window.SC_TRANSLATIONS = {
     "radioEventLink": "DÉCOUVRIR NOS ÉVÉNEMENTS ↗",
     "radioBeforePlay": "Choisissez un mix et lancez l'écoute pour charger SoundCloud.",
     "radioConsent": "SoundCloud se charge uniquement lorsque vous lancez l'écoute. Les fichiers audio restent hébergés chez SoundCloud.",
-    "radioLimits": "Votre navigateur peut demander un second clic dans le lecteur SoundCloud. La musique s'arrête si vous quittez cette page.",
+    "radioLimits": "Auto DJ tente de lancer le mix suivant à la fin d’un morceau ou d’une playlist. Votre navigateur peut exiger un clic supplémentaire dans SoundCloud. La musique s’arrête si vous quittez cette page.",
     "radioReady": "Lecteur SoundCloud chargé. Appuyez sur Play dans le lecteur si nécessaire.",
     "radioUnavailable": "La sélection musicale est momentanément indisponible. Réessayez plus tard.",
-    "radioOpenSource": "Ouvrir sur SoundCloud"
+    "radioOpenSource": "Ouvrir sur SoundCloud",
+    "radioPlaybackError": "SoundCloud n’a pas pu charger cet enregistrement. Essayez Mix suivant ou ouvrez le lien SoundCloud original."
   },
   "nl": {
     "tagline": "UNDERGROUND — ORGANISCH — BRUSSEL",
@@ -466,9 +468,10 @@ window.SC_TRANSLATIONS = {
     "radioEventLink": "ONTDEK ONZE EVENTS ↗",
     "radioBeforePlay": "Kies een mix en druk op Start om de SoundCloud-speler te laden.",
     "radioConsent": "SoundCloud wordt pas geladen nadat je op afspelen drukt. De audio staat bij SoundCloud, niet op deze website.",
-    "radioLimits": "Je browser kan nog een klik op de SoundCloud-speler vragen. De muziek stopt wanneer je deze pagina verlaat.",
+    "radioLimits": "Auto DJ probeert de volgende mix af te spelen wanneer de opname of afspeellijst is afgelopen. Je browser kan om nog een klik in SoundCloud vragen. De muziek stopt wanneer je deze pagina verlaat.",
     "radioReady": "SoundCloud-speler geladen. Klik op Play in de speler als de muziek niet begint.",
     "radioUnavailable": "De muziekselectie is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
-    "radioOpenSource": "Openen op SoundCloud"
+    "radioOpenSource": "Openen op SoundCloud",
+    "radioPlaybackError": "SoundCloud kon deze opname niet laden. Probeer Volgende mix of open de originele SoundCloud-link."
   }
 };
