@@ -202,14 +202,20 @@
     const selected=new URLSearchParams(location.search).get('post');
     const detail=document.getElementById('blog-detail');
     const selectedPost=published.find(p=>p.slug===selected);
+    const coverHTML=p=>{
+      const cover=String(p?.image||'');
+      return /^assets\/blog\/[a-z0-9_./ -]+\.(?:jpg|jpeg|png|webp|avif)$/i.test(cover) && !cover.includes('..')
+        ? '<img class="blog-cover" loading="lazy" src="'+esc(cover)+'" alt="'+esc(languageVal(p.title))+'">'
+        : '';
+    };
     if(selectedPost){
       list.hidden=true;empty.hidden=true;detail.hidden=false;
       const paragraphs=String(languageVal(selectedPost.body||selectedPost.excerpt)).split(/\n\s*\n/).map(para=>`<p>${esc(para).replace(/\n/g,'<br>')}</p>`).join('');
-      detail.innerHTML=`<a class="btn alt" href="blog.html">${esc(i18n[current]?.blogBack||'Back')} ↗</a><span class="eyebrow">${esc(fullDate(selectedPost.date))}</span><h2>${esc(languageVal(selectedPost.title))}</h2>${paragraphs}`;
+      detail.innerHTML=`<a class="btn alt" href="blog.html">${esc(i18n[current]?.blogBack||'Back')} ↗</a><span class="eyebrow">${esc(fullDate(selectedPost.date))}</span><h2>${esc(languageVal(selectedPost.title))}</h2>${coverHTML(selectedPost)}${paragraphs}`;
       return;
     }
     list.hidden=false;detail.hidden=true;empty.hidden=!!published.length;
-    list.innerHTML=published.map(p=>`<article class="card blog-card"><span class="num">${esc(fullDate(p.date))}</span><h3>${esc(languageVal(p.title))}</h3><p>${esc(languageVal(p.excerpt||p.body))}</p>${p.slug?`<a href="blog.html?post=${encodeURIComponent(p.slug)}">${esc(l('readMore'))} ↗</a>`:''}${p.url?` <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">↗</a>`:''}</article>`).join('');
+    list.innerHTML=published.map(p=>`<article class="card blog-card">${coverHTML(p)}<span class="num">${esc(fullDate(p.date))}</span><h3>${esc(languageVal(p.title))}</h3><p>${esc(languageVal(p.excerpt||p.body))}</p>${p.slug?`<a href="blog.html?post=${encodeURIComponent(p.slug)}">${esc(l('readMore'))} ↗</a>`:''}${p.url?` <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">↗</a>`:''}</article>`).join('');
   }
   const dateKey=(y,m,d)=>`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   function renderCalendar(){
