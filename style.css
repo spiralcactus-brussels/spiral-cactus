@@ -139,3 +139,7 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .radio-bottom-links>a{font:700 12px var(--modular);letter-spacing:.09em}.radio-bottom-links>a:hover{color:var(--lime)}
 @media(max-width:900px){.radio-station{grid-template-columns:1fr}.radio-visual{aspect-ratio:16/6}.radio-heading{font-size:clamp(58px,12vw,120px)}}
 @media(max-width:530px){.radio-page{padding-top:43px}.radio-topline{align-items:flex-start;flex-direction:column;gap:8px}.radio-heading{font-size:clamp(52px,15vw,81px);margin-top:16px}.radio-main,.radio-sidebar{padding:16px}.radio-wave{gap:3px}.radio-freq{display:none}.radio-actions{flex-direction:column}.radio-actions .btn{width:100%}}
+
+/* Optional blog cover images managed through Pages CMS. */
+.blog-cover{display:block;width:100%;max-height:370px;object-fit:cover;border:1px solid var(--line);margin:8px 0 20px;background:var(--panel)}
+.blog-card .blog-cover{aspect-ratio:16/9;max-height:none;object-fit:cover;margin:0 0 16px}
