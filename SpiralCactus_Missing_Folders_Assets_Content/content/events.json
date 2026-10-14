@@ -1,0 +1,86 @@
+[
+  {
+    "id": "acid-edition",
+    "date": "2026-10-16",
+    "start": "22:00",
+    "end": "07:00",
+    "venue": "Barrio Brussels",
+    "gallery": "2026-10-16-acid-edition",
+    "ticket": "https://spiral-cactus.weticket.io/brussels-rave-night-acid-edition-1",
+    "poster": "",
+    "name": {
+      "en": "Brussels Rave Night: Acid Edition",
+      "fr": "Brussels Rave Night : Acid Edition",
+      "nl": "Brussels Rave Night: Acid Edition"
+    },
+    "description": {
+      "en": "Jungle, tekno, acidcore, hardcore and industrial hard techno. A full-spectrum underground night.",
+      "fr": "Jungle, tekno, acidcore, hardcore et hard techno industrielle. Une nuit underground sans compromis.",
+      "nl": "Jungle, tekno, acidcore, hardcore en industriële hardtechno. Een compromisloze undergroundnacht."
+    },
+    "artists": [
+      {
+        "name": "Pingu BKZ",
+        "genre": "Jungle / Drum-Tekno"
+      },
+      {
+        "name": "YoH L’BRAnK",
+        "genre": "Mentalcore / Acidcore"
+      },
+      {
+        "name": "GanjaFlexx",
+        "genre": "Acid / Freetekno"
+      },
+      {
+        "name": "Nocid",
+        "genre": "Acidcore / Acid Tekno"
+      },
+      {
+        "name": "Soul3d",
+        "genre": "Acid / Hardcore"
+      },
+      {
+        "name": "Minopolska",
+        "genre": "Hard Techno / Industrial"
+      }
+    ]
+  },
+  {
+    "id": "first-rave",
+    "date": "2026-08-28",
+    "start": "22:00",
+    "end": "07:00",
+    "venue": "Barrio Brussels",
+    "gallery": "2026-08-28-brussels-rave-night",
+    "ticket": "",
+    "poster": "",
+    "name": {
+      "en": "Brussels Rave Night",
+      "fr": "Brussels Rave Night",
+      "nl": "Brussels Rave Night"
+    },
+    "description": {
+      "en": "Our first event in Brussels, bringing together artists, sound and a community around independent electronic music.",
+      "fr": "Notre première soirée bruxelloise, réunissant artistes, sound system et communauté autour des musiques électroniques indépendantes.",
+      "nl": "Ons eerste evenement in Brussel, waar artiesten, geluid en een community samenkwamen rond onafhankelijke elektronische muziek."
+    },
+    "artists": [
+      {
+        "name": "Nawatt",
+        "genre": "Brussels Rave Night · 28/08"
+      },
+      {
+        "name": "MEGO",
+        "genre": "Brussels Rave Night · 28/08"
+      },
+      {
+        "name": "Terahmet",
+        "genre": "Brussels Rave Night · 28/08"
+      },
+      {
+        "name": "Soul3d",
+        "genre": "Acid / Hardcore"
+      }
+    ]
+  }
+]
