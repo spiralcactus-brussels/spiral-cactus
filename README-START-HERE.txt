@@ -79,7 +79,11 @@ TRANSLATIONS:
 - The language selector keeps the selected language when changing pages. No external translation API is required.
 
 CONTACT:
-- Form opens the visitor's email application with a draft addressed to spiralcactus24@gmail.com; visitors must click Send in their email app. A direct mailto link is also provided. Neither workflow proves an email reached the inbox; conduct a real send/receive test yourself. A true server-side contact form requires an authenticated form service.
+- The contact form now submits via AJAX to https://formsubmit.co/ajax/spiralcactus24@gmail.com; the HTML action at https://formsubmit.co/spiralcactus24@gmail.com is a fallback for visitors without JavaScript.
+- No FormSubmit login or secret key is needed. On the FIRST genuine submission, FormSubmit sends an activation email to spiralcactus24@gmail.com. The mailbox owner MUST confirm it before emailed submissions are delivered. Check Spam as well.
+- IMPORTANT: Do not tell users that inbox delivery has been verified until you complete a real form submission and confirm receipt in the SpiralCactus mailbox. A successful API response proves submission acceptance, not necessarily inbox delivery.
+- The form shows EN/FR/NL status messages, includes a honeypot, leaves FormSubmit's default CAPTCHA protection enabled, and informs visitors that the third party processes their data. FormSubmit's published documentation describes keeping submissions for 30 days.
+- To test, open the public contact page, complete all fields with a unique subject, submit, activate the mailbox as instructed, then submit again and inspect the recipient Inbox and Spam folder. JavaScript off uses the third-party fallback form (may navigate away from the site).
 - Public contact is spiralcactus24@gmail.com, set in app.js.
 
 LOCAL PREVIEW:

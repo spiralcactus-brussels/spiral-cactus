@@ -47,15 +47,69 @@
     const links=document.getElementById('mainlinks');links.classList.toggle('opened');e.currentTarget.setAttribute('aria-expanded',String(links.classList.contains('opened')));
   });
   document.querySelectorAll('#mainlinks a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('mainlinks')?.classList.remove('opened');}));
+  // AJAX contact delivery using FormSubmit; HTML form.action is a no-JavaScript fallback.
   const contact = document.getElementById('contactform');
   if(contact){
     const params=new URLSearchParams(location.search);
     if(params.get('subject')==='dj')contact.elements.subject.value='DJ / Live act booking';
-    contact.addEventListener('submit',e=>{
-      e.preventDefault();const fd=new FormData(contact);
-      const email=String(fd.get('email')||'').trim(),subject=String(fd.get('subject')||'').trim(),message=String(fd.get('message')||'').trim();
-      if(!email||!subject||!message){alert(l('submitError'));return;}
-      location.href=`mailto:spiralcactus24@gmail.com?subject=${encodeURIComponent('SpiralCactus — '+subject)}&body=${encodeURIComponent(message+'\n\nFrom: '+email)}`;
+    const status=contact.querySelector('#contact-status');
+    const submit=contact.querySelector('button[type="submit"]');
+    const contactText=(key)=>i18n[current]?.[key]||i18n.en?.[key]||key;
+    let sending=false;
+    const showStatus=(key,state)=>{
+      if(!status)return;
+      status.hidden=false;
+      status.dataset.state=state;
+      status.dataset.messageKey=key;
+      status.textContent=contactText(key);
+    };
+    contact.addEventListener('submit',async(e)=>{
+      e.preventDefault();
+      if(sending||!contact.reportValidity())return;
+      const fd=new FormData(contact);
+      const email=String(fd.get('email')||'').trim();
+      const subject=String(fd.get('subject')||'').trim();
+      const message=String(fd.get('message')||'').trim();
+      if(fd.get('_honey'))return; // Hidden honeypot: ignore automated spam.
+      if(!email||!subject||!message){showStatus('contactInvalid','error');return;}
+      sending=true;
+      submit.disabled=true;
+      submit.textContent=contactText('contactSending');
+      showStatus('contactSending','info');
+      try{
+        const response=await fetch('https://formsubmit.co/ajax/spiralcactus24@gmail.com',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify({
+            email,subject,message,
+            _subject:'SpiralCactus — '+subject,
+            _template:'table',
+            _honey:'',
+            source:'SpiralCactus website contact form',
+            _url:'https://spiralcactus-brussels.github.io/spiral-cactus/contact.html'
+          })
+        });
+        const result=await response.json();
+        if(!response.ok||!(result?.success===true||result?.success==='true')){
+          throw new Error(result?.message||'FormSubmit did not confirm submission.');
+        }
+        contact.reset();
+        showStatus('contactSent','success');
+      }catch(error){
+        console.warn('SpiralCactus contact form submission failed:',error);
+        showStatus('contactSendError','error');
+      }finally{
+        sending=false;
+        submit.disabled=false;
+        submit.textContent=contactText('formSend');
+      }
+    });
+    // Keep the inline message translated when visitors switch languages.
+    document.getElementById('langselect')?.addEventListener('change',()=>{
+      if(status&&!status.hidden&&status.dataset.messageKey){
+        status.textContent=contactText(status.dataset.messageKey);
+      }
+      if(sending)submit.textContent=contactText('contactSending');
     });
   }
   // Faster atmospheric dots, with a reduced-motion option and battery-aware pausing.

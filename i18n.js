@@ -88,11 +88,11 @@ window.SC_TRANSLATIONS = {
     "contactEye": "LET’S CONNECT",
     "contactTitle": "CONTACT US",
     "contactnote": "Artists, DJs, collectives, venues, press, partners and creative collaborators—reach out.",
-    "contactExplain": "This form opens your email app. It does not send or store a message on a server.",
+    "contactExplain": "The form delivers messages to SpiralCactus through FormSubmit. No email app needed.",
     "formEmail": "Your email",
     "formSubject": "Subject",
     "formMessage": "Message",
-    "formSend": "Open email draft ↗",
+    "formSend": "Send message ↗",
     "emailPlaceholder": "you@example.com",
     "subjectPlaceholder": "DJ booking / Collaboration / Press",
     "messagePlaceholder": "Tell us about your idea...",
@@ -112,7 +112,6 @@ window.SC_TRANSLATIONS = {
     "allAlbums": "All events",
     "galleryWaiting": "No photos published yet. Check back soon.",
     "footerTagline": "© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIC — BRUSSELS",
-
     "liveNow": "LIVE NOW",
     "inDevelopment": "IN DEVELOPMENT",
     "formTitle": "Contact form",
@@ -124,12 +123,16 @@ window.SC_TRANSLATIONS = {
     "calendarPrev": "Previous month",
     "calendarNext": "Next month",
     "calendarGrid": "Events by date",
-
     "blogBack": "← Back to all stories",
     "manCulture": "01 / CULTURE",
     "manSound": "02 / SOUND",
     "manPeople": "03 / PEOPLE",
-    "manEvolution": "∞ / EVOLUTION"
+    "manEvolution": "∞ / EVOLUTION",
+    "contactPrivacy": "FormSubmit processes your email address and message to deliver it to SpiralCactus. Please avoid sending sensitive information.",
+    "contactSending": "Sending your message…",
+    "contactSent": "Message submitted successfully. Thank you for contacting SpiralCactus!",
+    "contactInvalid": "Please complete the email, subject and message fields.",
+    "contactSendError": "We couldn't submit your message. Please try again or email spiralcactus24@gmail.com directly."
   },
   "fr": {
     "tagline": "UNDERGROUND — ORGANIQUE — BRUXELLES",
@@ -219,11 +222,11 @@ window.SC_TRANSLATIONS = {
     "contactEye": "ENTRONS EN CONTACT",
     "contactTitle": "CONTACTEZ-NOUS",
     "contactnote": "Artistes, DJs, collectifs, lieux, presse, partenaires et créatifs : parlons de vos idées.",
-    "contactExplain": "Ce formulaire ouvre votre application de messagerie. Aucun message n’est envoyé ni conservé sur un serveur.",
+    "contactExplain": "Ce formulaire transmet votre message à SpiralCactus via FormSubmit, sans ouvrir votre messagerie.",
     "formEmail": "Votre adresse e-mail",
     "formSubject": "Objet",
     "formMessage": "Message",
-    "formSend": "Ouvrir un e-mail ↗",
+    "formSend": "Envoyer le message ↗",
     "emailPlaceholder": "vous@exemple.com",
     "subjectPlaceholder": "Booking DJ / Collaboration / Presse",
     "messagePlaceholder": "Parlez-nous de votre projet...",
@@ -243,7 +246,6 @@ window.SC_TRANSLATIONS = {
     "allAlbums": "Tous les événements",
     "galleryWaiting": "Aucune photo publiée pour le moment. À bientôt !",
     "footerTagline": "© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIQUE — BRUXELLES",
-
     "liveNow": "ACTUELLEMENT",
     "inDevelopment": "EN DÉVELOPPEMENT",
     "formTitle": "Formulaire de contact",
@@ -255,12 +257,16 @@ window.SC_TRANSLATIONS = {
     "calendarPrev": "Mois précédent",
     "calendarNext": "Mois suivant",
     "calendarGrid": "Événements par date",
-
     "blogBack": "← Retour aux articles",
     "manCulture": "01 / CULTURE",
     "manSound": "02 / SON",
     "manPeople": "03 / PERSONNES",
-    "manEvolution": "∞ / ÉVOLUTION"
+    "manEvolution": "∞ / ÉVOLUTION",
+    "contactPrivacy": "FormSubmit traite votre adresse e-mail et votre message pour les transmettre à SpiralCactus. Évitez d'envoyer des informations sensibles.",
+    "contactSending": "Envoi de votre message…",
+    "contactSent": "Message transmis avec succès. Merci d'avoir contacté SpiralCactus !",
+    "contactInvalid": "Veuillez compléter votre e-mail, l'objet et le message.",
+    "contactSendError": "Votre message n'a pas pu être envoyé. Réessayez ou écrivez directement à spiralcactus24@gmail.com."
   },
   "nl": {
     "tagline": "UNDERGROUND — ORGANISCH — BRUSSEL",
@@ -350,11 +356,11 @@ window.SC_TRANSLATIONS = {
     "contactEye": "LATEN WE CONTACT MAKEN",
     "contactTitle": "CONTACTEER ONS",
     "contactnote": "Artiesten, dj’s, collectieven, locaties, pers, partners en creatievelingen: neem contact op.",
-    "contactExplain": "Dit formulier opent je e-mailapp. Er wordt niets via een server verzonden of opgeslagen.",
+    "contactExplain": "Dit formulier stuurt je bericht via FormSubmit naar SpiralCactus, zonder e-mailapp.",
     "formEmail": "Je e-mailadres",
     "formSubject": "Onderwerp",
     "formMessage": "Bericht",
-    "formSend": "Open e-mailconcept ↗",
+    "formSend": "Bericht verzenden ↗",
     "emailPlaceholder": "jij@voorbeeld.be",
     "subjectPlaceholder": "DJ-boeking / Samenwerking / Pers",
     "messagePlaceholder": "Vertel ons over je idee...",
@@ -374,7 +380,6 @@ window.SC_TRANSLATIONS = {
     "allAlbums": "Alle evenementen",
     "galleryWaiting": "Er zijn nog geen foto’s gepubliceerd. Kom binnenkort terug!",
     "footerTagline": "© 2026 SPIRALCACTUS · UNDERGROUND — ORGANISCH — BRUSSEL",
-
     "liveNow": "NU ACTIEF",
     "inDevelopment": "IN ONTWIKKELING",
     "formTitle": "Contactformulier",
@@ -386,11 +391,15 @@ window.SC_TRANSLATIONS = {
     "calendarPrev": "Vorige maand",
     "calendarNext": "Volgende maand",
     "calendarGrid": "Evenementen per datum",
-
     "blogBack": "← Terug naar alle verhalen",
     "manCulture": "01 / CULTUUR",
     "manSound": "02 / GELUID",
     "manPeople": "03 / MENSEN",
-    "manEvolution": "∞ / EVOLUTIE"
+    "manEvolution": "∞ / EVOLUTIE",
+    "contactPrivacy": "FormSubmit verwerkt je e-mailadres en bericht om deze bij SpiralCactus te bezorgen. Verstuur geen gevoelige informatie.",
+    "contactSending": "Je bericht wordt verzonden…",
+    "contactSent": "Bericht succesvol ingediend. Bedankt dat je contact opneemt met SpiralCactus!",
+    "contactInvalid": "Vul je e-mailadres, onderwerp en bericht in.",
+    "contactSendError": "Je bericht kon niet worden verstuurd. Probeer het opnieuw of mail rechtstreeks naar spiralcactus24@gmail.com."
   }
 };

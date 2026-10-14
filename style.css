@@ -90,3 +90,12 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .archive-poster{width:166px;max-width:100%;aspect-ratio:3/4;object-fit:cover;flex:0 0 auto;border:1px solid var(--line);background:#08090c}
 .archive-copy{flex:1;min-width:0}
 @media(max-width:800px){.archive-poster{width:200px}}
+
+/* Direct-contact AJAX status and hidden spam trap. */
+.contact-honeypot{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+.contact-status{padding:12px 14px;margin:10px 0 0;border:1px solid var(--line);font-size:13px;line-height:1.6}
+.contact-status[data-state="success"]{background:#b7ff2212;border-color:#80b830;color:#dcffa8}
+.contact-status[data-state="error"]{background:#ff642c12;border-color:#b75232;color:#ffcbb9}
+.contact-status[data-state="info"]{background:#c5d6ff11;border-color:#4d596c;color:#d5def0}
+.contactrow form .note{line-height:1.6;margin:0 0 8px}
+.contactrow form button:disabled{opacity:.7;cursor:wait}
