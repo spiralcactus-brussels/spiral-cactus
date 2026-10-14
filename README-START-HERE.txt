@@ -101,3 +101,12 @@ SPIRAL RADIO (FREE SOUNDCLOUD EMBEDS):
 - Music licensing: a DJ's permission alone does not necessarily clear the copyrights in underlying tracks. Prefer official artist-enabled SoundCloud embeds. Assess Belgian public streaming rights before promoting the feature as an always-on radio station.
 
 - MEGO's verified DJ mixes are on Mixcloud (not confirmed on SoundCloud); Terahmet, Obvyss and YoH L’BRAnK currently need accurate playable SoundCloud URLs from their artists before inclusion. Avoid using similarly named musicians or unrelated label accounts.
+
+
+GOOGLE DISCOVERY & SEO (OCTOBER 2026):
+- The static sitemap is published at https://spiralcactus-brussels.github.io/spiral-cactus/sitemap.xml and lists all 11 public pages.
+- All HTML pages now have absolute canonical URLs and specific static meta descriptions. The homepage includes factual organization/social-profile JSON-LD.
+- Google Search Console setup: add a URL-prefix property exactly 'https://spiralcactus-brussels.github.io/spiral-cactus/', verify ownership using an HTML file or meta tag, submit 'sitemap.xml' under Sitemaps and request indexing of the homepage in URL Inspection.
+- The URL path matters: use a URL-prefix property containing /spiral-cactus/. Search Console verification needs a user-owned Google account.
+- The project cannot control the domain root robots.txt at https://spiralcactus-brussels.github.io/robots.txt; a robots.txt in /spiral-cactus/ would not be the host's robots.txt. No website page contains a noindex directive.
+- Publishing or submitting a sitemap does not guarantee indexing or search ranking. Google controls the timing.
