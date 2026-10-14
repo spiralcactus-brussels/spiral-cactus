@@ -54,41 +54,47 @@
     "venue": "Barrio Brussels",
     "gallery": "2026-08-28-brussels-rave-night",
     "ticket": "",
-    "poster": "",
+    "poster": "https://weticket.ams3.digitaloceanspaces.com/event/spiral-cactus-presents-brussels-rave-night__by_spiral-cactus__cover_photo-019f3839-2629-716f-a41b-aedef7a7c59b.png",
     "name": {
       "en": "Brussels Rave Night",
       "fr": "Brussels Rave Night",
       "nl": "Brussels Rave Night"
     },
     "description": {
-      "en": "Our first event in Brussels, bringing together artists, sound and a community around independent electronic music.",
-      "fr": "Notre première soirée bruxelloise, réunissant artistes, sound system et communauté autour des musiques électroniques indépendantes.",
-      "nl": "Ons eerste evenement in Brussel, waar artiesten, geluid en een community samenkwamen rond onafhankelijke elektronische muziek."
+      "en": "Our first Brussels Rave Night, featuring Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber and Hard Core, with six artists from the underground scene.",
+      "fr": "Notre première Brussels Rave Night, entre Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber et Hard Core, réunissant six artistes de la scène underground.",
+      "nl": "Onze eerste Brussels Rave Night met Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber en Hard Core en zes artiesten uit de undergroundscene."
     },
     "artists": [
       {
         "name": "Nawatt",
-        "genre": "Brussels Rave Night · 28/08"
+        "genre": "",
+        "crew": "AKU · TeknoDealers"
       },
       {
         "name": "MEGO",
-        "genre": "Brussels Rave Night · 28/08"
+        "genre": "",
+        "crew": "Structure Béton · C2C"
       },
       {
         "name": "Terahmet",
-        "genre": "Brussels Rave Night · 28/08"
+        "genre": "",
+        "crew": "Goulag"
       },
       {
         "name": "Soul3d",
-        "genre": "Acid / Hardcore"
+        "genre": "",
+        "crew": "Oldschool Waves · Gazmatek · Exiles"
       },
       {
         "name": "Pingu BKZ",
-        "genre": "Brussels Rave Night · 28/08"
+        "genre": "",
+        "crew": "Bankizz Label"
       },
       {
-        "name": "Obeis",
-        "genre": "Brussels Rave Night · 28/08"
+        "name": "Obvyss",
+        "genre": "",
+        "crew": "Drum&Beer · Alternative Area"
       }
     ]
   }
