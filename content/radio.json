@@ -12,6 +12,18 @@
     "event": "28 August & 16 October 2026"
   },
   {
+    "id": "pingu-mbss-2024",
+    "artist": "Pingu BKZ",
+    "title": "PINGU BKZ ft. MC Lucius — MBSS Open Air",
+    "url": "https://soundcloud.com/bankizz_label/pingu-bkz-ft-mc-lucius-mbss-open-air-recorded-dj-set",
+    "format": "track",
+    "genre": "Jungle / Breakcore / Hardcore",
+    "description": "Recorded DJ set · 59 min",
+    "source": "Bankizz — Free Net Label",
+    "credit": "Bankizz",
+    "event": "28 August & 16 October 2026"
+  },
+  {
     "id": "minopolska-clubhard",
     "artist": "Minopolska",
     "title": "CLUB HARD — Insolent Agency Takeover",
@@ -21,6 +33,42 @@
     "description": "DJ set",
     "source": "Minopolska",
     "credit": "Minopolska",
+    "event": "16 October 2026"
+  },
+  {
+    "id": "ganjaflexx-vinyl-mix",
+    "artist": "GanjaFlexx",
+    "title": "Tout va bien, je vais mieux! (vinyl mix)",
+    "url": "https://soundcloud.com/ganjaflexx/tout-va-bien-je-vais-mieux-vinyl-mix",
+    "format": "track",
+    "genre": "Mentalcore / Industrial / Oldskool Tekno",
+    "description": "Vinyl DJ mix · 1h 40m",
+    "source": "GanjaFlexx",
+    "credit": "GanjaFlexx",
+    "event": "16 October 2026"
+  },
+  {
+    "id": "nawatt-dkemist",
+    "artist": "Nawatt",
+    "title": "Nawatt B2B D-Kemist — Tekno Dealers Set",
+    "url": "https://soundcloud.com/nawatt/setnawattvsd-kemist",
+    "format": "track",
+    "genre": "Neo Tekno / Acidcore",
+    "description": "Recorded B2B set",
+    "source": "Nawatt",
+    "credit": "Nawatt · Tekno Dealers",
+    "event": "28 August 2026"
+  },
+  {
+    "id": "nocid-acid-for-free",
+    "artist": "Nocid",
+    "title": "Nocid — Acid For Free 2019",
+    "url": "https://soundcloud.com/djnocid/nocid-at-acid-for-free-200719",
+    "format": "track",
+    "genre": "Acidcore / Acid Tekno",
+    "description": "Recorded DJ set",
+    "source": "Nocid",
+    "credit": "Nocid",
     "event": "16 October 2026"
   },
   {
@@ -36,6 +84,42 @@
     "event": "16 October 2026"
   },
   {
+    "id": "ganjaflexx-hardtek",
+    "artist": "GanjaFlexx",
+    "title": "This Is Ganja's Hardtek",
+    "url": "https://soundcloud.com/ganjaflexx/this-is-ganjas-hardtek",
+    "format": "track",
+    "genre": "Hardtek / Tribecore",
+    "description": "DJ mix · 31 min",
+    "source": "GanjaFlexx",
+    "credit": "GanjaFlexx",
+    "event": "16 October 2026"
+  },
+  {
+    "id": "nawatt-dark-gospel",
+    "artist": "Nawatt",
+    "title": "NAWATT — Dark Gospel",
+    "url": "https://soundcloud.com/nawatt/nawatt-dark-gospel",
+    "format": "track",
+    "genre": "Acidcore / Neo Tekno",
+    "description": "Original production",
+    "source": "Nawatt",
+    "credit": "Nawatt",
+    "event": "28 August 2026"
+  },
+  {
+    "id": "nocid-solid-impact",
+    "artist": "Nocid",
+    "title": "Nocid — Solid Impact 301022",
+    "url": "https://soundcloud.com/djnocid/nocid-solid-impact-301022-mp3",
+    "format": "track",
+    "genre": "Acidcore / Hard Techno",
+    "description": "DJ recording",
+    "source": "Nocid",
+    "credit": "Nocid",
+    "event": "16 October 2026"
+  },
+  {
     "id": "minopolska-mooki",
     "artist": "Minopolska",
     "title": "MOOKI — Move Your Feet (Minopolska Remix)",
@@ -46,5 +130,17 @@
     "source": "Minopolska",
     "credit": "Minopolska",
     "event": "16 October 2026"
+  },
+  {
+    "id": "nawatt-dontstop",
+    "artist": "Nawatt",
+    "title": "NAWATT — DONTSTOP",
+    "url": "https://soundcloud.com/nawatt/dontstop",
+    "format": "track",
+    "genre": "Acidcore / Neo Tekno",
+    "description": "Original production",
+    "source": "Nawatt",
+    "credit": "Nawatt",
+    "event": "28 August 2026"
   }
 ]
