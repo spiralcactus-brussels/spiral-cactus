@@ -38,12 +38,21 @@ try{
 function advance(autoplay){const visible=items.map((t,i)=>({...t,index:i})).filter(t=>filter.value==='all'||t.artist===filter.value).map(t=>t.index);const p=visible.indexOf(selected);const nxt=visible[(p+1+visible.length)%visible.length];if(nxt!==undefined)load(nxt,autoplay);}
 async function init(){
 try{
- const response=await fetch('content/radio.json',{cache:'no-cache'});if(!response.ok)throw Error('HTTP '+response.status);
- const raw=await response.json();
- if(!Array.isArray(raw))throw Error('Invalid playlist');
- const validArtists=new Set(['Soul3d','Minopolska']);
- items=raw.filter(t=>t&&typeof t.title==='string'&&validArtists.has(t.artist)&&validUrl(t.url)&&(t.format==='track'||t.format==='playlist'));
- if(!items.length)throw Error('Empty playlist');
+ const [response,eventsResponse]=await Promise.all([
+   fetch('content/radio.json',{cache:'no-cache'}),
+   fetch('content/events.json',{cache:'no-cache'})
+ ]);
+ if(!response.ok||!eventsResponse.ok)throw Error('HTTP error while loading radio guest artists');
+ const [raw,events]=await Promise.all([response.json(),eventsResponse.json()]);
+ if(!Array.isArray(raw)||!Array.isArray(events))throw Error('Invalid radio or event data');
+ // A DJ must have appeared on a real SpiralCactus lineup to be eligible.
+ const guestArtists=new Set(events.flatMap(e=>Array.isArray(e.artists)?e.artists.map(a=>a.name):[]).filter(Boolean).map(a=>a.toLowerCase()));
+ items=raw.filter(t=>t&&typeof t.title==='string'&&typeof t.artist==='string'&&guestArtists.has(t.artist.toLowerCase())&&validUrl(t.url)&&(t.format==='track'||t.format==='playlist'));
+ if(!items.length)throw Error('Empty guest playlist');
+ filter.querySelectorAll('option:not([value="all"])').forEach(option=>option.remove());
+ [...new Set(items.map(t=>t.artist))].sort((a,b)=>a.localeCompare(b)).forEach(name=>{
+   const option=document.createElement('option');option.value=name;option.textContent=name;filter.appendChild(option);
+ });
  paint();start.disabled=false;mark('radioBeforePlay');
 }catch(err){console.warn('Radio playlist unavailable',err);start.disabled=true;mark('radioUnavailable')}
 }
