@@ -5,12 +5,12 @@
   const locales = {en:'en-GB', fr:'fr-BE', nl:'nl-BE'};
   const i18n = window.SC_TRANSLATIONS || {};
   const dynamic = {
-    en:{tickets:'Tickets',photos:'View photos',poster:'Lineup poster',past:'Past event',upcoming:'Upcoming event',artists:'On the lineup',emptyEvents:'No events in this month.',readMore:'Read more',emptyBlog:'The first stories are coming soon.',monthEvent:'Event',submitError:'Please complete all fields.',openPhoto:'Open photograph',closePhoto:'Close photograph',venue:'Venue',thisMonth:'This month'},
-    fr:{tickets:'Billetterie',photos:'Voir les photos',poster:'Affiche du line-up',past:'Événement passé',upcoming:'À venir',artists:'Au line-up',emptyEvents:'Aucun événement pour ce mois.',readMore:'Lire la suite',emptyBlog:'Les premiers articles arrivent bientôt.',monthEvent:'Événement',submitError:'Veuillez remplir tous les champs.',openPhoto:'Ouvrir la photo',closePhoto:'Fermer la photo',venue:'Lieu',thisMonth:'Ce mois-ci'},
-    nl:{tickets:'Tickets',photos:'Bekijk de foto’s',poster:'Line-up poster',past:'Voorbij',upcoming:'Binnenkort',artists:'Op de line-up',emptyEvents:'Geen evenementen in deze maand.',readMore:'Lees meer',emptyBlog:'De eerste verhalen verschijnen binnenkort.',monthEvent:'Evenement',submitError:'Vul alle velden in.',openPhoto:'Open foto',closePhoto:'Sluit foto',venue:'Locatie',thisMonth:'Deze maand'}
+    en:{tickets:'Tickets',photos:'View photos',poster:'Lineup poster',past:'Past event',upcoming:'Upcoming event',artists:'On the lineup',emptyEvents:'No events in this month.',readMore:'Read more',emptyBlog:'The first stories are coming soon.',monthEvent:'Event',submitError:'Please complete all fields.',openPhoto:'Open photograph',closePhoto:'Close photograph',venue:'Venue',thisMonth:'This month',shopBuy:'Buy securely',ticketOnSite:'Buy tickets on this page',ticketHelp:'Secure checkout provided by WeTicket. If the embedded shop does not load, use the direct link.',ticketExternal:'Open ticket shop',shopNoLink:'Ordering will open when checkout is configured.'},
+    fr:{tickets:'Billetterie',photos:'Voir les photos',poster:'Affiche du line-up',past:'Événement passé',upcoming:'À venir',artists:'Au line-up',emptyEvents:'Aucun événement pour ce mois.',readMore:'Lire la suite',emptyBlog:'Les premiers articles arrivent bientôt.',monthEvent:'Événement',submitError:'Veuillez remplir tous les champs.',openPhoto:'Ouvrir la photo',closePhoto:'Fermer la photo',venue:'Lieu',thisMonth:'Ce mois-ci',shopBuy:'Acheter en toute sécurité',ticketOnSite:'Acheter des billets ici',ticketHelp:'Paiement sécurisé géré par WeTicket. Si la billetterie ne s’affiche pas, utilisez le lien direct.',ticketExternal:'Ouvrir la billetterie',shopNoLink:'Les commandes seront disponibles une fois le paiement configuré.'},
+    nl:{tickets:'Tickets',photos:'Bekijk de foto’s',poster:'Line-up poster',past:'Voorbij',upcoming:'Binnenkort',artists:'Op de line-up',emptyEvents:'Geen evenementen in deze maand.',readMore:'Lees meer',emptyBlog:'De eerste verhalen verschijnen binnenkort.',monthEvent:'Evenement',submitError:'Vul alle velden in.',openPhoto:'Open foto',closePhoto:'Sluit foto',venue:'Locatie',thisMonth:'Deze maand',shopBuy:'Veilig kopen',ticketOnSite:'Koop tickets op deze pagina',ticketHelp:'Veilig afrekenen via WeTicket. Gebruik de rechtstreekse link als de ingebedde shop niet opent.',ticketExternal:'Open ticketshop',shopNoLink:'Bestellen is mogelijk zodra de betaalfunctie is ingesteld.'}
   };
   const page = document.body.dataset.page;
-  let current = 'en', events = [], posts = [], galleryPhotos = [], month = new Date(new Date().getFullYear(),new Date().getMonth(),1);
+  let current = 'en', events = [], posts = [], galleryPhotos = [], products = [], month = new Date(new Date().getFullYear(),new Date().getMonth(),1);
   const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const languageVal = obj => typeof obj === 'string' ? obj : (obj?.[current] || obj?.en || '');
   const l = key => dynamic[current]?.[key] || key;
@@ -34,13 +34,13 @@
   function changeLang(lang){
     current=langs.includes(lang)?lang:'en';
     try{localStorage.setItem('sc-lang',current)}catch(_){/* private browsing */}
-    renderText(); renderEvents(); renderArtists(); renderBlog(); renderCalendar(); renderGallery(); setupGallery();
+    renderText(); renderEvents(); renderArtists(); renderBlog(); renderCalendar(); renderGallery(); renderShop(); setupGallery();
   }
   try{current=localStorage.getItem('sc-lang') || 'en';}catch(_){current='en'}
   if(!langs.includes(current))current='en';
   document.getElementById('langselect')?.addEventListener('change',e=>changeLang(e.target.value));
   const theme = document.getElementById('themebtn');
-  function setTheme(on){document.body.classList.toggle('light',on); try{localStorage.setItem('sc-theme',on?'light':'dark')}catch(_){}}
+  function setTheme(on){document.body.classList.toggle('light',on);theme?.setAttribute('aria-pressed',String(on));document.querySelector('meta[name="theme-color"]')?.setAttribute('content',on?'#f6f7f2':'#08090c');try{localStorage.setItem('sc-theme',on?'light':'dark')}catch(_){}}
   try{setTheme(localStorage.getItem('sc-theme')==='light')}catch(_){}
   theme?.addEventListener('click',()=>setTheme(!document.body.classList.contains('light')));
   document.getElementById('menubtn')?.addEventListener('click',e=>{
@@ -72,7 +72,8 @@
     if(!ctx)return;
     const delta=Math.min((t-prev)/16.67||1,3);prev=t;
     ctx.clearRect(0,0,innerWidth,innerHeight);
-    for(const d of dots){ctx.globalAlpha=d.a;ctx.fillStyle=d.c;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();if(!reduced){d.y-=d.v*delta;d.x+=Math.sin(t/2500+d.y/110)*.10*delta;if(d.y<0){d.y=innerHeight;d.x=Math.random()*innerWidth;}}}
+    const light=document.body.classList.contains('light');const lightPalette={'#b7ff22':'#245c30','#ff5722':'#a23b1b','#b394fa':'#593a8a','#c5d6ff':'#315d75'};
+    for(const d of dots){ctx.globalAlpha=light?Math.min(.9,d.a*1.7):d.a;ctx.fillStyle=light?(lightPalette[d.c]||'#264b34'):d.c;ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);ctx.fill();if(!reduced){d.y-=d.v*delta;d.x+=Math.sin(t/2500+d.y/110)*.10*delta;if(d.y<0){d.y=innerHeight;d.x=Math.random()*innerWidth;}}}
     ctx.globalAlpha=1;if(!reduced&& !document.hidden)raf=requestAnimationFrame(draw);
   }
   if(ctx){sizeDots();addEventListener('resize',sizeDots,{passive:true});raf=requestAnimationFrame(draw);
@@ -92,12 +93,32 @@
     const ticket=e.ticket?`<a class="btn" href="${esc(e.ticket)}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'';
     return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></div>`;
   }
+
+  // Only embed known hosted payment providers. No card details are handled by GitHub Pages.
+  function safePaymentUrl(raw){
+    if(typeof raw!=='string'||!raw)return '';
+    try {
+      const u=new URL(raw),host=u.hostname.toLowerCase();
+      const allowed=host.endsWith('.weticket.io')||['buy.stripe.com','checkout.stripe.com','pay.mollie.com','paypal.com','www.paypal.com'].includes(host);
+      return u.protocol==='https:' && allowed ? u.href : '';
+    }catch(_){return ''}
+  }
+  function ticketEmbedHTML(e){
+    const url=safePaymentUrl(e.ticketEmbed);
+    if(!url||isPast(e))return '';
+    const fallback=safePaymentUrl(e.ticket)||url;
+    return '<details class="ticket-embed"><summary>'+esc(l('ticketOnSite'))+' ↓</summary>'
+      +'<p class="note">'+esc(l('ticketHelp'))+'</p>'
+      +'<iframe src="'+esc(url)+'" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="'+esc(l('ticketOnSite'))+'"></iframe>'
+      +'<p><a class="btn alt" href="'+esc(fallback)+'" target="_blank" rel="noopener noreferrer">'+esc(l('ticketExternal'))+' ↗</a></p>'
+      +'</details>';
+  }
   function renderEvents(){
     if(page!=='events')return;
     const featured=document.getElementById('featured-event'), list=document.getElementById('event-list');
     if(!featured || !list)return;
     const main=events.find(e=>e.id==='acid-edition') || events[0];
-    featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>`:'';
+    featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>${ticketEmbedHTML(main)}`:'';
     list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
   }
   function renderArtists(){
@@ -146,6 +167,20 @@
     document.getElementById('calendar-prev')?.addEventListener('click',()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1);renderCalendar()});
     document.getElementById('calendar-next')?.addEventListener('click',()=>{month=new Date(month.getFullYear(),month.getMonth()+1,1);renderCalendar()});
     document.getElementById('calendar-today')?.addEventListener('click',()=>{month=new Date(new Date().getFullYear(),new Date().getMonth(),1);renderCalendar()});
+  }
+
+  function renderShop(){
+    if(page!=='shop')return;
+    const grid=document.getElementById('shop-items'),empty=document.getElementById('shop-empty');
+    if(!grid||!empty)return;
+    const valid=products.filter(p=>p && p.published!==false && p.name && safePaymentUrl(p.checkout));
+    grid.innerHTML=valid.map(p=>{
+      const img=(typeof p.image==='string' && /^assets\\/shop\\/[a-z0-9._/-]+\\.(jpg|jpeg|png|webp|avif)$/i.test(p.image))
+        ? '<img loading="lazy" src="'+esc(p.image)+'" alt="'+esc(languageVal(p.name))+'">' : '';
+      return '<article class="shop-product">'+img+'<h2>'+esc(languageVal(p.name))+'</h2><p>'+esc(languageVal(p.description||''))+'</p>'
+        +'<p class="shop-price">'+esc(p.price||'')+'</p><a class="btn" href="'+esc(safePaymentUrl(p.checkout))+'" rel="noopener noreferrer" target="_blank">'+esc(l('shopBuy'))+' ↗</a></article>';
+    }).join('');
+    empty.hidden=valid.length>0;
   }
   // Photo entries are authored in content/gallery.json, never injected as raw template syntax.
   function renderGallery(){
@@ -207,8 +242,8 @@
     }
   }
   renderText(); setupGallery(); renderCalendar();
-  Promise.all([loadJson('content/events.json'),loadJson('content/blog.json'),loadJson('content/gallery.json')]).then(([ev,po,photos])=>{
-    events=Array.isArray(ev)?ev:[];posts=Array.isArray(po)?po:[];galleryPhotos=Array.isArray(photos)?photos:[];
-    renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();setupGallery();
+  Promise.all([loadJson('content/events.json'),loadJson('content/blog.json'),loadJson('content/gallery.json'),loadJson('content/shop.json')]).then(([ev,po,photos,merch])=>{
+    events=Array.isArray(ev)?ev:[];posts=Array.isArray(po)?po:[];galleryPhotos=Array.isArray(photos)?photos:[];products=Array.isArray(merch)?merch:[];
+    renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
   });
 })();
