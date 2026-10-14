@@ -95,3 +95,8 @@ body.light .hero-logo-video{filter:grayscale(1) invert(1) contrast(1.3);mix-blen
 /* Light mode: avoid a separate compositing island. Multiply blending now uses the
    real page background instead of a white rectangle inside the logo container. */
 body.light .hero-logo-still{background:transparent}
+
+/* Preserve the August 2026 official flyer in the past-events archive. */
+.archive-poster{width:166px;max-width:100%;aspect-ratio:3/4;object-fit:cover;flex:0 0 auto;border:1px solid var(--line);background:#08090c}
+.archive-copy{flex:1;min-width:0}
+@media(max-width:800px){.archive-poster{width:200px}}
