@@ -1,0 +1,460 @@
+# SpiralCactus CMS configuration for https://app.pagescms.org/
+# Connect with GitHub; authorize only spiralcactus-brussels/spiral-cactus.
+media:
+  -
+    name: "gallery"
+    label: "Event photography"
+    input: "assets/gallery"
+    output: "assets/gallery"
+    rename: "safe"
+    extensions:
+      - "jpg"
+      - "jpeg"
+      - "png"
+      - "webp"
+      - "avif"
+  -
+    name: "posters"
+    label: "Event posters"
+    input: "assets/posters"
+    output: "assets/posters"
+    rename: "safe"
+    extensions:
+      - "jpg"
+      - "jpeg"
+      - "png"
+      - "webp"
+      - "avif"
+  -
+    name: "artists"
+    label: "DJ portraits"
+    input: "assets/artists"
+    output: "assets/artists"
+    rename: "safe"
+    extensions:
+      - "jpg"
+      - "jpeg"
+      - "png"
+      - "webp"
+      - "avif"
+  -
+    name: "blog"
+    label: "Blog cover images"
+    input: "assets/blog"
+    output: "assets/blog"
+    rename: "safe"
+    extensions:
+      - "jpg"
+      - "jpeg"
+      - "png"
+      - "webp"
+      - "avif"
+  -
+    name: "shop"
+    label: "Shop product photography"
+    input: "assets/shop"
+    output: "assets/shop"
+    rename: "safe"
+    extensions:
+      - "jpg"
+      - "jpeg"
+      - "png"
+      - "webp"
+      - "avif"
+content:
+  -
+    name: "events"
+    label: "Events, Calendar & Lineups"
+    type: "file"
+    path: "content/events.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "id"
+        type: "string"
+        label: "Unique event ID"
+        required: true
+        description: "Use a unique lowercase ID. Keep existing IDs unchanged."
+      -
+        name: "name"
+        type: "object"
+        label: "Event name"
+        fields:
+          -
+            name: "en"
+            type: "string"
+            label: "English"
+          -
+            name: "fr"
+            type: "string"
+            label: "Français"
+          -
+            name: "nl"
+            type: "string"
+            label: "Nederlands"
+      -
+        name: "date"
+        type: "date"
+        label: "Date"
+        required: true
+        default: ""
+        options:
+          format: "yyyy-MM-dd"
+      -
+        name: "start"
+        type: "string"
+        label: "Start time"
+        description: "Use 24-hour format, e.g. 22:00"
+      -
+        name: "end"
+        type: "string"
+        label: "End time"
+        description: "Use 24-hour format, e.g. 07:00"
+      -
+        name: "venue"
+        type: "string"
+        label: "Venue"
+      -
+        name: "description"
+        type: "object"
+        label: "Description"
+        fields:
+          -
+            name: "en"
+            type: "text"
+            label: "English"
+          -
+            name: "fr"
+            type: "text"
+            label: "Français"
+          -
+            name: "nl"
+            type: "text"
+            label: "Nederlands"
+      -
+        name: "poster"
+        type: "image"
+        label: "Event poster"
+        options:
+          media: "posters"
+      -
+        name: "gallery"
+        type: "string"
+        label: "Gallery album ID"
+        description: "Use same ID in photo gallery, e.g. 2026-10-16-acid-edition"
+      -
+        name: "ticket"
+        type: "string"
+        label: "WeTicket event URL"
+      -
+        name: "ticketEmbed"
+        type: "string"
+        label: "WeTicket ticket shop URL"
+        description: "Optional embedded checkout URL ending /shop"
+      -
+        name: "artists"
+        type: "object"
+        label: "DJ Lineup"
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{name}"
+        fields:
+          -
+            name: "name"
+            type: "string"
+            label: "DJ name"
+            required: true
+          -
+            name: "genre"
+            type: "string"
+            label: "Genre"
+          -
+            name: "crew"
+            type: "string"
+            label: "Crew/label"
+          -
+            name: "image"
+            type: "image"
+            label: "Artist portrait"
+            options:
+              media: "artists"
+  -
+    name: "gallery"
+    label: "Photo Gallery & Albums"
+    type: "file"
+    path: "content/gallery.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "file"
+        type: "image"
+        label: "Photograph"
+        options:
+          media: "gallery"
+      -
+        name: "album"
+        type: "string"
+        label: "Album ID"
+        required: true
+        description: "Must match an event's Gallery album ID."
+      -
+        name: "caption"
+        type: "object"
+        label: "Photo caption"
+        fields:
+          -
+            name: "en"
+            type: "string"
+            label: "English"
+          -
+            name: "fr"
+            type: "string"
+            label: "Français"
+          -
+            name: "nl"
+            type: "string"
+            label: "Nederlands"
+  -
+    name: "blog"
+    label: "Blog & News"
+    type: "file"
+    path: "content/blog.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "slug"
+        type: "string"
+        label: "Article slug"
+        required: true
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        description: "Unique lowercase URL name; letters, digits, hyphens only."
+      -
+        name: "date"
+        type: "date"
+        label: "Publish date"
+        required: true
+        default: ""
+        options:
+          format: "yyyy-MM-dd"
+      -
+        name: "published"
+        type: "boolean"
+        label: "Published"
+        default: false
+      -
+        name: "title"
+        type: "object"
+        label: "Article title"
+        fields:
+          -
+            name: "en"
+            type: "string"
+            label: "English"
+          -
+            name: "fr"
+            type: "string"
+            label: "Français"
+          -
+            name: "nl"
+            type: "string"
+            label: "Nederlands"
+      -
+        name: "excerpt"
+        type: "object"
+        label: "Short introduction"
+        fields:
+          -
+            name: "en"
+            type: "text"
+            label: "English"
+          -
+            name: "fr"
+            type: "text"
+            label: "Français"
+          -
+            name: "nl"
+            type: "text"
+            label: "Nederlands"
+      -
+        name: "body"
+        type: "object"
+        label: "Full article text"
+        fields:
+          -
+            name: "en"
+            type: "text"
+            label: "English"
+          -
+            name: "fr"
+            type: "text"
+            label: "Français"
+          -
+            name: "nl"
+            type: "text"
+            label: "Nederlands"
+      -
+        name: "image"
+        type: "image"
+        label: "Cover image"
+        options:
+          media: "blog"
+      -
+        name: "url"
+        type: "string"
+        label: "Optional external article link"
+  -
+    name: "radio"
+    label: "Spiral Radio & SoundCloud"
+    type: "file"
+    path: "content/radio.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "id"
+        type: "string"
+        label: "Unique mix ID"
+        required: true
+      -
+        name: "artist"
+        type: "string"
+        label: "DJ / Artist"
+        required: true
+        description: "Must match a DJ name from an event lineup."
+      -
+        name: "title"
+        type: "string"
+        label: "Set / track title"
+        required: true
+      -
+        name: "url"
+        type: "string"
+        label: "Public SoundCloud track / playlist URL"
+        required: true
+      -
+        name: "format"
+        type: "select"
+        label: "SoundCloud format"
+        required: true
+        options:
+          values:
+            -
+              name: "track"
+              label: "Individual mix or track"
+            -
+              name: "playlist"
+              label: "SoundCloud playlist"
+      -
+        name: "genre"
+        type: "string"
+        label: "Music genre"
+      -
+        name: "description"
+        type: "string"
+        label: "Description / duration"
+      -
+        name: "source"
+        type: "string"
+        label: "Source / uploader"
+      -
+        name: "credit"
+        type: "string"
+        label: "Credit"
+      -
+        name: "event"
+        type: "string"
+        label: "Event credit"
+  -
+    name: "shop"
+    label: "Shop & Merchandise"
+    type: "file"
+    path: "content/shop.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "id"
+        type: "string"
+        label: "Unique product ID"
+      -
+        name: "published"
+        type: "boolean"
+        label: "Visible in shop"
+        default: false
+      -
+        name: "name"
+        type: "object"
+        label: "Product name"
+        fields:
+          -
+            name: "en"
+            type: "string"
+            label: "English"
+          -
+            name: "fr"
+            type: "string"
+            label: "Français"
+          -
+            name: "nl"
+            type: "string"
+            label: "Nederlands"
+      -
+        name: "description"
+        type: "object"
+        label: "Product description"
+        fields:
+          -
+            name: "en"
+            type: "text"
+            label: "English"
+          -
+            name: "fr"
+            type: "text"
+            label: "Français"
+          -
+            name: "nl"
+            type: "text"
+            label: "Nederlands"
+      -
+        name: "image"
+        type: "image"
+        label: "Product photo"
+        options:
+          media: "shop"
+      -
+        name: "price"
+        type: "string"
+        label: "Displayed price"
+        description: "Example: €25.00"
+      -
+        name: "checkout"
+        type: "string"
+        label: "Secure external payment link"
+        description: "Required for the product to appear on the live shop."
+settings:
+  commit:
+    identity: "app"
