@@ -39,8 +39,39 @@ BLOG:
 - Edit content/blog.json, currently an empty JSON array []. Add posts using the format in content/EXAMPLES.md.
 - Each post can include a unique slug, title, excerpt, body in en/fr/nl and an optional external url. Click a blog card to open its full article. Avoid publishing unfinished items with "published": false.
 
-SHOP:
-- Intentionally blank. No dummy products, checkout, payments, or orders are enabled.
+SHOP (READY TO CONFIGURE; CURRENTLY EMPTY):
+- The Shop remains empty until you publish real products with valid hosted checkout links.
+- Upload product pictures to assets/shop/ (the folder already exists).
+- Edit content/shop.json in GitHub. Example:
+  [
+    {
+      "name": {"en":"SpiralCactus T-shirt","fr":"T-shirt SpiralCactus","nl":"SpiralCactus T-shirt"},
+      "description": {"en":"Black cotton shirt","fr":"T-shirt noir en coton","nl":"Zwart katoenen shirt"},
+      "price": "€25.00",
+      "image": "assets/shop/tshirt.jpg",
+      "checkout": "https://buy.stripe.com/YOUR-ACTUAL-VERIFIED-LINK",
+      "published": true
+    }
+  ]
+- The example above is documentation only; do not publish it as a real product.
+- Use genuine payment links from a verified Stripe/Mollie/WeTicket merchant account. Never copy API secret keys, credit card data or customer details into this public GitHub repository.
+- The buyer completes payment on the hosted checkout, not on a GitHub Pages server.
+- Organiser registration, VAT assessment, prices, refunds, shipping, consumer information and privacy policy need to be finalized before collecting real orders.
+
+EMBEDDED EVENT TICKETING:
+- Existing external WeTicket links remain available from the Events page.
+- For a future event, set its "ticketEmbed" in content/events.json to the exact hosted WeTicket shop URL found via the WeTicket dashboard's Share button (format: https://your-org.weticket.io/your-event/shop).
+- When valid and when the event is upcoming, an expand/collapse ticket panel on the Events page will embed the shop, with an external fallback.
+- The Acid Edition embed currently uses the /shop path based on WeTicket documentation; VERIFY it on the live website before directing paying customers to it.
+- GitHub Pages itself never accepts card numbers, creates ticket barcodes, reconciles purchases or sends payout statements; WeTicket handles transactions and ticket issuance.
+
+MEDIA UPLOADS:
+- Go INSIDE the target folder in GitHub before clicking Add file > Upload files. Upload IMAGE FILES, NOT a whole parent folder (to avoid nested incorrect paths).
+- Actual event posters: assets/posters/ and update the matching "poster" in content/events.json.
+- Community artist pictures: assets/artists/ and update the matching artist's "image" in content/events.json.
+- Gallery photos can go straight into assets/gallery/; then add each image's relative path and album ID to content/gallery.json. Keep gallery data [] until photos exist.
+- For August 28 album use 2026-08-28-brussels-rave-night. For October 16 use 2026-10-16-acid-edition.
+
 
 TRANSLATIONS:
 - i18n.js contains all standard website text in EN, FR and NL. Content JSON includes language versions of events/blog entries.
@@ -48,7 +79,7 @@ TRANSLATIONS:
 - The language selector keeps the selected language when changing pages. No external translation API is required.
 
 CONTACT:
-- Form opens user's email application; it does not transmit/save form data to a server.
+- Form opens the visitor's email application with a draft addressed to spiralcactus24@gmail.com; visitors must click Send in their email app. A direct mailto link is also provided. Neither workflow proves an email reached the inbox; conduct a real send/receive test yourself. A true server-side contact form requires an authenticated form service.
 - Public contact is spiralcactus24@gmail.com, set in app.js.
 
 LOCAL PREVIEW:
