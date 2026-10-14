@@ -190,6 +190,22 @@
     document.getElementById('photo-modal')?.addEventListener('click',e=>{if(e.target.id==='photo-modal')closeModal()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   }
+  // Optional presentation animation plays once and returns to the white still logo.
+  if(page==='index'){
+    const wrap=document.querySelector('.hero-logo');
+    const video=wrap?.querySelector('.hero-logo-video');
+    const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if(video && !reduced){
+      const end=()=>{wrap.classList.remove('is-playing');video.pause();};
+      video.addEventListener('ended',end);
+      video.addEventListener('error',end);
+      video.addEventListener('canplay',()=>{
+        const attempt=video.play();
+        if(attempt && typeof attempt.then==='function')attempt.then(()=>wrap.classList.add('is-playing')).catch(end);
+      },{once:true});
+      video.load();
+    }
+  }
   renderText(); setupGallery(); renderCalendar();
   Promise.all([loadJson('content/events.json'),loadJson('content/blog.json'),loadJson('content/gallery.json')]).then(([ev,po,photos])=>{
     events=Array.isArray(ev)?ev:[];posts=Array.isArray(po)?po:[];galleryPhotos=Array.isArray(photos)?photos:[];
