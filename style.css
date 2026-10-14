@@ -24,3 +24,10 @@ body.light{--bg:#eef0e9;--panel:#fff;--panel2:#fbfcf8;--line:#bcc1b9;--text:#111
 @media(max-width:560px){nav{padding:11px 15px;gap:9px}.wordmark{font-size:17px}.actions{gap:5px}.pill{min-height:37px;padding:7px}.theme-button{width:37px}.lang-select{min-width:56px}.wrap{padding:39px 17px}.hero-title{font-size:clamp(60px,15vw,90px)}h1{font-size:clamp(55px,16vw,89px)}h2{font-size:49px}.hero{gap:0}.lead{font-size:16px}.grid,.gallery-grid,.blog-grid{grid-template-columns:1fr}.eventbox{padding:17px;gap:15px}.eventbox h3{font-size:50px}.event-poster{min-height:330px}.poster-content strong{font-size:84px}.poster-lineup{font-size:16px}.sectionhead{display:block}.sectionhead h2{margin-bottom:13px}.card{min-height:170px}.calendar-toolbar{gap:7px;flex-wrap:wrap}.calendar-toolbar h2{flex-basis:50%;min-width:0;font-size:32px}.calendar-toolbar #calendar-today{margin-left:0;width:100%}.cal-weekday{font-size:10px}.cal-cell,.cal-blank{min-height:75px;padding:4px}.cal-date{font-size:11px;height:21px;width:21px}.cal-event{font-size:9px;padding:3px;line-height:1.2}.links a{width:calc(50% - 7px);min-width:0}.shop-empty{min-height:220px}.hero-logo{max-width:350px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
 .blog-detail{max-width:850px;margin-top:35px;padding:25px 0}.blog-detail .eyebrow{display:block;margin-top:30px}.blog-detail h2{font-size:clamp(44px,7vw,80px);margin-top:15px}.blog-detail p{font-size:17px;line-height:1.85;color:var(--text)}
+
+/* Optional homepage logo video: static white mark remains the fallback. */
+.hero-logo{position:relative;overflow:hidden}
+.hero-logo-video{display:none;width:100%;height:auto;object-fit:contain;mix-blend-mode:screen;filter:grayscale(1) contrast(1.3)}
+.hero-logo.is-playing .hero-logo-still{display:none}
+.hero-logo.is-playing .hero-logo-video{display:block}
+@media(prefers-reduced-motion:reduce){.hero-logo-video{display:none!important}.hero-logo-still{display:block!important}}
