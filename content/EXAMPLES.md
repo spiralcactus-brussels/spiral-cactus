@@ -20,7 +20,7 @@ Edit `content/events.json`. Each event is an object in the `[` `]` array separat
 }
 ```
 
-Create `assets/gallery/2026-11-20-new-night/` and add photos there after the event. For a new album option in the dropdown, add the folder slug and label as a `<option value="2026-11-20-new-night">New Night</option>` to `gallery.html`; listing photos within the new folder itself is automatic.
+After the event, upload photos to a subfolder of `assets/gallery/` or directly inside `assets/gallery/`, then register the paths in `content/gallery.json`. The album filter will read album IDs from the event file and photo entries; do not edit `gallery.html`.
 
 ## New blog post
 
@@ -44,7 +44,11 @@ The blog card displays the excerpt; clicking Read More opens the full `body` tex
 
 ## Gallery upload procedure
 
-GitHub website > repository > `assets` > `gallery` > choose event folder > **Add file** > **Upload files** > **Commit changes**. No HTML update needed for additional photos in existing folders. Uploads are published after the GitHub Pages/Jekyll build completes.
+1. Open the **actual destination folder** on GitHub, e.g. `assets/gallery/`. Choose **Add file** > **Upload files** and select the JPG/PNG/WebP files themselves (not a containing parent folder). Commit.
+2. Edit `content/gallery.json` and add an entry for each uploaded photo with its exact file path and album ID (example below). Commit.
+3. Refresh the live site after GitHub Pages redeploys. **Both upload and JSON entry are necessary.** You do **not** need to change HTML or JavaScript.
+
+For event posters, upload to `assets/posters/` and set `poster` in `content/events.json` to the uploaded file path. For Community artist images, upload to `assets/artists/` and set `image` on that artist in `content/events.json`.
 
 
 ## Photo gallery (`content/gallery.json`)
@@ -74,9 +78,18 @@ Inside an event's `artists` list you can add an optional image property without 
 ```json
 {
   "name": "Soul3d",
-  "genre": "Acid / Hardcore",
+  "crew": "Oldschool Waves · Gazmatek · Exiles",
   "image": "assets/artists/soul3d.jpg"
 }
 ```
 
 First upload the image into the corresponding GitHub folder. The old text-only design stays unchanged for artists without an image.
+
+## Verified August 28 lineup
+
+The event was billed as Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber and Hard Core.
+The original poster identifies artist crews/labels but does NOT say which exact genre each artist played. Accordingly the artist cards show the poster's verified crew credit where no reliable per-artist genre was provided. When confirmed, add an artist-specific `"genre": "Exact set style"` in `content/events.json`; that will replace the crew label for that card. The name is `Obvyss`.
+
+## Contact form
+
+GitHub Pages hosts static HTML and cannot itself send email. The current Contact form opens a draft in the visitor's mail app addressed to `spiralcactus24@gmail.com`. To have the Send button deliver immediately, connect a real third-party hosted form endpoint (such as Formspree) to an account you control, confirm its email address and test delivery. No endpoint is currently configured; don't mistake the mailto draft for confirmed delivery.
