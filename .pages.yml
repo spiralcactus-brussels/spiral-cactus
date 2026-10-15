@@ -185,8 +185,43 @@ content:
             options:
               media: "artists"
   -
+    name: "gallery-bulk"
+    label: "BULK PHOTO UPLOAD — Event Albums"
+    type: "file"
+    path: "content/gallery-albums.json"
+    format: "json"
+    list: true
+    operations:
+      create: false
+      rename: false
+      delete: false
+    fields:
+      -
+        name: "name"
+        type: "string"
+        label: "Event / Album name"
+        required: true
+        description: "Example: Brussels Rave Night — 28 August 2026. This is for your reference."
+      -
+        name: "album"
+        type: "string"
+        label: "Gallery album ID"
+        required: true
+        description: "Must be identical to the Gallery album ID in Events & Calendar. Do not change the two existing IDs."
+      -
+        name: "photos"
+        type: "image"
+        label: "PHOTOS — Select 20, 50 or 100 together"
+        description: "Click here, choose Upload, select multiple pictures in one batch or drag them into the uploader. Save once to publish this album."
+        options:
+          media: "gallery"
+          multiple:
+            max: 250
+          unique: true
+          rename: "safe"
+  -
     name: "gallery"
-    label: "Photo Gallery & Albums"
+    label: "Individual photo captions (optional)"
     type: "file"
     path: "content/gallery.json"
     format: "json"

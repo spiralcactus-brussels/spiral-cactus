@@ -1,3 +1,10 @@
+# NEW: BULK GALLERY UPLOAD WITH PAGES CMS
+
+Open https://app.pagescms.org/ → spiral-cactus → **BULK PHOTO UPLOAD — Event Albums**.
+Select the August 28 or Acid Edition album, then in its **PHOTOS** image picker choose multiple images at once. **Save once**. There is no need to add one JSON entry per image.
+For future events, create a new album item with the event's gallery ID. The album lists are stored in `content/gallery-albums.json` and the public gallery merges them with the optional individually captioned images in `content/gallery.json`. Duplicate image URLs are shown only once, preferring the captioned entry.
+
+---
 # Editing SpiralCactus data through GitHub
 
 ## New event

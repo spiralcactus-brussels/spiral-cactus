@@ -315,8 +315,32 @@
     }
   }
   renderText(); setupGallery(); renderCalendar();
-  Promise.all([loadJson('content/events.json'),loadJson('content/blog.json'),loadJson('content/gallery.json'),loadJson('content/shop.json')]).then(([ev,po,photos,merch])=>{
-    events=Array.isArray(ev)?ev:[];posts=Array.isArray(po)?po:[];galleryPhotos=Array.isArray(photos)?photos:[];products=Array.isArray(merch)?merch:[];
+  Promise.all([
+    loadJson('content/events.json'),
+    loadJson('content/blog.json'),
+    loadJson('content/gallery.json'),
+    loadJson('content/gallery-albums.json'),
+    loadJson('content/shop.json')
+  ]).then(([ev,po,photos,albums,merch])=>{
+    events=Array.isArray(ev)?ev:[];
+    posts=Array.isArray(po)?po:[];
+    products=Array.isArray(merch)?merch:[];
+    // Both gallery workflows coexist:
+    //   gallery.json          — manually captioned individual photographs
+    //   gallery-albums.json   — an entire batch of pictures tied to one event
+    // Preserve manual entries/captions if the same picture is also in a bulk album.
+    const manual=Array.isArray(photos)?photos.filter(p=>p&&typeof p.file==='string'):[];
+    const seen=new Set(manual.map(p=>p.file.toLowerCase()));
+    const batch=[];
+    if(Array.isArray(albums))for(const group of albums){
+      if(!group||typeof group.album!=='string'||!Array.isArray(group.photos))continue;
+      for(const file of group.photos){
+        if(typeof file!=='string'||seen.has(file.toLowerCase()))continue;
+        seen.add(file.toLowerCase());
+        batch.push({file,album:group.album});
+      }
+    }
+    galleryPhotos=[...manual,...batch];
     renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
   });
 })();
