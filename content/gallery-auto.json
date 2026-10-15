@@ -1,0 +1,17 @@
+---
+layout: null
+permalink: /content/gallery-auto.json
+---
+[
+{%- assign comma = "" -%}
+{%- for photo in site.static_files -%}
+  {%- assign p = photo.path | split: "/" -%}
+  {%- assign ext = photo.extname | downcase -%}
+  {%- if p.size == 5 and p[1] == 'assets' and p[2] == 'gallery' -%}
+    {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.webp' or ext == '.avif' -%}
+      {{ comma }}{"file":{{ photo.path | remove_first: "/" | jsonify }},"album":{{ p[3] | jsonify }}}
+      {%- assign comma = "," -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+]

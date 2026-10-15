@@ -257,14 +257,9 @@
   }
   // Photo entries are authored in content/gallery.json, never injected as raw template syntax.
   function allowedGalleryImage(file){
-    if(typeof file!=='string')return false;
-    if(/^assets\/gallery\/[a-z0-9_./ -]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(file)&&!file.includes('..'))return true;
-    // New signed Cloudinary media URLs are returned from Supabase's published-only table.
-    try{
-      const u=new URL(file);
-      return u.protocol==='https:'&&u.hostname==='res.cloudinary.com'&&
-        /^\/[a-zA-Z0-9_-]+\/image\/upload\//.test(u.pathname);
-    }catch(_){return false}
+    return typeof file==='string' &&
+      /^assets\/gallery\/[a-z0-9_./ :()-]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(file) &&
+      !file.includes('..');
   }
   function renderGallery(){
     if(page!=='gallery')return;
@@ -330,8 +325,9 @@
     loadJson('content/blog.json'),
     loadJson('content/gallery.json'),
     loadJson('content/gallery-albums.json'),
+    loadJson('content/gallery-auto.json'),
     loadJson('content/shop.json')
-  ]).then(([ev,po,photos,albums,merch])=>{
+  ]).then(([ev,po,photos,albums,autoPhotos,merch])=>{
     events=Array.isArray(ev)?ev:[];
     posts=Array.isArray(po)?po:[];
     products=Array.isArray(merch)?merch:[];
@@ -350,36 +346,16 @@
         batch.push({file,album:group.album});
       }
     }
+    // Jekyll finds all images in event folders during each GitHub Pages build.
+    // Manual captions and existing album records are retained and deduplicated.
+    if(Array.isArray(autoPhotos))for(const photo of autoPhotos){
+      if(!photo||typeof photo.file!=='string'||typeof photo.album!=='string')continue;
+      if(seen.has(photo.file.toLowerCase()))continue;
+      seen.add(photo.file.toLowerCase());
+      batch.push({file:photo.file,album:photo.album});
+    }
     galleryPhotos=[...manual,...batch];
     renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
 
-    // Optional new gallery service: when configured, published Supabase photos
-    // join the old GitHub gallery automatically; no other page is affected.
-    const cfg=window.SC_BACKEND;
-    if(page==='gallery'&&cfg?.supabaseUrl&&cfg?.supabaseAnonKey&&window.supabase?.createClient){
-      try{
-        const galleryDb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{
-          auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
-        });
-        galleryDb.from('sc_gallery_photos')
-          .select('image_url,event_id,caption_en,caption_fr,caption_nl')
-          .eq('status','published')
-          .order('created_at',{ascending:false})
-          .limit(1000)
-          .then(({data,error})=>{
-            if(error){console.warn('Optional hosted photo gallery unavailable:',error.message);return;}
-            const seen=new Set(galleryPhotos.map(p=>String(p.file||'').toLowerCase()));
-            for(const item of data||[]){
-              if(!allowedGalleryImage(item.image_url)||seen.has(item.image_url.toLowerCase()))continue;
-              seen.add(item.image_url.toLowerCase());
-              galleryPhotos.push({
-                file:item.image_url,album:item.event_id,
-                caption:{en:item.caption_en||'',fr:item.caption_fr||'',nl:item.caption_nl||''}
-              });
-            }
-            renderGallery();setupGallery();
-          });
-      }catch(e){console.warn('Optional gallery connection not ready:',e)}
-    }
   });
 })();

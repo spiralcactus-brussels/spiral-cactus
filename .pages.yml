@@ -1,70 +1,54 @@
-# SpiralCactus CMS configuration for https://app.pagescms.org/
-# Connect with GitHub; authorize only spiralcactus-brussels/spiral-cactus.
+# SpiralCactus — One free admin panel: Pages CMS
+# CONTENT: edit website information. MEDIA: upload images to their final destination.
+# For events: open the event photo album under MEDIA and upload JPG/WebP files.
 media:
   -
-    name: "gallery"
-    label: "Event photography"
-    input: "assets/gallery"
-    output: "assets/gallery"
+    name: "photos-aug-2026"
+    label: "01 — GALLERY: RAVE NIGHT 28 AUG"
+    input: "assets/gallery/2026-08-28-brussels-rave-night"
+    output: "assets/gallery/2026-08-28-brussels-rave-night"
     rename: "safe"
-    extensions:
-      - "jpg"
-      - "jpeg"
-      - "png"
-      - "webp"
-      - "avif"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
+  -
+    name: "photos-oct-2026"
+    label: "02 — GALLERY: ACID EDITION 16 OCT"
+    input: "assets/gallery/2026-10-16-acid-edition"
+    output: "assets/gallery/2026-10-16-acid-edition"
+    rename: "safe"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
   -
     name: "posters"
-    label: "Event posters"
+    label: "03 — EVENT POSTERS"
     input: "assets/posters"
     output: "assets/posters"
     rename: "safe"
-    extensions:
-      - "jpg"
-      - "jpeg"
-      - "png"
-      - "webp"
-      - "avif"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
   -
     name: "artists"
-    label: "DJ portraits"
+    label: "04 — DJ PORTRAITS"
     input: "assets/artists"
     output: "assets/artists"
     rename: "safe"
-    extensions:
-      - "jpg"
-      - "jpeg"
-      - "png"
-      - "webp"
-      - "avif"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
   -
     name: "blog"
-    label: "Blog cover images"
+    label: "05 — BLOG IMAGES"
     input: "assets/blog"
     output: "assets/blog"
     rename: "safe"
-    extensions:
-      - "jpg"
-      - "jpeg"
-      - "png"
-      - "webp"
-      - "avif"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
   -
     name: "shop"
-    label: "Shop product photography"
+    label: "06 — SHOP PRODUCT IMAGES"
     input: "assets/shop"
     output: "assets/shop"
     rename: "safe"
-    extensions:
-      - "jpg"
-      - "jpeg"
-      - "png"
-      - "webp"
-      - "avif"
+    extensions: ["jpg", "jpeg", "png", "webp", "avif"]
+
 content:
   -
     name: "events"
-    label: "Events, Calendar & Lineups"
+    label: "01 — EVENTS & CALENDAR"
     type: "file"
     path: "content/events.json"
     format: "json"
@@ -185,84 +169,8 @@ content:
             options:
               media: "artists"
   -
-    name: "gallery-bulk"
-    label: "BULK PHOTO UPLOAD — Event Albums"
-    type: "file"
-    path: "content/gallery-albums.json"
-    format: "json"
-    list: true
-    operations:
-      create: false
-      rename: false
-      delete: false
-    fields:
-      -
-        name: "name"
-        type: "string"
-        label: "Event / Album name"
-        required: true
-        description: "Example: Brussels Rave Night — 28 August 2026. This is for your reference."
-      -
-        name: "album"
-        type: "string"
-        label: "Gallery album ID"
-        required: true
-        description: "Must be identical to the Gallery album ID in Events & Calendar. Do not change the two existing IDs."
-      -
-        name: "photos"
-        type: "image"
-        label: "PHOTOS — Select 20, 50 or 100 together"
-        description: "Click here, choose Upload, select multiple pictures in one batch or drag them into the uploader. Save once to publish this album."
-        options:
-          media: "gallery"
-          multiple:
-            max: 250
-          unique: true
-          rename: "safe"
-  -
-    name: "gallery"
-    label: "Individual photo captions (optional)"
-    type: "file"
-    path: "content/gallery.json"
-    format: "json"
-    list: true
-    operations:
-      create: false
-      rename: false
-      delete: false
-    fields:
-      -
-        name: "file"
-        type: "image"
-        label: "Photograph"
-        options:
-          media: "gallery"
-      -
-        name: "album"
-        type: "string"
-        label: "Album ID"
-        required: true
-        description: "Must match an event's Gallery album ID."
-      -
-        name: "caption"
-        type: "object"
-        label: "Photo caption"
-        fields:
-          -
-            name: "en"
-            type: "string"
-            label: "English"
-          -
-            name: "fr"
-            type: "string"
-            label: "Français"
-          -
-            name: "nl"
-            type: "string"
-            label: "Nederlands"
-  -
     name: "blog"
-    label: "Blog & News"
+    label: "02 — BLOG & NEWS"
     type: "file"
     path: "content/blog.json"
     format: "json"
@@ -355,7 +263,7 @@ content:
         label: "Optional external article link"
   -
     name: "radio"
-    label: "Spiral Radio & SoundCloud"
+    label: "03 — SPIRAL RADIO"
     type: "file"
     path: "content/radio.json"
     format: "json"
@@ -421,7 +329,7 @@ content:
         label: "Event credit"
   -
     name: "shop"
-    label: "Shop & Merchandise"
+    label: "04 — SHOP & PRODUCTS"
     type: "file"
     path: "content/shop.json"
     format: "json"

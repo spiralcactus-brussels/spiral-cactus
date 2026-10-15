@@ -1,30 +1,40 @@
-# SpiralCactus — Pages CMS Administration
+# SPIRALCACTUS — YOUR FREE ADMIN DASHBOARD
 
-## One-time connection
-1. Open https://app.pagescms.org/ and sign in with the GitHub account that controls spiralcactus-brussels/spiral-cactus.
-2. Install/authorize the Pages CMS GitHub App. Choose 'Only select repositories' and select spiralcactus-brussels/spiral-cactus. Review the permissions before approval.
-3. Select the repository and the main branch. Pages CMS reads the .pages.yml file already committed at the root. Do not create a second configuration.
-4. The dashboard will show editors for Events, BULK PHOTO UPLOAD, optional individual photo captions, Blog, Spiral Radio, and Shop. Upload image files through the named media libraries.
+Go to https://app.pagescms.org/ and select `spiralcactus-brussels/spiral-cactus` (main branch).
 
-## Working with the editors
-- Events and Calendar: Add an item in Events, enter a unique ID, date, times, venue, names/descriptions in EN/FR/NL, ticket link, optional embedded shop link, poster and guest artists. Save. The event/calendar pages read content/events.json.
-- Artists: DJ names, genres, crews and portraits are currently edited in each event's DJ Lineup field. The Community page still features the original two event IDs only.
-- **Bulk Gallery (recommended):** Click **BULK PHOTO UPLOAD — Event Albums** in Content, expand the relevant event (Item #1 = August 28; Item #2 = Acid Edition), and open its Photos picker. Click Upload and select 20 or more JPG/WebP/PNG pictures at once (Cmd/Ctrl-click or Shift-click in the file picker, or drag and drop). Save once. The public Gallery automatically displays every selected picture in that album. If the picker already contains photos, ADD new photos; do not replace or delete the existing selection unless intended.
-- **New album:** Create a new item in Bulk Photo Upload. Enter a friendly name and copy its Gallery album ID exactly from the event in Events & Calendar. Choose the pictures, Save. This requires no code edits.
-- **Optional custom captions:** The **Individual photo captions (optional)** section continues to manage one picture at a time with translations. If an image is present in both lists, the custom-caption entry wins and the photo is not duplicated.
-- **Media library:** The **Event photography** tab can upload multiple files too, but uploading only to the media library does NOT register images on the public website. Select the photographs into the bulk album and Save. The photos do not have to reside in separate physical folders: they are grouped by album ID.
-- **Upload size:** Very large camera JPGs can exceed Pages CMS/GitHub upload limits. Resize/compress large files first; for website use, roughly 2000–2560 px along the longest edge and 300 KB–2 MB per image is usually adequate.
-- Blog: Add a post with date, unique lowercase hyphenated slug, EN/FR/NL title, excerpt and body. Optionally upload a cover picture. Keep Published off until ready. The public blog supports plain text and blank-line paragraphs, not full rich text formatting.
-- Spiral Radio: Enter a unique mix ID, a DJ name matching an existing event lineup, title and public SoundCloud link. Select track or playlist. Save. The player reads content/radio.json.
-- Shop: Fill in product content and image. Set Published on and a valid payment-provider checkout link for the product to appear. The CMS does not provide a payment processor.
+## CONTENT — Edit the site
+- **01 — EVENTS & CALENDAR:** Dates, names in EN/FR/NL, posters, lineups and ticket links. Click an event or add a new one and Save.
+- **02 — BLOG & NEWS:** Draft and publish articles; use the Published switch.
+- **03 — SPIRAL RADIO:** Add SoundCloud mixes and playlists.
+- **04 — SHOP & PRODUCTS:** Product images and checkout links.
 
-## Publishing and security
-- Saving in Pages CMS commits to GitHub, then GitHub Pages deploys the public site automatically. Your public design and URL remain unchanged.
-- Pages CMS is a separate private administration app secured by GitHub authentication. Do not share any passwords, personal access tokens or GitHub private keys.
-- Existing content remains stored as JSON arrays. The editor lets you add list items; there is no need to write JSON by hand.
-- Avoid editing the same JSON file simultaneously in GitHub and Pages CMS. Keep backups before bulk edits.
-- Verify the first write by adding a draft blog post; confirm the underlying JSON remains an array before editing live event data.
-- Big photos should be optimized before upload. Large files may hit GitHub/Pages CMS provider limits.
-- The Pages CMS login and live editing session cannot be tested here until the owner authorizes the app in their browser.
+Artists remain editable inside the event's DJ Lineup. There's no duplicate artist database.
 
-Official documentation: https://pagescms.org/docs/quick-start/
+## MEDIA — Upload photos and images
+- **01 — GALLERY: RAVE NIGHT 28 AUG:** Upload party photographs from 28 August 2026 here.
+- **02 — GALLERY: ACID EDITION 16 OCT:** Upload party photographs from 16 October 2026 here.
+- **03 — EVENT POSTERS:** Posters used by the Events editor.
+- **04 — DJ PORTRAITS:** Portraits used by the Events editor.
+- **05 — BLOG IMAGES:** Covers used by Blog & News.
+- **06 — SHOP PRODUCT IMAGES:** Merchandise photos.
+
+### Upload photos (only the MEDIA area)
+1. Open the correct gallery album under **MEDIA**.
+2. Click **Upload** in that folder, or drag photographs into the media uploader if offered.
+3. In Finder, select multiple optimized JPG or WebP photographs in one selection.
+4. Wait for **every file** to show in the media list. This is the whole publishing action: no JSON edits, no secondary album editor, no extra Save.
+5. After a successful GitHub Pages deployment, see the photos in https://spiralcactus-brussels.github.io/spiral-cactus/gallery.html (choose the album filter).
+
+The public Gallery automatically discovers files stored in an event's folder on every GitHub Pages Jekyll build. It produces `content/gallery-auto.json` from `site.static_files`. Older individual captions in `content/gallery.json` and previous batch data in `content/gallery-albums.json` are preserved but removed from the Pages CMS sidebar. The unassigned file `assets/gallery/DSC_0030.JPG` is retained, not automatically associated with any event.
+
+### If only one photo uploads
+Pages CMS runs the actual upload process. Configuration cannot fix a service/browser upload failure. Test first with **three small JPGs** (each below 2 MB); make sure all 3 appear under Media and then in your live Gallery. If they don't, send a screenshot of the upload state and errors. For large camera files, first resize to around 2000–2400 pixels on the longest edge. Some users report Pages CMS refusing files over approximately 4.5 MB. Never assume the entire selected batch was uploaded if only one file appears.
+
+### Future events
+Future events should use an album folder named exactly after the event's Gallery album ID. The Jekyll manifest includes any new folder, but its named media link needs to be added to `.pages.yml` to make uploading into that folder one-click.
+
+## Cost and deployment
+Pages CMS and GitHub Pages are free for this public repository, subject to platform limits (including GitHub Pages site size and Pages CMS upload limits). No backend server, paid subscription, Supabase or Cloudinary needed. The unfinished custom admin prototype was retired. GitHub Pages still hosts the public site.
+
+### Verification
+Confirm the GitHub Pages deployment succeeds, then test an actual multi-image upload while signed in to Pages CMS. The assistant cannot simulate your signed-in Pages CMS account. If its bulk upload still fails with small files, we will need another free way to handle large batches rather than pretend it is fixed.
