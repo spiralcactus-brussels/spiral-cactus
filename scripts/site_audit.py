@@ -89,6 +89,10 @@ for event in events:
     check(bool(event.get("gallery")),f"{event['id']}: gallery ID")
 check(all(str(r.get("url","")).startswith("https://soundcloud.com/") for r in radio),"Radio SoundCloud sources")
 check(isinstance(gallery,list) and isinstance(oldalbums,list),"Gallery legacy files valid")
+for group in oldalbums:
+    for path in group.get("photos", []):
+        check((ROOT/path).is_file(), f"Gallery album {group.get('album','?')}: linked photo exists ({path})")
+
 
 sitemap=(ROOT/"sitemap.xml").read_text()
 urls=re.findall(r"<loc>([^<]+)</loc>",sitemap)
