@@ -26,7 +26,7 @@
     document.documentElement.lang=current;
     document.getElementById('langselect').value=current;
     const titlePage = document.querySelector('nav a.active')?.textContent || 'SpiralCactus';
-    const homeTitles={en:'SpiralCactus Brussels | Underground Raves & Radio',fr:'SpiralCactus Bruxelles | Raves Underground & Radio',nl:'SpiralCactus Brussel | Underground Raves & Radio'};
+    const homeTitles={en:'SpiralCactus Brussels | Underground Raves & Radio',fr:'SpiralCactus Bruxelles | Raves underground et radio',nl:'SpiralCactus Brussel | Undergroundraves en radio'};
     document.title=page==='index'?homeTitles[current]:`SpiralCactus Brussels | ${titlePage}`;
     document.querySelectorAll('[data-dynamic-lang]').forEach(el=>{const w=dynamic[current]?.[el.dataset.dynamicLang];if(w!==undefined)el.textContent=w;});
     document.querySelectorAll('[data-i18n-aria-label]').forEach(el=>{const w=words[el.dataset.i18nAriaLabel];if(w!==undefined)el.setAttribute('aria-label',w);});
@@ -47,7 +47,7 @@
   document.getElementById('menubtn')?.addEventListener('click',e=>{
     const links=document.getElementById('mainlinks');links.classList.toggle('opened');e.currentTarget.setAttribute('aria-expanded',String(links.classList.contains('opened')));
   });
-  document.querySelectorAll('#mainlinks a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('mainlinks')?.classList.remove('opened');}));
+  document.querySelectorAll('#mainlinks a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('mainlinks')?.classList.remove('opened');document.getElementById('menubtn')?.setAttribute('aria-expanded','false');}));
   // AJAX contact delivery using FormSubmit; HTML form.action is a no-JavaScript fallback.
   const contact = document.getElementById('contactform');
   if(contact){
