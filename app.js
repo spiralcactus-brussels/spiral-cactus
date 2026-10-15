@@ -256,10 +256,20 @@
     empty.hidden=valid.length>0;
   }
   // Photo entries are authored in content/gallery.json, never injected as raw template syntax.
+  function allowedGalleryImage(file){
+    if(typeof file!=='string')return false;
+    if(/^assets\/gallery\/[a-z0-9_./ -]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(file)&&!file.includes('..'))return true;
+    // New signed Cloudinary media URLs are returned from Supabase's published-only table.
+    try{
+      const u=new URL(file);
+      return u.protocol==='https:'&&u.hostname==='res.cloudinary.com'&&
+        /^\/[a-zA-Z0-9_-]+\/image\/upload\//.test(u.pathname);
+    }catch(_){return false}
+  }
   function renderGallery(){
     if(page!=='gallery')return;
     const grid=document.getElementById('gallery-grid');if(!grid)return;
-    grid.innerHTML=galleryPhotos.filter(p=>typeof p.file==='string' && /^assets\/gallery\/.+\.(?:jpe?g|png|webp|gif|avif)$/i.test(p.file)).map(p=>{
+    grid.innerHTML=galleryPhotos.filter(p=>allowedGalleryImage(p?.file)).map(p=>{
       const caption=languageVal(p.caption||p.alt||'') || p.file.split('/').pop().replace(/[-_]/g,' ').replace(/\.[^.]+$/,'');
       const album=String(p.album||p.file.split('/').slice(-2,-1)[0]||'');
       return `<figure class="gallery-item" data-album="${esc(album)}"><button class="gallery-open" type="button" aria-label="${esc(l('openPhoto'))}"><img loading="lazy" decoding="async" src="${esc(p.file)}" alt="${esc(caption)}"></button><figcaption>${esc(caption)}</figcaption></figure>`;
@@ -342,5 +352,34 @@
     }
     galleryPhotos=[...manual,...batch];
     renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
+
+    // Optional new gallery service: when configured, published Supabase photos
+    // join the old GitHub gallery automatically; no other page is affected.
+    const cfg=window.SC_BACKEND;
+    if(page==='gallery'&&cfg?.supabaseUrl&&cfg?.supabaseAnonKey&&window.supabase?.createClient){
+      try{
+        const galleryDb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{
+          auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}
+        });
+        galleryDb.from('sc_gallery_photos')
+          .select('image_url,event_id,caption_en,caption_fr,caption_nl')
+          .eq('status','published')
+          .order('created_at',{ascending:false})
+          .limit(1000)
+          .then(({data,error})=>{
+            if(error){console.warn('Optional hosted photo gallery unavailable:',error.message);return;}
+            const seen=new Set(galleryPhotos.map(p=>String(p.file||'').toLowerCase()));
+            for(const item of data||[]){
+              if(!allowedGalleryImage(item.image_url)||seen.has(item.image_url.toLowerCase()))continue;
+              seen.add(item.image_url.toLowerCase());
+              galleryPhotos.push({
+                file:item.image_url,album:item.event_id,
+                caption:{en:item.caption_en||'',fr:item.caption_fr||'',nl:item.caption_nl||''}
+              });
+            }
+            renderGallery();setupGallery();
+          });
+      }catch(e){console.warn('Optional gallery connection not ready:',e)}
+    }
   });
 })();
