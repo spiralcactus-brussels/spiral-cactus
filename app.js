@@ -174,7 +174,9 @@
     if(page!=='events')return;
     const featured=document.getElementById('featured-event'), list=document.getElementById('event-list');
     if(!featured || !list)return;
-    const main=events.find(e=>e.id==='acid-edition') || events[0];
+    // Always feature the next upcoming event (or the newest past event).
+    const future=[...events].filter(e=>!isPast(e)).sort((a,b)=>a.date.localeCompare(b.date));
+    const main=future[0] || [...events].sort((a,b)=>b.date.localeCompare(a.date))[0];
     featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>${ticketEmbedHTML(main)}`:'';
     list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card">${e.poster?`<img class="archive-poster" src="${esc(e.poster)}" alt="${esc(languageVal(e.name))} poster" loading="lazy">`:''}<div class="archive-copy"><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
   }
@@ -302,22 +304,6 @@
     document.getElementById('photo-close')?.addEventListener('click',closeModal);
     document.getElementById('photo-modal')?.addEventListener('click',e=>{if(e.target.id==='photo-modal')closeModal()});
     document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
-  }
-  // Optional presentation animation plays once and returns to the white still logo.
-  if(page==='index'){
-    const wrap=document.querySelector('.hero-logo');
-    const video=wrap?.querySelector('.hero-logo-video');
-    const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if(video && !reduced){
-      const end=()=>{wrap.classList.remove('is-playing');video.pause();};
-      video.addEventListener('ended',end);
-      video.addEventListener('error',end);
-      video.addEventListener('canplay',()=>{
-        const attempt=video.play();
-        if(attempt && typeof attempt.then==='function')attempt.then(()=>wrap.classList.add('is-playing')).catch(end);
-      },{once:true});
-      video.load();
-    }
   }
   renderText(); setupGallery(); renderCalendar();
   Promise.all([
