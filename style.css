@@ -206,16 +206,22 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .discover-future-shell{border-top:1px solid #52632f;background:linear-gradient(175deg,#111711 0,#0a0e0d 32%,#08090c 65%)}
 .discover-future-opening{padding-top:95px;padding-bottom:34px;scroll-margin-top:80px}
 .discover-future-opening .discover-chapter-marker{border-bottom-color:#566a37}
-.discover-future-heading{font:800 clamp(67px,10.5vw,136px)/.88 var(--modular);letter-spacing:-.055em;max-width:1100px;margin:20px 0 36px}
+.discover-today h1,.discover-future-heading{font:800 clamp(72px,10.5vw,138px)/1.02 var(--display);letter-spacing:.01em;text-transform:uppercase;max-width:1100px}
+.discover-future-heading{margin:20px 0 36px}
 .discover-future-opening>.lead{max-width:930px}
 .discover-future-note{display:grid;grid-template-columns:210px 1fr;gap:30px;align-items:center;padding:25px 0;margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .discover-future-note p{margin:0;color:var(--muted)}
 .discover-experiences{border-top:0;padding-top:58px}
 .discover-experiences .experiences-heading{margin-top:15px}
 .discover-experiences .mission-panel{margin-top:58px}
-@media(max-width:800px){.discover-today{padding-top:45px;padding-bottom:66px}.discover-future-opening{padding-top:64px}.discover-future-heading{font-size:clamp(61px,12vw,96px)}.discover-values-grid{grid-template-columns:1fr}.discover-value{min-height:0}.discover-future-note{grid-template-columns:1fr;gap:8px}.discover-philosophy{margin-top:65px}}
-@media(max-width:480px){.discover-chapter-marker{margin-bottom:28px}.discover-future-heading{font-size:clamp(54px,12.5vw,74px)}.discover-value{padding:19px}}
+@media(max-width:800px){.discover-today{padding-top:45px;padding-bottom:66px}.discover-future-opening{padding-top:64px}.discover-today h1,.discover-future-heading{font-size:clamp(61px,12vw,96px)}.discover-values-grid{grid-template-columns:1fr}.discover-value{min-height:0}.discover-future-note{grid-template-columns:1fr;gap:8px}.discover-philosophy{margin-top:65px}}
+@media(max-width:480px){.discover-chapter-marker{margin-bottom:28px}.discover-today h1,.discover-future-heading{font-size:clamp(54px,12.5vw,74px)}.discover-value{padding:19px}}
 
 /* Only personal member accounts are offered until the email services are configured. */
 body[data-page="members"] .member-area{grid-template-columns:minmax(0,1fr);max-width:860px;margin-inline:auto}
 body[data-page="members"] .member-news-side[hidden]{display:none!important}
+
+/* Clear title hierarchy: only the two chapter titles use full display scale. */
+.discover-experiences .experiences-heading{font:800 clamp(43px,6vw,78px)/1.02 var(--display);letter-spacing:.01em}
+@media(max-width:800px){.discover-experiences .experiences-heading{font-size:clamp(42px,8.2vw,67px)}}
+@media(max-width:480px){.discover-experiences .experiences-heading{font-size:clamp(38px,10vw,56px)}}
