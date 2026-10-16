@@ -137,3 +137,42 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 /* Optional blog cover images managed through Pages CMS. */
 .blog-cover{display:block;width:100%;max-height:370px;object-fit:cover;border:1px solid var(--line);margin:8px 0 20px;background:var(--panel)}
 .blog-card .blog-cover{aspect-ratio:16/9;max-height:none;object-fit:cover;margin:0 0 16px}
+
+
+/* SpiralCactus members: account portal and upcoming community program */
+.member-home-cta{padding-top:45px;padding-bottom:90px}
+.member-home-inner{border:1px solid #586c31;background:linear-gradient(110deg,#181e17,#101315);padding:30px 35px;display:flex;align-items:center;gap:25px;justify-content:space-between}
+.member-home-inner h2{font:800 clamp(38px,5vw,68px)/1 var(--display);margin:12px 0}
+.member-home-inner p{color:var(--muted);max-width:590px;margin:0}
+.member-home-inner .btn{white-space:nowrap}
+.member-intro{padding-bottom:38px}
+.member-intro h1{font:800 clamp(56px,8.5vw,122px)/.9 var(--display);margin:16px 0 25px;max-width:1000px}
+.member-intro>.lead{max-width:770px}
+.member-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:45px}
+.member-benefit{background:#141820;border:1px solid var(--line);padding:25px;min-height:212px}
+.member-benefit .num{font-weight:800;color:var(--lime)}
+.member-benefit h2{font:800 33px/1.04 var(--display);margin:16px 0 8px}
+.member-benefit p{color:var(--muted);margin:0;font-size:14px}
+.member-area{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.74fr);gap:28px;padding-top:24px;padding-bottom:95px;align-items:start}
+.member-card,.member-news-side{border:1px solid var(--line);background:#12151b;padding:31px}
+.member-card h2,.member-news-side h2{font:800 clamp(38px,5vw,58px)/1 var(--display);margin:0 0 25px}
+.member-news-side{background:linear-gradient(155deg,#172016,#101319)}
+.member-news-side .eyebrow{color:var(--lime)}
+.member-news-side p{color:var(--muted)}
+.member-tabs{display:flex;gap:6px;margin-bottom:22px}
+.member-tab{background:#1b1e26;border:1px solid var(--line);color:var(--text);cursor:pointer;padding:11px 16px;flex:1;font-weight:800}
+.member-tab.selected{border-color:var(--lime);color:var(--lime)}
+#member-auth-form,#member-recovery-form,#member-profile-form{display:grid;gap:16px}
+.member-card label{display:grid;gap:6px;font-size:13px;font-weight:700}
+.member-card input:not([type=checkbox]){border:1px solid #525863;background:#090b0e;color:var(--text);padding:14px 13px;width:100%;border-radius:3px}
+.member-choice{display:flex!important;flex-direction:row;align-items:flex-start;gap:10px!important;font-weight:400!important;color:var(--muted);line-height:1.55}
+.member-choice input{width:18px;height:18px;flex-shrink:0;accent-color:var(--lime);margin:3px 0}
+.member-status{margin:12px 0 0;padding:12px 14px;border:1px solid #55663d;background:#1f281a;color:#d9f5ae}
+.member-status[data-state=error]{border-color:#985343;background:#2d1919;color:#ffc6ad}
+.member-link-button{background:none;border:none;color:var(--lime);font:700 13px Inter,Arial,sans-serif;cursor:pointer;text-decoration:underline;padding:14px 0 0;text-align:left}
+.member-privacy{margin-top:23px;color:var(--muted)}
+.member-identity{font-size:20px;font-weight:700;overflow-wrap:anywhere}
+.member-muted{padding:16px;border-left:2px solid var(--lime);background:#1b2022;color:var(--muted)}
+#member-newsletter-embed iframe{width:100%;height:440px;border:0;background:#fff}
+@media(max-width:850px){.member-area{grid-template-columns:1fr}.member-benefits{grid-template-columns:1fr}.member-benefit{min-height:0}.member-home-inner{align-items:flex-start;flex-direction:column}.member-card,.member-news-side{padding:23px}}
+@media(max-width:480px){.member-intro h1{font-size:59px}.member-home-inner{padding:23px}.member-benefit h2{font-size:28px}}

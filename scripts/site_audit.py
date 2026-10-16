@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus-brussels.github.io/spiral-cactus/"
 PAGES = ["index.html","discover.html","activities.html","events.html",
          "calendar.html","gallery.html","radio.html","artists.html",
-         "blog.html","shop.html","contact.html"]
+         "blog.html","shop.html","contact.html","members.html"]
 errors = []
 warnings = []
 checks = []
@@ -72,7 +72,7 @@ for name in PAGES:
         if path and not (ROOT/path).is_file():
             errors.append(f"{name}: broken {attr}={url}")
 
-for js in ("app.js","radio.js","i18n.js"):
+for js in ("app.js","radio.js","i18n.js","members.js","members-config.js"):
     result=subprocess.run(["node","--check",str(ROOT/js)],capture_output=True,text=True)
     check(result.returncode==0,f"{js}: syntax check")
     if result.returncode:errors.append(result.stderr[:1500])

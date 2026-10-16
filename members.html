@@ -1,0 +1,62 @@
+<!doctype html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08090c"><meta name="description" content="Join the SpiralCactus Brussels community. Discover member accounts, underground events, early announcements and future member opportunities."><title>SpiralCactus | Members & Community</title><meta property="og:type" content="website"><meta property="og:site_name" content="Spiral Cactus"><meta property="og:title" content="SpiralCactus | Members & Community"><meta property="og:description" content="Join the SpiralCactus Brussels community. Discover member accounts, underground events, early announcements and future member opportunities."><meta property="og:url" content="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><meta property="og:image" content="https://spiralcactus-brussels.github.io/spiral-cactus/assets/logo-original.jpg"><meta property="og:image:alt" content="Spiral Cactus underground music and arts collective in Brussels"><meta name="twitter:card" content="summary"><link rel="canonical" href="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
+<body data-page="members"><canvas id="particles" aria-hidden="true"></canvas>
+<header class="site-header"><nav aria-label="Main navigation"><a class="wordmark" href="index.html" aria-label="SpiralCactus home">SPIRAL<span>CACTUS</span></a>
+<button id="menubtn" class="pill nav-menu" data-i18n-aria-label="menuLabel" aria-label="Toggle menu" aria-expanded="false">☰</button>
+<div class="links" id="mainlinks"><a data-i18n="home" href="index.html" class="" >Home</a><a data-i18n="discover" href="discover.html" class="" >Discover</a><a data-i18n="activities" href="activities.html" class="" >Experiences</a><a data-i18n="events" href="events.html" class="" >Events</a><a data-i18n="calendar" href="calendar.html" class="" >Calendar</a><a data-i18n="gallery" href="gallery.html" class="" >Gallery</a><a data-i18n="radio" href="radio.html" class="" >Radio</a><a data-i18n="community" href="artists.html" class="" >Community</a><a data-i18n="blog" href="blog.html" class="" >Blog</a><a data-i18n="shop" href="shop.html" class="" >Shop</a><a data-i18n="contact" href="contact.html" class="" >Contact</a></div>
+<div class="actions"><label class="sr-only" for="langselect" data-i18n="langLabel">Website language</label><select class="pill lang-select" id="langselect" data-i18n-aria-label="langLabel" aria-label="Website language"><option value="en">EN</option><option value="fr">FR</option><option value="nl">NL</option></select></div></nav></header>
+<main id="main-content">
+<section class="wrap member-intro">
+  <p class="eyebrow" data-i18n="memberEyebrow">THE SPIRAL IS OPEN</p>
+  <h1 data-i18n="memberTitle">BECOME PART OF THE SPIRAL</h1>
+  <p class="lead" data-i18n="memberIntro">Join the SpiralCactus community. Create a free account to keep your profile and hear about future member opportunities.</p>
+  <div class="member-benefits">
+    <article class="member-benefit"><span class="num">01 /</span><h2 data-i18n="memberPerk1">First to know</h2><p data-i18n="memberPerk1Desc">Be ready for event announcements and ticket updates.</p></article>
+    <article class="member-benefit"><span class="num">02 /</span><h2 data-i18n="memberPerk2">Community access</h2><p data-i18n="memberPerk2Desc">Your place in our growing Brussels underground community.</p></article>
+    <article class="member-benefit"><span class="num">03 /</span><h2 data-i18n="memberPerk3">Member offers</h2><p data-i18n="memberPerk3Desc">Presales and discounts may be offered at selected future events. None are active yet.</p></article>
+  </div>
+</section>
+<section class="wrap member-area" aria-labelledby="member-area-heading">
+<div class="member-card">
+<h2 id="member-area-heading" data-i18n="memberHeading">YOUR SPIRAL ACCOUNT</h2>
+<p id="member-loading" class="note" role="status">Checking membership availability…</p>
+<div id="member-wait" hidden><p class="member-muted" data-i18n="memberComing">Account registration is being prepared. Sign-up and login will open once our secure account service is connected.</p></div>
+<div id="member-access" hidden>
+ <div class="member-tabs" aria-label="Account access">
+  <button type="button" class="member-tab selected" id="member-tab-signup" data-i18n="memberSignup" aria-pressed="true">Create account</button>
+  <button type="button" class="member-tab" id="member-tab-signin" data-i18n="memberSignin" aria-pressed="false">Sign in</button>
+ </div>
+ <form id="member-auth-form">
+  <label id="member-name-wrap" for="member-name"><span data-i18n="memberName">Display name (optional)</span><input id="member-name" name="name" type="text" maxlength="60" autocomplete="nickname"></label>
+  <label for="member-email"><span data-i18n="memberEmail">Email</span><input id="member-email" name="email" type="email" maxlength="254" autocomplete="email" required></label>
+  <label for="member-password"><span data-i18n="memberPassword">Password (minimum 8 characters)</span><input id="member-password" name="password" type="password" minlength="8" maxlength="200" autocomplete="new-password" required></label>
+  <label id="member-optin-wrap" class="member-choice"><input id="member-optin" type="checkbox"><span data-i18n="memberNewsletter">I'd like to receive occasional SpiralCactus event and community emails when the newsletter is launched. I can change this later.</span></label>
+  <button class="btn" type="submit" id="member-submit" data-i18n="memberSubmitSignup">CREATE MY ACCOUNT ↗</button>
+  <button type="button" id="member-forgot" class="member-link-button" data-i18n="memberForgot" hidden>Forgot password?</button>
+  <p id="member-auth-status" class="member-status" role="status" aria-live="polite" hidden></p>
+ </form>
+</div>
+<div id="member-recovery" hidden>
+ <h3 data-i18n="memberResetTitle">Set a new password</h3>
+ <form id="member-recovery-form">
+  <label for="member-new-password"><span data-i18n="memberPassword">Password (minimum 8 characters)</span><input type="password" id="member-new-password" minlength="8" maxlength="200" autocomplete="new-password" required></label>
+  <button class="btn" type="submit" data-i18n="memberResetSubmit">SAVE NEW PASSWORD ↗</button>
+ </form>
+</div>
+<div id="member-dashboard" hidden>
+ <p class="eyebrow" data-i18n="memberDashboard">YOU'RE IN THE SPIRAL</p>
+ <p class="member-identity" id="member-identity"></p><p class="note"><span data-i18n="memberMemberSince">Member since</span> <span id="member-since"></span></p>
+ <form id="member-profile-form">
+   <label for="member-profile-name"><span data-i18n="memberName">Display name (optional)</span><input id="member-profile-name" type="text" maxlength="60"></label>
+   <label class="member-choice"><input type="checkbox" id="member-profile-optin"><span data-i18n="memberNewsletter">I'd like to receive occasional SpiralCactus event and community emails when the newsletter is launched. I can change this later.</span></label>
+   <button type="submit" class="btn" data-i18n="memberSave">SAVE PREFERENCES ↗</button>
+ </form>
+ <button type="button" class="member-link-button" id="member-signout" data-i18n="memberSignout">Sign out</button>
+</div>
+<p id="member-shared-status" class="member-status" role="status" aria-live="polite" hidden></p>
+<p class="note member-privacy" data-i18n="memberPrivacy">Membership is free. Creating an account is separate from consenting to marketing emails. No discounts or presale access are guaranteed; offers will be announced when available.</p>
+</div>
+<aside class="member-news-side"><div class="eyebrow">SPIRAL SIGNAL / 001</div><h2 data-i18n="memberNewsletterHeading">THE UNDERGROUND, IN YOUR INBOX</h2><p data-i18n="memberNewsletterIntro">Rave announcements, lineups, ticket launches and occasional community news. Newsletter sign-up will open here once the mailing service is connected.</p><div id="member-newsletter-embed" hidden></div><p class="note" id="member-newsletter-pending">Newsletter subscription is coming soon. A member account does not automatically subscribe you.</p><a class="btn alt" href="events.html">EXPLORE EVENTS ↗</a></aside>
+</section>
+</main><footer><span data-i18n="footerTagline">© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIC — BRUSSELS</span> <span>·</span> <a data-i18n="footerContact" href="contact.html" class="" >CONTACT ↗</a></footer><script src="i18n.js" defer></script><script src="members-config.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script><script src="members.js" defer></script><script src="app.js" defer></script></body></html>
