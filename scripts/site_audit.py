@@ -100,6 +100,10 @@ check('url=discover.html#experiences' in legacy, "Old Experiences URL forwards t
 merged=(ROOT/"discover.html").read_text()
 check('id="experiences"' in merged, "Experience section merged into Discover Us")
 check(merged.count('<article class="card">') >= 9, "All project and experience cards retained")
+check('id="today"' in merged and 'id="future"' in merged, "Discover Us: present and future clearly separated")
+check(merged.index('id="philosophy"') < merged.index('id="future"') < merged.index('id="experiences"'), "Discover Us: philosophy before future and experiences")
+check(merged.count('class="discover-value"') == 4, "Discover Us: four practical nightlife values")
+
 for name in PAGES:
     page=(ROOT/name).read_text()
     check('href="activities.html"' not in page, f"{name}: no outdated Experiences navigation")

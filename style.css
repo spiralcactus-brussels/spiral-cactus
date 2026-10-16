@@ -186,3 +186,32 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 
 /* Keep sign-up tab visibly inactive until email confirmation is deliverable. */
 .member-tab:disabled{cursor:not-allowed;opacity:.55}
+
+/* Two clear editorial chapters for Discover Us: present -> future. */
+.discover-today{padding-top:74px;padding-bottom:100px;scroll-margin-top:80px}
+.discover-chapter-marker{display:flex;align-items:center;gap:14px;max-width:100%;border-bottom:1px solid #444a50;padding:0 0 18px;margin-bottom:37px;text-transform:uppercase;letter-spacing:.18em;color:#d3d5db;font-size:11px;font-weight:800}
+.discover-chapter-index{font:800 29px/1 var(--display);letter-spacing:0;color:var(--lime)}
+.discover-today h1{margin-top:11px}
+.discover-today>.grid{margin-top:42px}
+.discover-philosophy{margin-top:82px}
+.discover-philosophy .sub-section{margin-top:0}
+.discover-philosophy>.lead{max-width:910px;margin-bottom:28px}
+.discover-values-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.discover-value{border:1px solid var(--line);background:linear-gradient(125deg,#181b21,#111418);padding:22px 24px;min-height:174px}
+.discover-value .num{font-weight:800;color:var(--lime);font-size:12px}
+.discover-value h3{font-size:clamp(22px,3vw,33px);margin:13px 0 8px}
+.discover-value p{font-size:14px;line-height:1.7;color:var(--muted);margin:0}
+.discover-values-footer{border-left:2px solid var(--lime);padding:7px 0 7px 17px;margin-top:23px;color:#d9dcdf;font-size:14px}
+.discover-today-actions{margin-top:38px}
+.discover-future-shell{border-top:1px solid #52632f;background:linear-gradient(175deg,#111711 0,#0a0e0d 32%,#08090c 65%)}
+.discover-future-opening{padding-top:95px;padding-bottom:34px;scroll-margin-top:80px}
+.discover-future-opening .discover-chapter-marker{border-bottom-color:#566a37}
+.discover-future-heading{font:800 clamp(67px,10.5vw,136px)/.88 var(--modular);letter-spacing:-.055em;max-width:1100px;margin:20px 0 36px}
+.discover-future-opening>.lead{max-width:930px}
+.discover-future-note{display:grid;grid-template-columns:210px 1fr;gap:30px;align-items:center;padding:25px 0;margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.discover-future-note p{margin:0;color:var(--muted)}
+.discover-experiences{border-top:0;padding-top:58px}
+.discover-experiences .experiences-heading{margin-top:15px}
+.discover-experiences .mission-panel{margin-top:58px}
+@media(max-width:800px){.discover-today{padding-top:45px;padding-bottom:66px}.discover-future-opening{padding-top:64px}.discover-future-heading{font-size:clamp(61px,12vw,96px)}.discover-values-grid{grid-template-columns:1fr}.discover-value{min-height:0}.discover-future-note{grid-template-columns:1fr;gap:8px}.discover-philosophy{margin-top:65px}}
+@media(max-width:480px){.discover-chapter-marker{margin-bottom:28px}.discover-future-heading{font-size:clamp(54px,12.5vw,74px)}.discover-value{padding:19px}}
