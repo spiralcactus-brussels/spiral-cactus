@@ -6,9 +6,9 @@
   const $ = id => document.getElementById(id);
   const config = window.SC_MEMBERS_CONFIG || {};
   const T = {
-    en: {loading:"Checking membership availability…", unavailable:"The account service is temporarily unavailable.", signupDone:"Check your inbox to confirm your email address. You can sign in after confirmation.", signedIn:"Welcome to the SpiralCactus community.", signInError:"Unable to sign in. Check your email and password.", checkEmail:"If this address has an account, a password-reset email will be sent.", needEmail:"Please enter your email address first.", resetDone:"Password updated. You're signed in.", saved:"Your profile and email preference have been saved. Newsletter delivery is not active yet.", profileError:"Your account is active, but profile settings are not available yet. Please contact us.", tryAgain:"Something went wrong. Please try again.", signedOut:"You have signed out.", accountReady:"Your SpiralCactus account is ready."},
-    fr: {loading:"Vérification du service membres…", unavailable:"Le service de comptes est temporairement indisponible.", signupDone:"Vérifiez vos e-mails pour confirmer votre adresse. Vous pourrez ensuite vous connecter.", signedIn:"Bienvenue dans la communauté SpiralCactus.", signInError:"Connexion impossible. Vérifiez votre adresse et votre mot de passe.", checkEmail:"Si un compte existe pour cette adresse, un e-mail de réinitialisation sera envoyé.", needEmail:"Indiquez d'abord votre adresse e-mail.", resetDone:"Mot de passe modifié. Vous êtes connecté.", saved:"Votre profil et votre préférence e-mail sont enregistrés. L'envoi de newsletters n'est pas encore actif.", profileError:"Votre compte est actif, mais votre profil est temporairement indisponible. Contactez-nous.", tryAgain:"Une erreur est survenue. Réessayez.", signedOut:"Vous avez été déconnecté.", accountReady:"Votre compte SpiralCactus est prêt."},
-    nl: {loading:"Ledenservice controleren…", unavailable:"De accountdienst is tijdelijk niet beschikbaar.", signupDone:"Bevestig je e-mailadres via de e-mail. Daarna kun je inloggen.", signedIn:"Welkom bij SpiralCactus.", signInError:"Inloggen is mislukt. Controleer je e-mail en wachtwoord.", checkEmail:"Als dit e-mailadres een account heeft, sturen we een herstellink.", needEmail:"Vul eerst je e-mailadres in.", resetDone:"Wachtwoord bijgewerkt. Je bent ingelogd.", saved:"Je profiel en e-mailvoorkeur zijn opgeslagen. De nieuwsbrief wordt nog niet verstuurd.", profileError:"Je account is actief, maar profielinstellingen zijn nog niet beschikbaar. Neem contact op.", tryAgain:"Er ging iets mis. Probeer het opnieuw.", signedOut:"Je bent uitgelogd.", accountReady:"Je SpiralCactus-account is klaar."}
+    en: {registrationClosed:"Public registration will open after confirmation emails are configured. Existing members can sign in.", loading:"Checking membership availability…", unavailable:"The account service is temporarily unavailable.", signupDone:"Check your inbox to confirm your email address. You can sign in after confirmation.", signedIn:"Welcome to the SpiralCactus community.", signInError:"Unable to sign in. Check your email and password.", checkEmail:"If this address has an account, a password-reset email will be sent.", needEmail:"Please enter your email address first.", resetDone:"Password updated. You're signed in.", saved:"Your profile and email preference have been saved. Newsletter delivery is not active yet.", profileError:"Your account is active, but profile settings are not available yet. Please contact us.", tryAgain:"Something went wrong. Please try again.", signedOut:"You have signed out.", accountReady:"Your SpiralCactus account is ready."},
+    fr: {registrationClosed:"Les inscriptions ouvriront après la configuration des e-mails de confirmation. Les membres existants peuvent se connecter.", loading:"Vérification du service membres…", unavailable:"Le service de comptes est temporairement indisponible.", signupDone:"Vérifiez vos e-mails pour confirmer votre adresse. Vous pourrez ensuite vous connecter.", signedIn:"Bienvenue dans la communauté SpiralCactus.", signInError:"Connexion impossible. Vérifiez votre adresse et votre mot de passe.", checkEmail:"Si un compte existe pour cette adresse, un e-mail de réinitialisation sera envoyé.", needEmail:"Indiquez d'abord votre adresse e-mail.", resetDone:"Mot de passe modifié. Vous êtes connecté.", saved:"Votre profil et votre préférence e-mail sont enregistrés. L'envoi de newsletters n'est pas encore actif.", profileError:"Votre compte est actif, mais votre profil est temporairement indisponible. Contactez-nous.", tryAgain:"Une erreur est survenue. Réessayez.", signedOut:"Vous avez été déconnecté.", accountReady:"Votre compte SpiralCactus est prêt."},
+    nl: {registrationClosed:"Registratie opent zodra bevestigingsmails zijn ingesteld. Bestaande leden kunnen inloggen.", loading:"Ledenservice controleren…", unavailable:"De accountdienst is tijdelijk niet beschikbaar.", signupDone:"Bevestig je e-mailadres via de e-mail. Daarna kun je inloggen.", signedIn:"Welkom bij SpiralCactus.", signInError:"Inloggen is mislukt. Controleer je e-mail en wachtwoord.", checkEmail:"Als dit e-mailadres een account heeft, sturen we een herstellink.", needEmail:"Vul eerst je e-mailadres in.", resetDone:"Wachtwoord bijgewerkt. Je bent ingelogd.", saved:"Je profiel en e-mailvoorkeur zijn opgeslagen. De nieuwsbrief wordt nog niet verstuurd.", profileError:"Je account is actief, maar profielinstellingen zijn nog niet beschikbaar. Neem contact op.", tryAgain:"Er ging iets mis. Probeer het opnieuw.", signedOut:"Je bent uitgelogd.", accountReady:"Je SpiralCactus-account is klaar."}
   };
   const lang = () => {
     let value = "en";
@@ -52,13 +52,18 @@
     return;
   }
   const client = window.supabase.createClient(domain, key, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  // Registration stays closed while outbound confirmation email is being configured.
+  // Switching this flag requires the project owner to verify SMTP and privacy settings first.
+  const registrationOpen = config.registrationOpen === true;
   let mode = "signup";
   let recovering = false;
   let activeUser = null;
   let updating = false;
   function authMode(next) {
-    mode = next;
-    const signingUp = next === "signup";
+    const signingUp = next === "signup" && registrationOpen;
+    mode = signingUp ? "signup" : "signin";
+    $("member-tab-signup").disabled = !registrationOpen;
+    $("member-tab-signup").title = registrationOpen ? "" : tr("registrationClosed");
     show("member-name-wrap", signingUp);
     show("member-optin-wrap", signingUp);
     show("member-forgot", !signingUp);
@@ -68,7 +73,7 @@
     $("member-tab-signin").setAttribute("aria-pressed", String(!signingUp));
     $("member-password").autocomplete = signingUp ? "new-password" : "current-password";
     $("member-submit").textContent = words(signingUp ? "memberSubmitSignup" : "memberSubmitSignin");
-    status("member-auth-status", "");
+    status("member-auth-status", registrationOpen ? "" : tr("registrationClosed"), registrationOpen ? "success" : "error");
   }
   $("member-tab-signup").addEventListener("click", () => authMode("signup"));
   $("member-tab-signin").addEventListener("click", () => authMode("signin"));
@@ -84,11 +89,18 @@
   }
   async function refresh() {
     if (recovering) return;
-    let user;
+    let user = null;
     try {
-      const {data, error} = await client.auth.getUser();
-      if (error) throw error;
-      user = data.user;
+      // getUser() without a session can return "Auth session missing" and must not
+      // be mistaken for a server outage; unauthenticated visitors see Sign in.
+      const {data: sessionData, error: sessionError} = await client.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (sessionData.session) {
+        // Always verify an existing session with the Auth server before reading profile data.
+        const {data, error} = await client.auth.getUser();
+        if (error) throw error;
+        user = data.user;
+      }
     } catch (_) {
       show("member-loading", false);
       show("member-wait", true);
@@ -123,6 +135,10 @@
     const name = $("member-name").value.trim().slice(0,60);
     status("member-auth-status", "");
     try {
+      if (mode === "signup" && !registrationOpen) {
+        status("member-auth-status", tr("registrationClosed"), "error");
+        return;
+      }
       if (mode === "signup") {
         const {data, error} = await client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname,data:{display_name:name,newsletter_opt_in:$("member-optin").checked}}});
         if (error) throw error;

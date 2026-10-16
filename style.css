@@ -183,3 +183,6 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .discover-experiences > .lead{max-width:900px;margin-bottom:35px}
 .discover-experiences .mission-panel{margin-top:60px}
 @media(max-width:800px){.discover-experiences{padding-top:52px;padding-bottom:65px}.discover-experiences .experiences-heading{font-size:clamp(52px,11vw,80px)}}
+
+/* Keep sign-up tab visibly inactive until email confirmation is deliverable. */
+.member-tab:disabled{cursor:not-allowed;opacity:.55}
