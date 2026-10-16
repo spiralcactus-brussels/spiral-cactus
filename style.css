@@ -215,3 +215,7 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .discover-experiences .mission-panel{margin-top:58px}
 @media(max-width:800px){.discover-today{padding-top:45px;padding-bottom:66px}.discover-future-opening{padding-top:64px}.discover-future-heading{font-size:clamp(61px,12vw,96px)}.discover-values-grid{grid-template-columns:1fr}.discover-value{min-height:0}.discover-future-note{grid-template-columns:1fr;gap:8px}.discover-philosophy{margin-top:65px}}
 @media(max-width:480px){.discover-chapter-marker{margin-bottom:28px}.discover-future-heading{font-size:clamp(54px,12.5vw,74px)}.discover-value{padding:19px}}
+
+/* Only personal member accounts are offered until the email services are configured. */
+body[data-page="members"] .member-area{grid-template-columns:minmax(0,1fr);max-width:860px;margin-inline:auto}
+body[data-page="members"] .member-news-side[hidden]{display:none!important}

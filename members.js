@@ -65,8 +65,8 @@
     $("member-tab-signup").disabled = !registrationOpen;
     $("member-tab-signup").title = registrationOpen ? "" : tr("registrationClosed");
     show("member-name-wrap", signingUp);
-    show("member-optin-wrap", signingUp);
-    show("member-forgot", !signingUp);
+    show("member-optin-wrap", signingUp && config.newsletterEnabled === true);
+    show("member-forgot", !signingUp && config.emailRecoveryEnabled === true);
     $("member-tab-signup").classList.toggle("selected", signingUp);
     $("member-tab-signin").classList.toggle("selected", !signingUp);
     $("member-tab-signup").setAttribute("aria-pressed", String(signingUp));
@@ -113,6 +113,7 @@
     show("member-recovery", false);
     show("member-access", !user);
     show("member-dashboard", !!user);
+    show("member-profile-optin-wrap", !!user && config.newsletterEnabled === true);
     if (user) {
       $("member-identity").textContent = user.email || "";
       let profile = null;
@@ -207,6 +208,6 @@
     if (event === "PASSWORD_RECOVERY") { resetView(); return; }
     if (!recovering && (event==="SIGNED_IN" || event==="SIGNED_OUT")) Promise.resolve().then(refresh);
   });
-  authMode("signup");
+  authMode(config.registrationOpen === true ? "signup" : "signin");
   refresh();
 })();
