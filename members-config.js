@@ -3,8 +3,7 @@
 window.SC_MEMBERS_CONFIG = {
   supabaseUrl: "https://ygeybkxvigippdtrgqej.supabase.co",
   supabasePublishableKey: "sb_publishable_q9Rlmw-2jJfsnrwisQdHQw_U4doIKnK",
-  // Set to true only after disabling Confirm Email in Supabase and testing signup.
-  registrationOpen: false,
+  // Registration is enabled automatically after Supabase Confirm Email is disabled.
   // Postpone newsletters and email-based password recovery until a real sender is ready.
   newsletterEnabled: false,
   emailRecoveryEnabled: false,
