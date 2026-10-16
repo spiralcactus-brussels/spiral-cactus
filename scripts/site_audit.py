@@ -153,15 +153,16 @@ if not json.loads((ROOT/"content/blog.json").read_text()):
     warnings.append("Blog has no published articles")
 if not json.loads((ROOT/"content/shop.json").read_text()):
     warnings.append("Shop has no published products (expected until checkout is configured)")
-print(f"\nAUTOMATED RESULTS: {len(checks)} passing checks; {len(errors)} errors; {len(warnings)} warnings")
-for line in errors: print("ERROR: "+line)
-for line in warnings: print("WARNING: "+line)
-print("NOTE: external services (FormSubmit, WeTicket iframe, SoundCloud) and actual mobile browser layout require manual testing.")
-sys.exit(1 if errors else 0)
-
 # A signup form needs to be exposed; Supabase itself authorizes account creation.
 member_js=(ROOT/"members.js").read_text()
 member_config=(ROOT/"members-config.js").read_text()
 check("registrationOpen: true" in member_config, "Members: sign-up form enabled")
 check("auth.signUp(" in member_js and "auth.signInWithPassword(" in member_js, "Members: signup and login actions present")
 check("/auth/v1/settings" not in member_js, "Members: no fragile browser authentication-settings gate")
+
+print(f"\nAUTOMATED RESULTS: {len(checks)} passing checks; {len(errors)} errors; {len(warnings)} warnings")
+for line in errors: print("ERROR: "+line)
+for line in warnings: print("WARNING: "+line)
+print("NOTE: external services (FormSubmit, WeTicket iframe, SoundCloud) and actual mobile browser layout require manual testing.")
+sys.exit(1 if errors else 0)
+
