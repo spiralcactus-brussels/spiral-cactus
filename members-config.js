@@ -3,7 +3,10 @@
 window.SC_MEMBERS_CONFIG = {
   supabaseUrl: "https://ygeybkxvigippdtrgqej.supabase.co",
   supabasePublishableKey: "sb_publishable_q9Rlmw-2jJfsnrwisQdHQw_U4doIKnK",
-  // Registration is enabled automatically after Supabase Confirm Email is disabled.
+  // Website form is enabled. In Supabase Authentication > Email, turn OFF
+  // Confirm Email to allow immediate sign-in until email delivery is ready.
+  // Supabase backend settings always decide if sign-up succeeds.
+  registrationOpen: true,
   // Postpone newsletters and email-based password recovery until a real sender is ready.
   newsletterEnabled: false,
   emailRecoveryEnabled: false,

@@ -6,9 +6,9 @@
   const $ = id => document.getElementById(id);
   const config = window.SC_MEMBERS_CONFIG || {};
   const T = {
-    en: {registrationClosed:"Account creation is not active yet. Existing members can sign in.", loading:"Checking membership availability…", unavailable:"The account service is temporarily unavailable.", signupDone:"Check your inbox to confirm your email address. You can sign in after confirmation.", signedIn:"Welcome to the SpiralCactus community.", signInError:"Unable to sign in. Check your email and password.", checkEmail:"If this address has an account, a password-reset email will be sent.", needEmail:"Please enter your email address first.", resetDone:"Password updated. You're signed in.", saved:"Your profile has been saved.", profileError:"Your account is active, but profile settings are not available yet. Please contact us.", tryAgain:"Something went wrong. Please try again.", signedOut:"You have signed out.", accountReady:"Your SpiralCactus account is ready."},
-    fr: {registrationClosed:"La création de compte n’est pas encore active. Les membres existants peuvent se connecter.", loading:"Vérification du service membres…", unavailable:"Le service de comptes est temporairement indisponible.", signupDone:"Vérifiez vos e-mails pour confirmer votre adresse. Vous pourrez ensuite vous connecter.", signedIn:"Bienvenue dans la communauté SpiralCactus.", signInError:"Connexion impossible. Vérifiez votre adresse et votre mot de passe.", checkEmail:"Si un compte existe pour cette adresse, un e-mail de réinitialisation sera envoyé.", needEmail:"Indiquez d'abord votre adresse e-mail.", resetDone:"Mot de passe modifié. Vous êtes connecté.", saved:"Votre profil a été enregistré.", profileError:"Votre compte est actif, mais votre profil est temporairement indisponible. Contactez-nous.", tryAgain:"Une erreur est survenue. Réessayez.", signedOut:"Vous avez été déconnecté.", accountReady:"Votre compte SpiralCactus est prêt."},
-    nl: {registrationClosed:"Registratie is nog niet actief. Bestaande leden kunnen inloggen.", loading:"Ledenservice controleren…", unavailable:"De accountdienst is tijdelijk niet beschikbaar.", signupDone:"Bevestig je e-mailadres via de e-mail. Daarna kun je inloggen.", signedIn:"Welkom bij SpiralCactus.", signInError:"Inloggen is mislukt. Controleer je e-mail en wachtwoord.", checkEmail:"Als dit e-mailadres een account heeft, sturen we een herstellink.", needEmail:"Vul eerst je e-mailadres in.", resetDone:"Wachtwoord bijgewerkt. Je bent ingelogd.", saved:"Je profiel is opgeslagen.", profileError:"Je account is actief, maar profielinstellingen zijn nog niet beschikbaar. Neem contact op.", tryAgain:"Er ging iets mis. Probeer het opnieuw.", signedOut:"Je bent uitgelogd.", accountReady:"Je SpiralCactus-account is klaar."}
+    en: {registrationClosed:"Account creation is not active yet. Existing members can sign in.", loading:"Checking membership availability…", unavailable:"The account service is temporarily unavailable.", signupDone:"Registration submitted, but you are not signed in yet. If you are asked to confirm your email, verification is still enabled in Supabase.", signedIn:"Welcome to the SpiralCactus community.", signInError:"Unable to sign in. Check your email and password.", checkEmail:"If this address has an account, a password-reset email will be sent.", needEmail:"Please enter your email address first.", resetDone:"Password updated. You're signed in.", saved:"Your profile has been saved.", profileError:"Your account is active, but profile settings are not available yet. Please contact us.", tryAgain:"Something went wrong. Please try again.", signedOut:"You have signed out.", accountReady:"Your SpiralCactus account is ready."},
+    fr: {registrationClosed:"La création de compte n’est pas encore active. Les membres existants peuvent se connecter.", loading:"Vérification du service membres…", unavailable:"Le service de comptes est temporairement indisponible.", signupDone:"Inscription envoyée, mais votre session n’est pas encore ouverte. Si une confirmation e-mail est requise, elle est encore activée dans Supabase.", signedIn:"Bienvenue dans la communauté SpiralCactus.", signInError:"Connexion impossible. Vérifiez votre adresse et votre mot de passe.", checkEmail:"Si un compte existe pour cette adresse, un e-mail de réinitialisation sera envoyé.", needEmail:"Indiquez d'abord votre adresse e-mail.", resetDone:"Mot de passe modifié. Vous êtes connecté.", saved:"Votre profil a été enregistré.", profileError:"Votre compte est actif, mais votre profil est temporairement indisponible. Contactez-nous.", tryAgain:"Une erreur est survenue. Réessayez.", signedOut:"Vous avez été déconnecté.", accountReady:"Votre compte SpiralCactus est prêt."},
+    nl: {registrationClosed:"Registratie is nog niet actief. Bestaande leden kunnen inloggen.", loading:"Ledenservice controleren…", unavailable:"De accountdienst is tijdelijk niet beschikbaar.", signupDone:"Registratie verzonden, maar je bent nog niet aangemeld. Als een e-mailbevestiging nodig is, staat die nog aan in Supabase.", signedIn:"Welkom bij SpiralCactus.", signInError:"Inloggen is mislukt. Controleer je e-mail en wachtwoord.", checkEmail:"Als dit e-mailadres een account heeft, sturen we een herstellink.", needEmail:"Vul eerst je e-mailadres in.", resetDone:"Wachtwoord bijgewerkt. Je bent ingelogd.", saved:"Je profiel is opgeslagen.", profileError:"Je account is actief, maar profielinstellingen zijn nog niet beschikbaar. Neem contact op.", tryAgain:"Er ging iets mis. Probeer het opnieuw.", signedOut:"Je bent uitgelogd.", accountReady:"Je SpiralCactus-account is klaar."}
   };
   const lang = () => {
     let value = "en";
@@ -52,9 +52,9 @@
     return;
   }
   const client = window.supabase.createClient(domain, key, {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-  // Registration opens only when Supabase reports that email auto-confirmation
-  // is enabled; fail closed if the public configuration endpoint is unreachable.
-  let registrationOpen = false;
+  // The website shows registration; Supabase Auth remains the authority that
+  // accepts or rejects new users based on its project settings.
+  const registrationOpen = config.registrationOpen === true;
   let mode = "signup";
   let recovering = false;
   let activeUser = null;
@@ -143,7 +143,7 @@
       if (mode === "signup") {
         const {data, error} = await client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname,data:{display_name:name,newsletter_opt_in:$("member-optin").checked}}});
         if (error) throw error;
-        if (data.session) await refresh();
+        if (data.session) { await refresh(); status("member-shared-status", tr("accountReady")); }
         else status("member-auth-status",tr("signupDone"));
         $("member-password").value = "";
       } else {
@@ -191,7 +191,9 @@
     updating = true;
     const button = event.currentTarget.querySelector("button[type=submit]"); button.disabled = true;
     try {
-      const {error} = await client.from("member_profiles").update({display_name:name,newsletter_opt_in:$("member-profile-optin").checked}).eq("id",activeUser.id);
+      const updates = {display_name:name};
+      if (config.newsletterEnabled === true) updates.newsletter_opt_in = $("member-profile-optin").checked;
+      const {error} = await client.from("member_profiles").update(updates).eq("id",activeUser.id);
       if (error) throw error;
       status("member-shared-status",tr("saved"));
     } catch (error) { status("member-shared-status",error?.message || tr("tryAgain"),"error"); }
@@ -208,25 +210,6 @@
     if (event === "PASSWORD_RECOVERY") { resetView(); return; }
     if (!recovering && (event==="SIGNED_IN" || event==="SIGNED_OUT")) Promise.resolve().then(refresh);
   });
-  authMode("signin");
+  authMode(registrationOpen ? "signup" : "signin");
   refresh();
-
-  (async () => {
-    try {
-      const cleanDomain = domain.endsWith("/") ? domain.slice(0, -1) : domain;
-      const response = await fetch(cleanDomain + "/auth/v1/settings", {
-        headers: {"apikey": key},
-        cache: "no-store"
-      });
-      if (!response.ok) throw new Error("Authentication settings unavailable");
-      const settings = await response.json();
-      registrationOpen = settings.mailer_autoconfirm === true
-        && settings.disable_signup !== true
-        && settings.external?.email === true;
-    } catch (error) {
-      console.warn("Unable to verify registration settings", error);
-      registrationOpen = false;
-    }
-    if (!activeUser && !recovering) authMode(registrationOpen ? "signup" : "signin");
-  })();
 })();
