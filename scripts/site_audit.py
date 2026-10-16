@@ -8,7 +8,7 @@ from urllib.parse import urlsplit, unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus-brussels.github.io/spiral-cactus/"
-PAGES = ["index.html","discover.html","activities.html","events.html",
+PAGES = ["index.html","discover.html","events.html",
          "calendar.html","gallery.html","radio.html","artists.html",
          "blog.html","shop.html","contact.html","members.html"]
 errors = []
@@ -93,6 +93,17 @@ for group in oldalbums:
     for path in group.get("photos", []):
         check((ROOT/path).is_file(), f"Gallery album {group.get('album','?')}: linked photo exists ({path})")
 
+
+# Legacy deep links should redirect to the merged Discover Us Experiences section.
+legacy=(ROOT/"activities.html").read_text()
+check('url=discover.html#experiences' in legacy, "Old Experiences URL forwards to Discover Us")
+merged=(ROOT/"discover.html").read_text()
+check('id="experiences"' in merged, "Experience section merged into Discover Us")
+check(merged.count('<article class="card">') >= 9, "All project and experience cards retained")
+for name in PAGES:
+    page=(ROOT/name).read_text()
+    check('href="activities.html"' not in page, f"{name}: no outdated Experiences navigation")
+    check('>Discover Us</a>' in page, f"{name}: Discover Us label on menu")
 
 sitemap=(ROOT/"sitemap.xml").read_text()
 urls=re.findall(r"<loc>([^<]+)</loc>",sitemap)

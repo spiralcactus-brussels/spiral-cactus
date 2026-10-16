@@ -176,3 +176,10 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 #member-newsletter-embed iframe{width:100%;height:440px;border:0;background:#fff}
 @media(max-width:850px){.member-area{grid-template-columns:1fr}.member-benefits{grid-template-columns:1fr}.member-benefit{min-height:0}.member-home-inner{align-items:flex-start;flex-direction:column}.member-card,.member-news-side{padding:23px}}
 @media(max-width:480px){.member-intro h1{font-size:59px}.member-home-inner{padding:23px}.member-benefit h2{font-size:28px}}
+
+/* Experiences is a section inside Discover Us, accessible with #experiences. */
+.discover-experiences{border-top:1px solid var(--line);padding-top:64px;padding-bottom:100px;scroll-margin-top:82px}
+.discover-experiences .experiences-heading{font:800 clamp(54px,9vw,110px)/.96 var(--display);margin:14px 0 20px}
+.discover-experiences > .lead{max-width:900px;margin-bottom:35px}
+.discover-experiences .mission-panel{margin-top:60px}
+@media(max-width:800px){.discover-experiences{padding-top:52px;padding-bottom:65px}.discover-experiences .experiences-heading{font-size:clamp(52px,11vw,80px)}}
