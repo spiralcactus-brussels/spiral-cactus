@@ -195,8 +195,20 @@
   function attach(){
     if(handlersAdded)return;
     handlersAdded=true;
-    document.querySelectorAll("[data-member-tab]").forEach(btn=>{
+    const tabs=Array.from(document.querySelectorAll("[data-member-tab]"));
+    tabs.forEach((btn,index)=>{
       btn.addEventListener("click",()=>setTab(btn.dataset.memberTab));
+      btn.addEventListener("keydown",evt=>{
+        let next=index;
+        if(evt.key==="ArrowRight")next=(index+1)%tabs.length;
+        else if(evt.key==="ArrowLeft")next=(index+tabs.length-1)%tabs.length;
+        else if(evt.key==="Home")next=0;
+        else if(evt.key==="End")next=tabs.length-1;
+        else return;
+        evt.preventDefault();
+        setTab(tabs[next].dataset.memberTab);
+        tabs[next].focus();
+      });
     });
     $("member-dashboard")?.addEventListener("click",evt=>{
       const btn=evt.target.closest("[data-save-event-id]");
