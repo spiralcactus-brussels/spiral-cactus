@@ -225,3 +225,70 @@ body[data-page="members"] .member-news-side[hidden]{display:none!important}
 .discover-experiences .experiences-heading{font:800 clamp(43px,6vw,78px)/1.02 var(--display);letter-spacing:.01em}
 @media(max-width:800px){.discover-experiences .experiences-heading{font-size:clamp(42px,8.2vw,67px)}}
 @media(max-width:480px){.discover-experiences .experiences-heading{font-size:clamp(38px,10vw,56px)}}
+
+/* SpiralCactus member dashboard — signed-in only. */
+body[data-page="members"].member-logged-in .member-intro{display:none}
+body[data-page="members"].member-logged-in .member-area{max-width:1220px;grid-template-columns:minmax(0,1fr);padding-top:55px}
+body[data-page="members"].member-logged-in .member-card{background:linear-gradient(140deg,#151a1b,#111319);padding:38px}
+body[data-page="members"].member-logged-in #member-area-heading{font-size:clamp(46px,5.8vw,82px);margin-bottom:35px}
+.member-dashboard-head{display:flex;gap:22px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:30px}
+.member-avatar{height:86px;width:86px;border-radius:50%;display:grid;place-items:center;background:var(--lime);font:800 29px/1 var(--modular);color:#10140e;flex-shrink:0}
+.member-dashboard-welcome{flex:1;min-width:0}
+.member-dashboard-welcome .eyebrow{margin:0 0 8px}
+.member-greeting{font-size:clamp(28px,3.7vw,50px);margin:0 0 8px}
+.member-identity{font-size:14px;margin:0;color:#e0e4e6}
+.member-since{margin:4px 0 0;color:var(--muted);font-size:13px}
+.member-signout-top{margin:0 0 0 auto;white-space:nowrap;align-self:flex-start}
+.member-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:25px 0 32px}
+.member-stat{padding:25px 22px;background:#0c1112;border:1px solid #303a36;display:grid;gap:10px}
+.member-stat-num{font:800 clamp(40px,5vw,68px)/1 var(--display);color:var(--lime)}
+.member-stat>span:last-child{font-size:11px;letter-spacing:.12em;font-weight:800;color:#bcc3c6}
+.member-dash-nav{display:flex;gap:2px;border-bottom:1px solid #3c4543;flex-wrap:wrap}
+.member-dash-nav button{appearance:none;border:0;border-bottom:3px solid transparent;background:transparent;color:#b5bdbe;padding:17px 20px;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.1em}
+.member-dash-nav button.selected,.member-dash-nav button[aria-selected=true]{color:var(--lime);border-bottom-color:var(--lime)}
+.member-dash-nav button:hover{color:#fff}
+.member-dash-panel{padding:40px 0 12px}
+.member-panel-header .eyebrow{margin:0}
+.member-panel-header h3{font-size:clamp(30px,4.5vw,52px);margin:10px 0 22px}
+.member-panel-second{margin-top:45px;border-top:1px solid var(--line);padding-top:28px}
+.member-event-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.member-event-card{display:grid;grid-template-columns:114px minmax(0,1fr);gap:17px;border:1px solid var(--line);background:#101419;padding:15px;align-items:start}
+.member-event-poster{width:114px;aspect-ratio:3/4;object-fit:cover;background:#26282e;border:1px solid #30363c;border-radius:2px}
+.member-event-body{min-width:0}
+.member-event-tag{font-size:10px;font-weight:800;color:var(--lime);letter-spacing:.15em}
+.member-event-name{font:800 clamp(22px,2.3vw,31px)/1.06 var(--display);margin:9px 0}
+.member-event-meta{font-size:12px;color:#c1c7c8;line-height:1.6;margin:0 0 9px}
+.member-event-note{font-size:12px;color:#9ea9a9;margin:8px 0}
+.member-event-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.member-event-actions .btn{font-size:10px;padding:10px 11px;letter-spacing:.06em}
+.member-saved{background:transparent;color:var(--lime);border-color:var(--lime)}
+.member-event-actions button:disabled{opacity:.55;cursor:wait}
+.member-empty{padding:25px;border:1px dashed #4a5351;background:#101616;color:#c0c7c7;grid-column:1/-1;margin:0}
+.member-all-events{margin-top:23px}
+.member-explainer{color:var(--muted);max-width:800px;margin:-8px 0 25px;line-height:1.65}
+.member-ticket-placeholder{border:1px solid #435b38;background:radial-gradient(circle at 95% 5%,#b7ff2216,transparent 52%),#111914;padding:clamp(25px,4vw,55px);max-width:900px}
+.member-ticket-symbol{font:800 100px/.8 var(--display);color:var(--lime);margin:15px 0}
+.member-ticket-placeholder h3{font-size:clamp(40px,5vw,74px);margin:15px 0 18px}
+.member-ticket-placeholder p{color:#c9d0cb;max-width:690px;line-height:1.75}
+.member-ticket-placeholder .btn{margin-top:12px}
+.member-profile-panel{max-width:720px}
+.member-profile-panel form{padding:22px;border:1px solid var(--line);background:#0b0f11}
+@media(max-width:850px){
+  .member-event-list{grid-template-columns:1fr}
+  .member-dash-nav button{padding:14px 12px;flex:1 1 45%}
+}
+@media(max-width:620px){
+  body[data-page="members"].member-logged-in .member-area{padding:25px 14px 50px}
+  body[data-page="members"].member-logged-in .member-card{padding:20px}
+  .member-dashboard-head{flex-wrap:wrap;gap:13px}
+  .member-avatar{height:60px;width:60px;font-size:23px}
+  .member-signout-top{margin:0 0 0 auto}
+  .member-summary{gap:7px}
+  .member-stat{padding:13px 10px;gap:5px}
+  .member-stat-num{font-size:37px}
+  .member-stat>span:last-child{font-size:9px;letter-spacing:.04em}
+  .member-event-card{grid-template-columns:86px minmax(0,1fr);gap:12px;padding:12px}
+  .member-event-poster{width:86px}
+  .member-dash-panel{padding-top:28px}
+}
+@media(max-width:380px){.member-event-card{grid-template-columns:1fr}.member-event-poster{width:100%;max-width:130px}}

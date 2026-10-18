@@ -72,7 +72,7 @@ for name in PAGES:
         if path and not (ROOT/path).is_file():
             errors.append(f"{name}: broken {attr}={url}")
 
-for js in ("app.js","radio.js","i18n.js","members.js","members-config.js"):
+for js in ("app.js","radio.js","i18n.js","members.js","members-config.js","member-dashboard.js"):
     result=subprocess.run(["node","--check",str(ROOT/js)],capture_output=True,text=True)
     check(result.returncode==0,f"{js}: syntax check")
     if result.returncode:errors.append(result.stderr[:1500])
@@ -159,6 +159,14 @@ member_config=(ROOT/"members-config.js").read_text()
 check("registrationOpen: true" in member_config, "Members: sign-up form enabled")
 check("auth.signUp(" in member_js and "auth.signInWithPassword(" in member_js, "Members: signup and login actions present")
 check("/auth/v1/settings" not in member_js, "Members: no fragile browser authentication-settings gate")
+dashboard_js=(ROOT/"member-dashboard.js").read_text()
+member_page=(ROOT/"members.html").read_text()
+check('src="member-dashboard.js"' in member_page, "Members: dashboard script loaded")
+check(all('id="member-panel-'+p+'"' in member_page for p in ("overview","events","tickets","profile")), "Members: four personalized dashboard tabs")
+check("member_saved_events" in dashboard_js, "Members: saved event integration uses secure database")
+check("Tickets are currently issued by WeTicket" in member_page, "Members: ticket status is explicit and not fabricated")
+check((ROOT/"member-dashboard.js").is_file(), "Members: dashboard script file exists")
+
 
 print(f"\nAUTOMATED RESULTS: {len(checks)} passing checks; {len(errors)} errors; {len(warnings)} warnings")
 for line in errors: print("ERROR: "+line)

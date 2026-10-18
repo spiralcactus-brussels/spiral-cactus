@@ -113,13 +113,17 @@
     show("member-recovery", false);
     show("member-access", !user);
     show("member-dashboard", !!user);
+    document.body.classList.toggle("member-logged-in", !!user);
+    if (!user) window.SC_MEMBER_DASHBOARD?.close();
     show("member-profile-optin-wrap", !!user && config.newsletterEnabled === true);
     if (user) {
       $("member-identity").textContent = user.email || "";
+      window.SC_MEMBER_DASHBOARD?.open(client, user);
       let profile = null;
       const {data, error} = await client.from("member_profiles").select("display_name, newsletter_opt_in, created_at").eq("id", user.id).maybeSingle();
       if (error || !data) { status("member-shared-status", tr("profileError"), "error"); return; }
       profile = data;
+      window.SC_MEMBER_DASHBOARD?.profile(profile.display_name || "");
       $("member-profile-name").value = profile.display_name || "";
       $("member-profile-optin").checked = !!profile.newsletter_opt_in;
       $("member-since").textContent = new Intl.DateTimeFormat(lang()==="fr"?"fr-BE":lang()==="nl"?"nl-BE":"en-GB",{day:"numeric",month:"long",year:"numeric"}).format(new Date(profile.created_at));
@@ -195,6 +199,7 @@
       if (config.newsletterEnabled === true) updates.newsletter_opt_in = $("member-profile-optin").checked;
       const {error} = await client.from("member_profiles").update(updates).eq("id",activeUser.id);
       if (error) throw error;
+      window.SC_MEMBER_DASHBOARD?.profile(name);
       status("member-shared-status",tr("saved"));
     } catch (error) { status("member-shared-status",error?.message || tr("tryAgain"),"error"); }
     finally { updating = false; button.disabled = false; }
@@ -203,6 +208,7 @@
     const {error} = await client.auth.signOut();
     if (error) { status("member-shared-status",error.message,"error"); return; }
     activeUser = null;
+    window.SC_MEMBER_DASHBOARD?.close();
     await refresh();
     status("member-auth-status",tr("signedOut"));
   });

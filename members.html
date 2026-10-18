@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08090c"><meta name="description" content="Join the SpiralCactus Brussels community. Discover member accounts, underground events, early announcements and future member opportunities."><title>SpiralCactus | Members & Community</title><meta property="og:type" content="website"><meta property="og:site_name" content="Spiral Cactus"><meta property="og:title" content="SpiralCactus | Members & Community"><meta property="og:description" content="Join the SpiralCactus Brussels community. Discover member accounts, underground events, early announcements and future member opportunities."><meta property="og:url" content="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><meta property="og:image" content="https://spiralcactus-brussels.github.io/spiral-cactus/assets/logo-original.jpg"><meta property="og:image:alt" content="Spiral Cactus underground music and arts collective in Brussels"><meta name="twitter:card" content="summary"><link rel="canonical" href="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08090c"><meta name="description" content="Your SpiralCactus member space: create an account, save upcoming events, explore event history and manage your personal profile."><title>SpiralCactus | Members & Community</title><meta property="og:type" content="website"><meta property="og:site_name" content="Spiral Cactus"><meta property="og:title" content="SpiralCactus | Members & Community"><meta property="og:description" content="Join the SpiralCactus Brussels community. Discover member accounts, underground events, early announcements and future member opportunities."><meta property="og:url" content="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><meta property="og:image" content="https://spiralcactus-brussels.github.io/spiral-cactus/assets/logo-original.jpg"><meta property="og:image:alt" content="Spiral Cactus underground music and arts collective in Brussels"><meta name="twitter:card" content="summary"><link rel="canonical" href="https://spiralcactus-brussels.github.io/spiral-cactus/members.html"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
 <body data-page="members"><canvas id="particles" aria-hidden="true"></canvas>
 <header class="site-header"><nav aria-label="Main navigation"><a class="wordmark" href="index.html" aria-label="SpiralCactus home">SPIRAL<span>CACTUS</span></a>
 <button id="menubtn" class="pill nav-menu" data-i18n-aria-label="menuLabel" aria-label="Toggle menu" aria-expanded="false">☰</button>
@@ -44,18 +44,70 @@
  </form>
 </div>
 <div id="member-dashboard" hidden>
- <p class="eyebrow" data-i18n="memberDashboard">YOU'RE IN THE SPIRAL</p>
- <p class="member-identity" id="member-identity"></p><p class="note"><span data-i18n="memberMemberSince">Member since</span> <span id="member-since"></span></p>
- <form id="member-profile-form">
-   <label for="member-profile-name"><span data-i18n="memberName">Display name (optional)</span><input id="member-profile-name" type="text" maxlength="60"></label>
-   <label class="member-choice" id="member-profile-optin-wrap" hidden><input type="checkbox" id="member-profile-optin"><span data-i18n="memberNewsletter">I'd like to receive occasional SpiralCactus event and community emails when the newsletter is launched. I can change this later.</span></label>
-   <button type="submit" class="btn" data-i18n="memberSave">SAVE PREFERENCES ↗</button>
- </form>
- <button type="button" class="member-link-button" id="member-signout" data-i18n="memberSignout">Sign out</button>
+  <div class="member-dashboard-head">
+    <div class="member-avatar" aria-hidden="true">SC</div>
+    <div class="member-dashboard-welcome">
+      <p class="eyebrow" data-i18n="memberDashboard">YOU'RE IN THE SPIRAL</p>
+      <h3 id="member-greeting" class="member-greeting">WELCOME BACK</h3>
+      <p class="member-identity" id="member-identity"></p>
+      <p class="member-since"><span data-i18n="memberMemberSince">Member since</span> <span id="member-since"></span></p>
+    </div>
+    <button type="button" class="member-link-button member-signout-top" id="member-signout" data-i18n="memberSignout">Sign out</button>
+  </div>
+
+  <div class="member-summary" aria-label="Member statistics">
+    <div class="member-stat"><span class="member-stat-num" id="member-summary-upcoming">0</span><span data-i18n="memberUpcomingStat">UPCOMING SAVED</span></div>
+    <div class="member-stat"><span class="member-stat-num" id="member-summary-saved">0</span><span data-i18n="memberSavedStat">MY SAVED EVENTS</span></div>
+    <div class="member-stat"><span class="member-stat-num">—</span><span data-i18n="memberTicketStat">TICKETS / NOT LINKED</span></div>
+  </div>
+
+  <div class="member-dash-nav" role="tablist" aria-label="Member dashboard">
+    <button id="member-tab-overview" role="tab" type="button" aria-controls="member-panel-overview" aria-selected="true" data-member-tab="overview" class="selected" data-i18n="memberOverviewTab">OVERVIEW</button>
+    <button id="member-tab-events" role="tab" type="button" aria-controls="member-panel-events" aria-selected="false" data-member-tab="events" data-i18n="memberEventsTab">MY EVENTS</button>
+    <button id="member-tab-tickets" role="tab" type="button" aria-controls="member-panel-tickets" aria-selected="false" data-member-tab="tickets" data-i18n="memberTicketsTab">MY TICKETS</button>
+    <button id="member-tab-profile" role="tab" type="button" aria-controls="member-panel-profile" aria-selected="false" data-member-tab="profile" data-i18n="memberProfileTab">MY PROFILE</button>
+  </div>
+  <p id="member-events-status" class="member-status" role="status" aria-live="polite" hidden></p>
+
+  <section id="member-panel-overview" class="member-dash-panel" role="tabpanel" aria-labelledby="member-tab-overview">
+    <div class="member-panel-header"><p class="eyebrow" data-i18n="memberYourAgenda">YOUR PERSONAL AGENDA</p><h3 data-i18n="memberNextNights">YOUR UPCOMING SAVED EVENTS</h3></div>
+    <div class="member-event-list" id="member-upcoming-list"><p class="member-empty" data-i18n="memberLoadingEvents">Loading your events…</p></div>
+    <div class="member-panel-header member-panel-second"><p class="eyebrow" data-i18n="memberDiscoverUpcoming">DISCOVER WHAT'S NEXT</p><h3 data-i18n="memberBrowseUpcoming">UPCOMING SPIRALCACTUS EVENTS</h3></div>
+    <div class="member-event-list" id="member-discover-list"><p class="member-empty" data-i18n="memberLoadingEvents">Loading your events…</p></div>
+    <a class="btn alt member-all-events" href="events.html" data-i18n="memberExploreEvents">EXPLORE ALL EVENTS ↗</a>
+  </section>
+
+  <section id="member-panel-events" class="member-dash-panel" role="tabpanel" aria-labelledby="member-tab-events" hidden>
+    <div class="member-panel-header"><p class="eyebrow" data-i18n="memberSavedEyebrow">YOUR PICKS</p><h3 data-i18n="memberSavedTitle">EVENTS YOU SAVED</h3></div>
+    <p class="member-explainer" data-i18n="memberSavedExplainer">Saving an event means you're interested. It does not reserve a place, prove attendance or include a ticket.</p>
+    <div class="member-event-list" id="member-saved-list"><p class="member-empty" data-i18n="memberLoadingEvents">Loading your events…</p></div>
+    <div class="member-panel-header member-panel-second"><p class="eyebrow" data-i18n="memberArchiveEyebrow">OUR HISTORY</p><h3 data-i18n="memberArchiveTitle">PAST SPIRALCACTUS NIGHTS</h3></div>
+    <p class="member-explainer" data-i18n="memberArchiveExplainer">This is the public event archive, not a verified record of the nights you've attended.</p>
+    <div class="member-event-list" id="member-archive-list"><p class="member-empty" data-i18n="memberLoadingEvents">Loading your events…</p></div>
+  </section>
+
+  <section id="member-panel-tickets" class="member-dash-panel" role="tabpanel" aria-labelledby="member-tab-tickets" hidden>
+    <div class="member-ticket-placeholder">
+      <span class="eyebrow" data-i18n="memberTicketsEyebrow">COMING IN A FUTURE UPDATE</span>
+      <div class="member-ticket-symbol" aria-hidden="true">↗</div>
+      <h3 data-i18n="memberTicketsTitle">YOUR TICKETS WILL LIVE HERE</h3>
+      <p data-i18n="memberTicketsDescription">Tickets are currently issued by WeTicket and are not linked to SpiralCactus member accounts. A saved event is not a purchase, and we will not display tickets or QR codes until they can be securely verified.</p>
+      <a class="btn" href="events.html" data-i18n="memberTicketsButton">EXPLORE EVENTS &amp; TICKETS ↗</a>
+    </div>
+  </section>
+
+  <section id="member-panel-profile" class="member-dash-panel member-profile-panel" role="tabpanel" aria-labelledby="member-tab-profile" hidden>
+    <div class="member-panel-header"><p class="eyebrow" data-i18n="memberProfileEyebrow">YOUR SPACE</p><h3 data-i18n="memberProfileTitle">PERSONAL INFORMATION</h3></div>
+    <form id="member-profile-form">
+      <label for="member-profile-name"><span data-i18n="memberName">Display name (optional)</span><input id="member-profile-name" type="text" maxlength="60" autocomplete="nickname"></label>
+      <label class="member-choice" id="member-profile-optin-wrap" hidden><input type="checkbox" id="member-profile-optin"><span data-i18n="memberNewsletter">I'd like to receive occasional SpiralCactus event and community emails when the newsletter is launched. I can change this later.</span></label>
+      <button type="submit" class="btn" data-i18n="memberSave">SAVE PREFERENCES ↗</button>
+    </form>
+  </section>
 </div>
 <p id="member-shared-status" class="member-status" role="status" aria-live="polite" hidden></p>
 <p class="note member-privacy" data-i18n="memberPrivacy">Membership is free. We use Supabase to manage your email and optional display name. Contact spiralcactus24@gmail.com to request access, correction or deletion of your personal information. Member offers are not yet active.</p>
 </div>
 <aside class="member-news-side" hidden><div class="eyebrow">SPIRAL SIGNAL / 001</div><h2 data-i18n="memberNewsletterHeading">THE UNDERGROUND, IN YOUR INBOX</h2><p data-i18n="memberNewsletterIntro">Rave announcements, lineups, ticket launches and occasional community news. Newsletter sign-up will open here once the mailing service is connected.</p><div id="member-newsletter-embed" hidden></div><p class="note" id="member-newsletter-pending">Newsletter subscription is coming soon. A member account does not automatically subscribe you.</p><a class="btn alt" href="events.html">EXPLORE EVENTS ↗</a></aside>
 </section>
-</main><footer><span data-i18n="footerTagline">© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIC — BRUSSELS</span> <span>·</span> <a data-i18n="footerContact" href="contact.html" class="" >CONTACT ↗</a></footer><script src="i18n.js" defer></script><script src="members-config.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script><script src="members.js" defer></script><script src="app.js" defer></script></body></html>
+</main><footer><span data-i18n="footerTagline">© 2026 SPIRALCACTUS · UNDERGROUND — ORGANIC — BRUSSELS</span> <span>·</span> <a data-i18n="footerContact" href="contact.html" class="" >CONTACT ↗</a></footer><script src="i18n.js" defer></script><script src="members-config.js" defer></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script><script src="member-dashboard.js" defer></script><script src="members.js" defer></script><script src="app.js" defer></script></body></html>
