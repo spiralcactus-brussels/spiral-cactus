@@ -184,7 +184,12 @@
       +'</details>';
   }
   // Release 01: a unified, event-first homepage and shareable event detail view.
-  const eventUrl = e => 'event.html?id='+encodeURIComponent(e.id);
+  // Published editions get event-specific previews on social networks.
+  // Future editions still work with the generic detail route until promoted.
+  const staticEventPages=new Set(['acid-edition','first-rave']);
+  const eventUrl=e=>staticEventPages.has(e.id)
+    ? 'event-'+e.id+'.html'
+    : 'event.html?id='+encodeURIComponent(e.id);
   const t = k => i18n[current]?.[k] || i18n.en?.[k] || k;
   const dateAndVenue = e => fullDate(e.date)+' · '+(e.venue||'');
 
@@ -280,7 +285,7 @@
     if(page!=='event')return;
     const root=document.getElementById('event-detail-root');
     if(!root)return;
-    const id=new URLSearchParams(location.search).get('id');
+    const id=document.body.dataset.eventId || new URLSearchParams(location.search).get('id');
     const e=events.find(item=>item.id===id && /^[a-z0-9-]{1,100}$/.test(item.id));
     if(!e){
       root.innerHTML='<h1>'+esc(t('eventDetailsTitle'))+'</h1><p class="lead">'+esc(t('eventDetailInvalid'))+'</p><a class="btn" href="events.html">'+esc(t('eventDetailsBack'))+'</a>';

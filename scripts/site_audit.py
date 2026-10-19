@@ -9,6 +9,7 @@ from urllib.parse import urlsplit, unquote
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus-brussels.github.io/spiral-cactus/"
 PAGES = ["index.html","discover.html","events.html","event.html",
+         "event-acid-edition.html","event-first-rave.html",
          "calendar.html","gallery.html","radio.html","artists.html",
          "blog.html","shop.html","contact.html","members.html"]
 errors = []
@@ -189,6 +190,17 @@ check("eventCalendar(e)" in (ROOT/"app.js").read_text(), "Event detail: timezone
 check("DTSTART;TZID=Europe/Brussels" in (ROOT/"app.js").read_text(), "Event calendars: Brussels local timezone")
 check("event-calendar" in (ROOT/"app.js").read_text(), "Event detail: calendar download bound")
 check("const closeMobileMenu" in (ROOT/"app.js").read_text(), "Navigation: dismissible mobile menu")
+
+# Static social previews resolve event-specific titles, posters and deep links.
+for event_id in ("acid-edition","first-rave"):
+    record=next((e for e in events if e["id"]==event_id),None)
+    check(record is not None, f"{event_id}: event exists")
+    detail=(ROOT/f"event-{event_id}.html").read_text()
+    check(f'data-event-id="{event_id}"' in detail, f"{event_id}: event route selects the correct edition")
+    check(f'<meta property="og:url" content="{BASE}event-{event_id}.html">' in detail, f"{event_id}: permanent social URL")
+    if record: check(record["name"]["en"].replace("&","&amp;") in detail, f"{event_id}: social preview has title")
+    check('name="twitter:image"' in detail, f"{event_id}: poster preview exists")
+check('staticEventPages.has(e.id)' in (ROOT/"app.js").read_text(), "Event pages: static edition routing enabled")
 
 print(f"\nAUTOMATED RESULTS: {len(checks)} passing checks; {len(errors)} errors; {len(warnings)} warnings")
 for line in errors: print("ERROR: "+line)

@@ -284,7 +284,8 @@ window.SC_TRANSLATIONS = {
     "eventsPastHeader": "PAST EDITIONS",
     "eventsViewDetail": "VIEW EVENT ↗",
     "eventsComingTitle": "MORE TO COME",
-    "eventsComingDescription": "We're working on our next SpiralCactus night. Revisit our past editions while we prepare the next one."
+    "eventsComingDescription": "We're working on our next SpiralCactus night. Revisit our past editions while we prepare the next one.",
+    "eventDetailLoading": "Loading event details…"
   },
   "fr": {
     "membersNav": "Membres",
@@ -570,7 +571,8 @@ window.SC_TRANSLATIONS = {
     "eventsPastHeader": "ÉDITIONS PASSÉES",
     "eventsViewDetail": "VOIR L'ÉVÉNEMENT ↗",
     "eventsComingTitle": "À SUIVRE",
-    "eventsComingDescription": "Nous préparons la prochaine soirée SpiralCactus. Retrouvez nos éditions précédentes en attendant."
+    "eventsComingDescription": "Nous préparons la prochaine soirée SpiralCactus. Retrouvez nos éditions précédentes en attendant.",
+    "eventDetailLoading": "Chargement de l'événement…"
   },
   "nl": {
     "membersNav": "Leden",
@@ -856,6 +858,7 @@ window.SC_TRANSLATIONS = {
     "eventsPastHeader": "VORIGE EDITIES",
     "eventsViewDetail": "BEKIJK EVENEMENT ↗",
     "eventsComingTitle": "ER KOMT MEER",
-    "eventsComingDescription": "We werken aan onze volgende SpiralCactus-nacht. Herbeleef intussen onze vorige edities."
+    "eventsComingDescription": "We werken aan onze volgende SpiralCactus-nacht. Herbeleef intussen onze vorige edities.",
+    "eventDetailLoading": "Evenementinformatie laden…"
   }
 };
