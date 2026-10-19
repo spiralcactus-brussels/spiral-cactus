@@ -1,0 +1,59 @@
+/* Release 01 — cinematic, event-led interface. Non-invasive layer over the original design. */
+:root{--r01-surface:#0d1110;--r01-border:#3b493a}
+body{background:#070a08;color:#f1f4ee}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 80% 7%,#b7ff2209,transparent 42%)}
+:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+.site-header{background:#080b09ed;backdrop-filter:blur(18px);border-bottom:1px solid #30402d}
+.site-header nav{max-width:1600px;margin:auto}
+.site-header .wordmark{font-family:var(--modular);letter-spacing:-.06em}
+.site-header .links>a.active{color:var(--lime)}
+.site-header .links>a:hover,.nav-extra a:hover{color:var(--lime)}
+.site-header .nav-more summary{letter-spacing:.1em}
+body[data-page=index] .home-hero{max-width:1600px;min-height:min(840px,95svh);padding-top:clamp(55px,8vw,120px);padding-bottom:clamp(70px,8vw,120px);gap:clamp(30px,5vw,90px);align-items:center}
+body[data-page=index] .home-hero-copy{position:relative;z-index:1}
+body[data-page=index] .home-hero-copy::before{content:"01 / SPIRALCACTUS";display:block;font:700 11px var(--modular);color:var(--lime);letter-spacing:.16em;margin-bottom:30px}
+body[data-page=index] .home-hero-title{font-size:clamp(84px,11.7vw,205px);line-height:.79;letter-spacing:-.085em;margin:25px 0 38px;text-shadow:0 10px 90px #000}
+body[data-page=index] .home-hero-title span{display:block}
+body[data-page=index] .home-hero-title .home-outline{-webkit-text-stroke:1.5px #c3ff71;color:transparent}
+body[data-page=index] .home-hero-copy>.lead{max-width:560px;color:#ccd2c8;font-size:clamp(16px,1.7vw,20px)}
+body[data-page=index] .home-hero-copy .buttons{margin-top:35px}
+body[data-page=index] .home-stage{position:relative;border-color:#4f653b;background:linear-gradient(155deg,#192316,#0a100c 65%);box-shadow:0 45px 110px #0009,0 0 90px #9aff150b;overflow:hidden}
+body[data-page=index] .home-stage::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--lime),transparent)}
+body[data-page=index] .home-feature-image{filter:saturate(.84) contrast(1.12)}
+body[data-page=index] .home-feature-copy{background:linear-gradient(0deg,#0b100e,#11170f)}
+body[data-page=index] .home-feature-copy h2{line-height:.93;letter-spacing:-.035em}
+body[data-page=index] .home-stage-coming{border-left:3px solid var(--lime)}
+body[data-page=index] .home-history{padding-top:clamp(60px,8vw,140px);padding-bottom:50px}
+body[data-page=index] .home-history-card{background:#0e130f;border:1px solid #354433;transition:transform .25s,border-color .25s}
+body[data-page=index] .home-history-card:hover{transform:translateY(-6px);border-color:var(--lime)}
+body[data-page=index] .home-history-card img{filter:contrast(1.07)}
+body[data-page=index] .home-culture .card{background:linear-gradient(145deg,#141b13,#080c0a);border-color:#32402e}
+body[data-page=index] .home-culture .card:hover{border-color:var(--lime)}
+body[data-page=index] .home-radio-feature{position:relative}
+body[data-page=index] .home-radio-art{box-shadow:inset 0 0 100px #80ff0d10}
+body[data-page=index] .home-future{padding-bottom:90px}
+body[data-page=index] .home-future>div{max-width:1050px}
+body[data-page=events] .events-release{padding-top:clamp(65px,9vw,130px)}
+body[data-page=events] .events-release>h1{font-size:clamp(70px,12vw,160px);letter-spacing:-.06em;line-height:.86}
+body[data-page=events] .eventbox{background:linear-gradient(140deg,#172014,#0a0e0b);border-color:#44563e;padding:clamp(20px,4vw,62px)}
+body[data-page=events] .eventbox .event-poster{box-shadow:18px 22px 0 #b7ff2210}
+body[data-page=events] .archive-card{background:#0e130f;border-color:#354333}
+body[data-page=events] .archive-card:hover{border-color:#b7ff22}
+body[data-page=events] .archive-poster{width:180px;height:236px;object-fit:cover}
+body[data-page=event] .event-detail{padding-top:clamp(40px,7vw,100px)}
+body[data-page=event] .detail-hero{border-top:1px solid #526449;padding-top:38px}
+body[data-page=event] .detail-head h1{font-size:clamp(66px,8.5vw,135px);text-wrap:balance}
+body[data-page=event] .detail-date-line{border-color:#526449}
+body[data-page=event] .detail-poster{box-shadow:20px 24px 0 #b7ff2212}
+body[data-page=event] .detail-artist-list li{border-color:#43523e}
+body[data-page=event] .detail-guidance{background:#101910}
+body[data-page=event] .detail-artist-list strong{font-size:clamp(27px,3vw,39px)}
+.r01-intro-strip{max-width:1600px;margin:0 auto;padding:16px clamp(17px,4vw,65px);border-top:1px solid #36482e;border-bottom:1px solid #36482e;color:#a6b5a3;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:750 11px var(--modular);letter-spacing:.13em;text-transform:uppercase}
+.r01-intro-strip strong{color:var(--lime);font-weight:800}
+.r01-event-strip{margin:50px auto 0;padding:20px 0;border-block:1px solid #48563d;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.r01-event-strip p{margin:0;color:#aeb9ad;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.r01-event-strip a{font-weight:800;font-size:12px;color:var(--lime);text-transform:uppercase;letter-spacing:.09em}
+@media(max-width:1180px){.site-header .links.opened{display:flex;flex-direction:column;align-items:stretch;max-height:calc(100svh - 68px);overflow-y:auto}.site-header .links.opened>a{width:100%;text-align:left}.site-header .nav-more{width:100%}.site-header .nav-extra{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){body[data-page=index] .home-hero{min-height:0;gap:35px}body[data-page=index] .home-hero-title{font-size:clamp(80px,15vw,140px)}body[data-page=events] .archive-card{align-items:start}}
+@media(max-width:560px){body[data-page=index] .home-hero{padding-top:55px;padding-bottom:70px}body[data-page=index] .home-hero-title{font-size:clamp(64px,17vw,100px);margin:25px 0 27px}body[data-page=index] .home-hero-copy .buttons{display:grid;grid-template-columns:1fr}body[data-page=index] .home-identity{margin-top:25px}body[data-page=index] .home-feature-poster{height:350px}body[data-page=index] .home-feature-copy{padding:24px}body[data-page=events] .events-release>h1{font-size:clamp(58px,15vw,88px)}body[data-page=events] .archive-poster{width:100%;height:auto;max-height:420px}body[data-page=event] .detail-head h1{font-size:clamp(51px,14vw,85px)}body[data-page=event] .detail-date-line{grid-template-columns:1fr;gap:16px}body[data-page=event] .detail-date-line>div{border-bottom:1px solid #283828;padding-bottom:9px}body[data-page=event] .detail-poster{box-shadow:none}.r01-intro-strip{font-size:10px}}
+@media(prefers-reduced-motion:reduce){body[data-page=index] .home-history-card{transition:none}body[data-page=index] .home-history-card:hover{transform:none}}
