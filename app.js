@@ -47,7 +47,20 @@
   document.getElementById('menubtn')?.addEventListener('click',e=>{
     const links=document.getElementById('mainlinks');links.classList.toggle('opened');e.currentTarget.setAttribute('aria-expanded',String(links.classList.contains('opened')));
   });
-  document.querySelectorAll('#mainlinks a').forEach(a=>a.addEventListener('click',()=>{document.getElementById('mainlinks')?.classList.remove('opened');document.getElementById('menubtn')?.setAttribute('aria-expanded','false');}));
+  const mainLinks=document.getElementById('mainlinks');
+  const navMore=mainLinks?.querySelector('.nav-more');
+  const closeMobileMenu=()=>{
+    mainLinks?.classList.remove('opened');
+    document.getElementById('menubtn')?.setAttribute('aria-expanded','false');
+    if(navMore)navMore.open=false;
+  };
+  document.querySelectorAll('#mainlinks a').forEach(a=>a.addEventListener('click',closeMobileMenu));
+  // Close the secondary navigation on Escape and outside clicks; keep keyboard navigation intact.
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMobileMenu();});
+  document.addEventListener('pointerdown',e=>{
+    if(navMore?.open && !navMore.contains(e.target))navMore.open=false;
+    if(mainLinks?.classList.contains('opened') && !e.target.closest('.site-header'))closeMobileMenu();
+  });
   // AJAX contact delivery using FormSubmit; HTML form.action is a no-JavaScript fallback.
   const contact = document.getElementById('contactform');
   if(contact){
@@ -174,6 +187,43 @@
   const eventUrl = e => 'event.html?id='+encodeURIComponent(e.id);
   const t = k => i18n[current]?.[k] || i18n.en?.[k] || k;
   const dateAndVenue = e => fullDate(e.date)+' · '+(e.venue||'');
+
+  // RFC 5545 calendar downloads for public upcoming events. Timezone is fixed to
+  // Brussels, including the overnight end time of a rave (next calendar day).
+  const calendarTime = value => /^\d{2}:\d{2}$/.test(value||'') && +value.slice(0,2)<24 && +value.slice(3)<60;
+  const icsEscape = value => String(value||'').replace(/[\r\n]+/g,' ').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,');
+  function eventCalendar(e){
+    if(!e || !/^\d{4}-\d{2}-\d{2}$/.test(e.date||'') || !calendarTime(e.start) || !calendarTime(e.end))return null;
+    const start=e.date.replaceAll('-',''),endNext=e.end<=e.start;
+    const endDay=endNext?new Date(new Date(e.date+'T12:00:00Z').getTime()+86400000).toISOString().slice(0,10).replaceAll('-',''):start;
+    const link=new URL(eventUrl(e),location.href).href;
+    const description=languageVal(e.description);
+    const parts=[
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SpiralCactus//Events//EN',
+      'CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
+      'UID:'+icsEscape(e.id)+'@spiralcactus.brussels',
+      'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
+      'DTSTART;TZID=Europe/Brussels:'+start+'T'+e.start.replace(':','')+'00',
+      'DTEND;TZID=Europe/Brussels:'+endDay+'T'+e.end.replace(':','')+'00',
+      'SUMMARY:'+icsEscape(languageVal(e.name)),
+      'DESCRIPTION:'+icsEscape(description),
+      'LOCATION:'+icsEscape(e.venue||'Brussels'),
+      'URL:'+link,'END:VEVENT','END:VCALENDAR',''
+    ];
+    return parts.join('\r\n');
+  }
+  function downloadEventCalendar(e){
+    const ics=eventCalendar(e);
+    if(!ics)return;
+    const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='spiralcactus-'+e.id+'.ics';
+    document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+  }
+
   function posterImage(e,cssClass,loading='lazy'){
     if(!e.poster)return '<div class="'+cssClass+' home-poster-placeholder" aria-hidden="true">SC / SPIRALCACTUS</div>';
     return '<img class="'+cssClass+'" src="'+esc(e.poster)+'" alt="'+esc(languageVal(e.name))+' — '+esc(l('poster'))+'" loading="'+loading+'" decoding="async">';
@@ -242,7 +292,9 @@
     const descr=languageVal(e.description);
     const lineup=(e.artists||[]).map((a,n)=>'<li><span class="detail-artist-count">'+String(n+1).padStart(2,'0')+'</span><div><strong>'+esc(a.name||'')+'</strong>'
       +(a.genre||a.crew?'<small>'+esc(a.genre||a.crew)+'</small>':'')+'</div></li>').join('');
-    const ctas='<a class="btn alt" href="gallery.html?event='+encodeURIComponent(e.gallery)+'">'+esc(t('eventDetailPhotos'))+'</a>'
+    const calendarAction=!historical && eventCalendar(e)
+      ? '<button class="btn alt" id="event-calendar" type="button">'+esc(t('eventDetailCalendar'))+'</button>' : '';
+    const ctas=calendarAction+'<a class="btn alt" href="gallery.html?event='+encodeURIComponent(e.gallery)+'">'+esc(t('eventDetailPhotos'))+'</a>'
       +(!historical?'<a class="btn alt" href="members.html">'+esc(t('memberProfileTab'))+' ↗</a>':'');
     const checkout=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('eventDetailTicketShop'))+'</a>':'';
     const dates='<div><span class="eyebrow">'+esc(t('eventInfoWhen'))+'</span><strong>'+esc(fullDate(e.date))+'</strong></div>'
@@ -270,6 +322,7 @@
     const absolute=new URL(eventUrl(e),location.href).href;
     document.querySelector('meta[property="og:url"]')?.setAttribute('content',absolute);
     document.querySelector('link[rel="canonical"]')?.setAttribute('href',absolute);
+    document.getElementById('event-calendar')?.addEventListener('click',()=>downloadEventCalendar(e));
     const btn=document.getElementById('event-share');
     btn?.addEventListener('click',async()=>{
       try{await navigator.clipboard.writeText(absolute);btn.textContent=t('eventDetailCopied');}

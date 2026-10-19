@@ -185,6 +185,11 @@ check("Tickets are currently issued by WeTicket" in member_page, "Members: ticke
 check((ROOT/"member-dashboard.js").is_file(), "Members: dashboard script file exists")
 
 
+check("eventCalendar(e)" in (ROOT/"app.js").read_text(), "Event detail: timezone-aware calendar action")
+check("DTSTART;TZID=Europe/Brussels" in (ROOT/"app.js").read_text(), "Event calendars: Brussels local timezone")
+check("event-calendar" in (ROOT/"app.js").read_text(), "Event detail: calendar download bound")
+check("const closeMobileMenu" in (ROOT/"app.js").read_text(), "Navigation: dismissible mobile menu")
+
 print(f"\nAUTOMATED RESULTS: {len(checks)} passing checks; {len(errors)} errors; {len(warnings)} warnings")
 for line in errors: print("ERROR: "+line)
 for line in warnings: print("WARNING: "+line)

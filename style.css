@@ -469,3 +469,19 @@ body[data-page="event"] .ticket-embed{max-width:950px;margin:0 auto 80px}
  .home-history-card:hover{transform:none}
 }
 
+
+
+/* Navigation interaction, legible event controls, and safe mobile reading. */
+.nav-more summary:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.nav-extra{z-index:40}
+.detail-head .buttons button.btn{font-family:Inter,Arial,sans-serif}
+.detail-head .buttons button.btn:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+.event-share:hover,.event-back:hover{color:var(--text)}
+@media(max-width:1180px){
+  .site-header .links.opened{max-height:calc(100dvh - 72px);overflow-y:auto;align-content:start}
+  .nav-more summary{touch-action:manipulation}
+}
+@media(max-width:560px){
+  .detail-head .buttons{gap:9px}
+  .detail-head .buttons .btn{width:100%;max-width:100%}
+}
