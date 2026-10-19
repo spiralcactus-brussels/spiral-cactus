@@ -57,3 +57,13 @@ body[data-page=event] .detail-artist-list strong{font-size:clamp(27px,3vw,39px)}
 @media(max-width:900px){body[data-page=index] .home-hero{min-height:0;gap:35px}body[data-page=index] .home-hero-title{font-size:clamp(80px,15vw,140px)}body[data-page=events] .archive-card{align-items:start}}
 @media(max-width:560px){body[data-page=index] .home-hero{padding-top:55px;padding-bottom:70px}body[data-page=index] .home-hero-title{font-size:clamp(64px,17vw,100px);margin:25px 0 27px}body[data-page=index] .home-hero-copy .buttons{display:grid;grid-template-columns:1fr}body[data-page=index] .home-identity{margin-top:25px}body[data-page=index] .home-feature-poster{height:350px}body[data-page=index] .home-feature-copy{padding:24px}body[data-page=events] .events-release>h1{font-size:clamp(58px,15vw,88px)}body[data-page=events] .archive-poster{width:100%;height:auto;max-height:420px}body[data-page=event] .detail-head h1{font-size:clamp(51px,14vw,85px)}body[data-page=event] .detail-date-line{grid-template-columns:1fr;gap:16px}body[data-page=event] .detail-date-line>div{border-bottom:1px solid #283828;padding-bottom:9px}body[data-page=event] .detail-poster{box-shadow:none}.r01-intro-strip{font-size:10px}}
 @media(prefers-reduced-motion:reduce){body[data-page=index] .home-history-card{transition:none}body[data-page=index] .home-history-card:hover{transform:none}}
+
+/* Navigation hierarchy: events and sound first; the remaining destinations stay available. */
+.site-header .links{display:flex}
+.site-header .links>a[href="events.html"]{order:1}
+.site-header .links>a[href="radio.html"]{order:2}
+.site-header .links>a[href="discover.html"]{order:3}
+.site-header .links>a[href="artists.html"]{order:4}
+.site-header .links>a[href="members.html"]{order:5}
+.site-header .links>.nav-more{order:6}
+@media(max-width:1180px){.site-header .links:not(.opened){display:none}.site-header .links.opened{display:flex}}
