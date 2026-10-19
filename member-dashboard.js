@@ -115,9 +115,9 @@
     body.append(details);
     if(mode==="saved")body.append(node("p","member-event-note",past(e)?t("historic"):t("interested")));
     const actions=node("div","member-event-actions");
-    const details=node("a","btn alt",t("details"));
-    details.href="event.html?id="+encodeURIComponent(e.id);
-    actions.append(details);
+    const detailLink=node("a","btn alt",t("details"));
+    detailLink.href="event.html?id="+encodeURIComponent(e.id);
+    actions.append(detailLink);
     const isSaved=saved.has(e.id);
     if((mode==="browse"&&!past(e))||mode==="saved"){
       const btn=node("button","btn member-save-button"+(isSaved?" member-saved":""),isSaved?t("remove"):t("save"));
