@@ -8,7 +8,7 @@ from urllib.parse import urlsplit, unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus-brussels.github.io/spiral-cactus/"
-PAGES = ["index.html","discover.html","events.html",
+PAGES = ["index.html","discover.html","events.html","event.html",
          "calendar.html","gallery.html","radio.html","artists.html",
          "blog.html","shop.html","contact.html","members.html"]
 errors = []
@@ -159,6 +159,23 @@ member_config=(ROOT/"members-config.js").read_text()
 check("registrationOpen: true" in member_config, "Members: sign-up form enabled")
 check("auth.signUp(" in member_js and "auth.signInWithPassword(" in member_js, "Members: signup and login actions present")
 check("/auth/v1/settings" not in member_js, "Members: no fragile browser authentication-settings gate")
+# Release 01: all visible navigation routes, dynamic event details and fallbacks.
+home=(ROOT/"index.html").read_text()
+detail=(ROOT/"event.html").read_text()
+event_page=(ROOT/"events.html").read_text()
+app=(ROOT/"app.js").read_text()
+check('id="home-event-stage"' in home and 'id="home-latest-events"' in home, "Homepage: event-led feature and archive")
+check('id="event-detail-root"' in detail and 'data-page="event"' in detail, "Dedicated event landing page")
+check('function renderEventDetail()' in app and 'function renderHome()' in app, "Event and homepage rendering present")
+check('if(!historical?' not in app and 'shop=!historical?' in app, "Past events never offer live checkout in detail")
+check('id="featured-event"' in event_page and 'id="event-list"' in event_page, "Event listing preserves dynamic containers")
+for name in PAGES:
+    page_html=(ROOT/name).read_text()
+    check('<details class="nav-more">' in page_html, f"{name}: secondary navigation works")
+    check('href="members.html"' in page_html, f"{name}: membership access remains visible")
+check(len({e["id"] for e in events})==len(events), "Events have unique IDs for landing-page links")
+check(all(re.fullmatch(r"[a-z0-9-]{1,100}",e["id"]) for e in events), "Event IDs safe for deep links")
+
 dashboard_js=(ROOT/"member-dashboard.js").read_text()
 member_page=(ROOT/"members.html").read_text()
 check('src="member-dashboard.js"' in member_page, "Members: dashboard script loaded")
