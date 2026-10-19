@@ -17,7 +17,7 @@
       saveDone:"Event added to your personal list.",removeDone:"Event removed from your personal list.",
       historic:"Saved earlier · not proof of attendance",
       interested:"Saved for later · not a booking",
-      poster:"Event poster", openShop:"OPEN TICKET SHOP ↗", viewEvents:"EXPLORE ALL EVENTS ↗"
+      details:"EVENT DETAILS ↗", poster:"Event poster", openShop:"OPEN TICKET SHOP ↗", viewEvents:"EXPLORE ALL EVENTS ↗"
     },
     fr: {
       hello:"BON RETOUR", upcoming:"À VENIR",past:"ÉVÉNEMENT PASSÉ",saved:"ENREGISTRÉ",
@@ -32,7 +32,7 @@
       saveDone:"Événement ajouté à votre liste personnelle.",removeDone:"Événement retiré de votre liste.",
       historic:"Enregistré auparavant · ne prouve pas la présence",
       interested:"Enregistré pour plus tard · pas une réservation",
-      poster:"Affiche de l'événement",openShop:"OUVRIR LA BILLETTERIE ↗",viewEvents:"VOIR LES ÉVÉNEMENTS ↗"
+      details:"DÉTAILS DE L’ÉVÉNEMENT ↗",poster:"Affiche de l'événement",openShop:"OUVRIR LA BILLETTERIE ↗",viewEvents:"VOIR LES ÉVÉNEMENTS ↗"
     },
     nl: {
       hello:"WELKOM TERUG",upcoming:"BINNENKORT",past:"VOORBIJ",saved:"BEWAARD",
@@ -47,7 +47,7 @@
       saveDone:"Evenement toegevoegd aan je lijst.",removeDone:"Evenement verwijderd uit je lijst.",
       historic:"Eerder bewaard · geen bewijs van aanwezigheid",
       interested:"Bewaard voor later · geen reservering",
-      poster:"Evenementposter",openShop:"OPEN TICKETSHOP ↗",viewEvents:"BEKIJK EVENEMENTEN ↗"
+      details:"EVENEMENTINFO ↗",poster:"Evenementposter",openShop:"OPEN TICKETSHOP ↗",viewEvents:"BEKIJK EVENEMENTEN ↗"
     }
   };
   const locale = {en:"en-GB",fr:"fr-BE",nl:"nl-BE"};
@@ -115,6 +115,9 @@
     body.append(details);
     if(mode==="saved")body.append(node("p","member-event-note",past(e)?t("historic"):t("interested")));
     const actions=node("div","member-event-actions");
+    const details=node("a","btn alt",t("details"));
+    details.href="event.html?id="+encodeURIComponent(e.id);
+    actions.append(details);
     const isSaved=saved.has(e.id);
     if((mode==="browse"&&!past(e))||mode==="saved"){
       const btn=node("button","btn member-save-button"+(isSaved?" member-saved":""),isSaved?t("remove"):t("save"));
