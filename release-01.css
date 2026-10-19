@@ -67,3 +67,28 @@ body[data-page=event] .detail-artist-list strong{font-size:clamp(27px,3vw,39px)}
 .site-header .links>a[href="members.html"]{order:5}
 .site-header .links>.nav-more{order:6}
 @media(max-width:1180px){.site-header .links:not(.opened){display:none}.site-header .links.opened{display:flex}}
+
+
+/* Header emblem and homepage identity — Release 01 refinements */
+.site-header .wordmark{display:inline-flex;align-items:center;gap:9px;flex-shrink:0}
+.site-header .wordmark-logo{display:block;width:42px;height:42px;object-fit:contain;flex:none}
+.site-header .wordmark>.brand-name{display:inline-block;white-space:nowrap;color:var(--text)}
+.site-header .wordmark>.brand-name span{color:var(--lime)}
+.site-header .wordmark:hover>.brand-name{color:var(--lime)}
+body[data-page="index"] .home-identity{display:flex;align-items:center;gap:26px;margin-top:46px}
+body[data-page="index"] .home-identity img{display:block;width:195px;height:195px;object-fit:contain;flex:0 0 auto;opacity:1}
+body[data-page="index"] .home-identity .eyebrow{font:800 clamp(11px,1.1vw,15px)/1.55 var(--modular);letter-spacing:.12em;color:var(--lime);max-width:235px}
+@media(max-width:1280px){.site-header .wordmark-logo{width:36px;height:36px}}
+@media(max-width:560px){
+  .site-header .wordmark{gap:7px}
+  .site-header .wordmark-logo{width:34px;height:34px}
+  body[data-page="index"] .home-identity{gap:15px;margin-top:34px}
+  body[data-page="index"] .home-identity img{width:125px;height:125px;opacity:1}
+  body[data-page="index"] .home-identity .eyebrow{font-size:11px;line-height:1.45;max-width:170px}
+}
+@media(max-width:380px){
+  .site-header .wordmark{font-size:14px;gap:5px}
+  .site-header .wordmark-logo{width:29px;height:29px}
+  body[data-page="index"] .home-identity img{width:105px;height:105px}
+  body[data-page="index"] .home-identity .eyebrow{max-width:145px}
+}
