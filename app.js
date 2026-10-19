@@ -35,7 +35,7 @@
   function changeLang(lang){
     current=langs.includes(lang)?lang:'en';
     try{localStorage.setItem('sc-lang',current)}catch(_){/* private browsing */}
-    renderText(); renderEvents(); renderArtists(); renderBlog(); renderCalendar(); renderGallery(); renderShop(); setupGallery();
+    renderText(); renderHome(); renderEvents(); renderEventDetail(); renderArtists(); renderBlog(); renderCalendar(); renderGallery(); renderShop(); setupGallery();
   }
   try{current=localStorage.getItem('sc-lang') || 'en';}catch(_){current='en'}
   if(!langs.includes(current))current='en';
@@ -147,8 +147,8 @@
     const inPageTickets=!!safePaymentUrl(e.ticketEmbed)&&!isPast(e);
     const ticket=inPageTickets
       ? `<button class="btn" type="button" data-open-ticketshop>${esc(l('ticketOnSite'))} ↓</button>`
-      : (e.ticket?`<a class="btn" href="${esc(e.ticket)}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'');
-    return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></div>`;
+      : (!isPast(e) && safePaymentUrl(e.ticket)?`<a class="btn" href="${esc(safePaymentUrl(e.ticket))}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'');
+    return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="${eventUrl(e)}">${esc(t('eventsViewDetail'))}</a></div>`;
   }
 
   // Only embed known hosted payment providers. No card details are handled by GitHub Pages.
@@ -170,15 +170,111 @@
       +'<p><a class="btn alt" href="'+esc(fallback)+'" target="_blank" rel="noopener noreferrer">'+esc(l('ticketExternal'))+' ↗</a></p>'
       +'</details>';
   }
+  // Release 01: a unified, event-first homepage and shareable event detail view.
+  const eventUrl = e => 'event.html?id='+encodeURIComponent(e.id);
+  const t = k => i18n[current]?.[k] || i18n.en?.[k] || k;
+  const dateAndVenue = e => fullDate(e.date)+' · '+(e.venue||'');
+  function posterImage(e,cssClass,loading='lazy'){
+    if(!e.poster)return '<div class="'+cssClass+' home-poster-placeholder" aria-hidden="true">SC / SPIRALCACTUS</div>';
+    return '<img class="'+cssClass+'" src="'+esc(e.poster)+'" alt="'+esc(languageVal(e.name))+' — '+esc(l('poster'))+'" loading="'+loading+'" decoding="async">';
+  }
+  function homeStageCard(e,isUpcoming){
+    const shop=isUpcoming?safePaymentUrl(e.ticket):'';
+    const category=t(isUpcoming?'homeUpcomingLabel':'homeLatestLabel');
+    const title=languageVal(e.name);
+    const detail='<a class="btn alt" href="'+eventUrl(e)+'">'+esc(t(isUpcoming?'homeEventMore':'homePastEdition'))+'</a>';
+    const ticket=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('homeTickets'))+'</a>':'';
+    const update=isUpcoming?'':'<div class="home-stage-coming"><span class="eyebrow">'+esc(t('homeComingLabel'))+'</span><p>'+esc(t('homeComingText'))+'</p></div>';
+    return '<div class="home-feature-poster">'+posterImage(e,'home-feature-image','eager')+'</div>'
+      +'<div class="home-feature-copy">'+update+'<p class="eyebrow">'+esc(category)+'</p>'
+      +'<h2>'+esc(title)+'</h2><p class="home-feature-meta">'+esc(dateAndVenue(e))+'</p>'
+      +'<div class="home-feature-actions">'+ticket+detail+'</div></div>';
+  }
+  function renderHome(){
+    if(page!=='index')return;
+    const featured=document.getElementById('home-event-stage');
+    const archive=document.getElementById('home-latest-events');
+    if(!featured||!archive)return;
+    const ordered=[...events].filter(e=>e&&e.id&&e.date).sort((a,b)=>a.date.localeCompare(b.date));
+    const next=ordered.find(e=>!isPast(e));
+    const previous=ordered.filter(isPast).reverse();
+    if(next)featured.innerHTML=homeStageCard(next,true);
+    else if(previous.length)featured.innerHTML=homeStageCard(previous[0],false);
+    else featured.innerHTML='<div class="home-stage-empty"><span class="eyebrow">'+esc(t('homeComingLabel'))+'</span><h2>'+esc(t('homeComingTitle'))+'</h2><p>'+esc(t('homeEventMissing'))+'</p><a class="btn alt" href="events.html">'+esc(t('homeFirstCta'))+'</a></div>';
+    archive.innerHTML=previous.slice(0,3).map(e=>'<a class="home-history-card" href="'+eventUrl(e)+'">'
+      +posterImage(e,'home-history-poster')+'<div class="home-history-info"><span class="eyebrow">'+esc(fullDate(e.date))+'</span>'
+      +'<h3>'+esc(languageVal(e.name))+'</h3><p>'+esc(e.venue||'')+'</p>'
+      +'<span class="home-history-cta">'+esc(t('eventsViewDetail'))+'</span></div></a>').join('');
+    if(!previous.length)archive.innerHTML='<p class="home-history-empty">'+esc(t('homeEventMissing'))+'</p>';
+  }
   function renderEvents(){
     if(page!=='events')return;
-    const featured=document.getElementById('featured-event'), list=document.getElementById('event-list');
-    if(!featured || !list)return;
-    // Always feature the next upcoming event (or the newest past event).
-    const future=[...events].filter(e=>!isPast(e)).sort((a,b)=>a.date.localeCompare(b.date));
-    const main=future[0] || [...events].sort((a,b)=>b.date.localeCompare(a.date))[0];
-    featured.innerHTML=main?`<article class="eventbox"><div class="event-info">${eventInfo(main)}</div>${posterHTML(main)}</article>${ticketEmbedHTML(main)}`:'';
-    list.innerHTML=events.filter(e=>e!==main).sort((a,b)=>b.date.localeCompare(a.date)).map(e=>`<article class="archive-card">${e.poster?`<img class="archive-poster" src="${esc(e.poster)}" alt="${esc(languageVal(e.name))} poster" loading="lazy">`:''}<div class="archive-copy"><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(languageVal(e.description))}</p><p class="muted">${esc(artistNames(e))}</p></div><a class="btn alt" href="gallery.html?event=${encodeURIComponent(e.gallery)}">${esc(l('photos'))} ↗</a></article>`).join('');
+    const featured=document.getElementById('featured-event'),list=document.getElementById('event-list');
+    if(!featured||!list)return;
+    const upcoming=[...events].filter(e=>!isPast(e)).sort((a,b)=>a.date.localeCompare(b.date));
+    const pastEvents=[...events].filter(isPast).sort((a,b)=>b.date.localeCompare(a.date));
+    if(upcoming.length){
+      const next=upcoming[0];
+      featured.innerHTML='<article class="eventbox"><div class="event-info">'+eventInfo(next)+'</div>'+posterHTML(next)+'</article>'
+        +ticketEmbedHTML(next)+upcoming.slice(1).map(e=>'<article class="archive-card"><div class="archive-copy"><span class="eyebrow">'+esc(fullDate(e.date))+'</span><h3>'+esc(languageVal(e.name))+'</h3><p>'+esc(e.venue)+'</p></div><a class="btn alt" href="'+eventUrl(e)+'">'+esc(t('eventsViewDetail'))+'</a></article>').join('');
+    } else {
+      featured.innerHTML='<div class="events-coming"><span class="eyebrow">'+esc(t('eventsUpcomingEmpty'))+'</span><h3>'+esc(t('eventsComingTitle'))+'</h3><p>'+esc(t('eventsComingDescription'))+'</p><a class="btn alt" href="radio.html">'+esc(t('homeSecondCta'))+'</a></div>';
+    }
+    list.innerHTML=pastEvents.map(e=>'<article class="archive-card">'+(e.poster?'<a class="archive-poster-link" href="'+eventUrl(e)+'">'+posterImage(e,'archive-poster')+'</a>':'')
+      +'<div class="archive-copy"><span class="eyebrow">'+esc(fullDate(e.date))+'</span><h3><a href="'+eventUrl(e)+'">'+esc(languageVal(e.name))+'</a></h3>'
+      +'<p>'+esc(languageVal(e.description))+'</p><p class="muted">'+esc(artistNames(e))+'</p></div>'
+      +'<a class="btn alt" href="'+eventUrl(e)+'">'+esc(t('eventsViewDetail'))+'</a></article>').join('');
+    if(!pastEvents.length)list.innerHTML='<p class="muted">'+esc(t('homeEventMissing'))+'</p>';
+  }
+  function renderEventDetail(){
+    if(page!=='event')return;
+    const root=document.getElementById('event-detail-root');
+    if(!root)return;
+    const id=new URLSearchParams(location.search).get('id');
+    const e=events.find(item=>item.id===id && /^[a-z0-9-]{1,100}$/.test(item.id));
+    if(!e){
+      root.innerHTML='<h1>'+esc(t('eventDetailsTitle'))+'</h1><p class="lead">'+esc(t('eventDetailInvalid'))+'</p><a class="btn" href="events.html">'+esc(t('eventDetailsBack'))+'</a>';
+      return;
+    }
+    const historical=isPast(e),shop=!historical?safePaymentUrl(e.ticket):'';
+    const safeEmbed=!historical?safePaymentUrl(e.ticketEmbed):'';
+    const heading=languageVal(e.name);
+    const descr=languageVal(e.description);
+    const lineup=(e.artists||[]).map((a,n)=>'<li><span class="detail-artist-count">'+String(n+1).padStart(2,'0')+'</span><div><strong>'+esc(a.name||'')+'</strong>'
+      +(a.genre||a.crew?'<small>'+esc(a.genre||a.crew)+'</small>':'')+'</div></li>').join('');
+    const ctas='<a class="btn alt" href="gallery.html?event='+encodeURIComponent(e.gallery)+'">'+esc(t('eventDetailPhotos'))+'</a>'
+      +(!historical?'<a class="btn alt" href="members.html">'+esc(t('memberProfileTab'))+' ↗</a>':'');
+    const checkout=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('eventDetailTicketShop'))+'</a>':'';
+    const dates='<div><span class="eyebrow">'+esc(t('eventInfoWhen'))+'</span><strong>'+esc(fullDate(e.date))+'</strong></div>'
+      +'<div><span class="eyebrow">'+esc(t('eventInfoWhere'))+'</span><strong>'+esc(e.venue||'')+'</strong></div>'
+      +'<div><span class="eyebrow">'+esc(t('eventInfoHours'))+'</span><strong>'+esc((e.start||'')+(e.end?' — '+e.end:''))+'</strong></div>';
+    root.innerHTML='<div class="detail-hero"><div class="detail-head"><span class="eyebrow">'+esc(historical?l('past'):l('upcoming'))+' / '+esc(t('eventDetailsTitle'))+'</span>'
+      +'<h1>'+esc(heading)+'</h1><p class="lead">'+esc(descr)+'</p><div class="detail-date-line">'+dates+'</div>'
+      +'<div class="buttons">'+checkout+ctas+'</div>'
+      +(historical?'<p class="detail-ticket-note">'+esc(t('eventDetailNotOnSale'))+'</p>'
+        :(shop||safeEmbed?'<p class="detail-ticket-note">'+esc(t('eventDetailTicketIssued'))+'</p>':''))
+      +'<button id="event-share" type="button" class="event-share">'+esc(t('eventDetailShare'))+' ↗</button></div>'
+      +'<div class="detail-poster">'+posterImage(e,'detail-poster-img','eager')+'</div></div>'
+      +'<div class="detail-content-grid"><section class="detail-lineup"><p class="eyebrow">'+esc(t('homeLineupLabel'))+'</p>'
+      +'<h2>'+esc(t('eventDetailLineup'))+'</h2><p>'+esc(t('eventDetailLineupLead'))+'</p>'
+      +(lineup?'<ol class="detail-artist-list">'+lineup+'</ol>':'<p>'+esc(t('eventDetailArtistsEmpty'))+'</p>')+'</section>'
+      +'<aside class="detail-guidance"><p class="eyebrow">'+esc(t('eventDetailPractical'))+'</p><h2>'+esc(t('eventDetailCareTitle'))+'</h2>'
+      +'<p>'+esc(t('eventDetailCareText'))+'</p><a class="btn alt" href="discover.html#philosophy">'+esc(t('eventDetailCareCta'))+'</a>'
+      +(!historical?'<p class="detail-help">'+esc(t('eventDetailFutureInfo'))+'</p>':'')+'</aside></div>'
+      +(safeEmbed?ticketEmbedHTML(e):'');
+    const headline=heading+' | SpiralCactus Brussels';
+    document.title=headline;
+    for(const [sel,val] of [['meta[property="og:title"]',headline],['meta[name="description"]',descr],['meta[property="og:description"]',descr]]){
+      const node=document.querySelector(sel);if(node)node.content=val;
+    }
+    const absolute=new URL(eventUrl(e),location.href).href;
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content',absolute);
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href',absolute);
+    const btn=document.getElementById('event-share');
+    btn?.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(absolute);btn.textContent=t('eventDetailCopied');}
+      catch(_){btn.textContent=t('eventDetailCopyFailed');}
+    });
   }
   if(page==='events'){
     document.getElementById('featured-event')?.addEventListener('click',event=>{
@@ -232,11 +328,11 @@
     for(let i=0;i<first;i++)html+='<div class="cal-blank" aria-hidden="true"></div>';
     for(let d=1;d<=total;d++){
       const key=dateKey(y,m,d),matches=events.filter(e=>e.date===key),today=key===dateKey(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
-      html+=`<div class="cal-cell ${matches.length?'has-event':''} ${today?'is-today':''}"><span class="cal-date">${d}</span>${matches.map(e=>`<a class="cal-event" href="events.html" title="${esc(languageVal(e.name))}">${esc(languageVal(e.name))}</a>`).join('')}</div>`;
+      html+=`<div class="cal-cell ${matches.length?'has-event':''} ${today?'is-today':''}"><span class="cal-date">${d}</span>${matches.map(e=>`<a class="cal-event" href="${eventUrl(e)}" title="${esc(languageVal(e.name))}">${esc(languageVal(e.name))}</a>`).join('')}</div>`;
     }
     grid.innerHTML=html;
     const monthEvents=events.filter(e=>localDate(e.date).getFullYear()===y&&localDate(e.date).getMonth()===m).sort((a,b)=>a.date.localeCompare(b.date));
-    list.innerHTML=monthEvents.length?monthEvents.map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p></div><a class="btn alt" href="events.html">${esc(l('monthEvent'))} ↗</a></article>`).join(''):`<p class="muted">${esc(l('emptyEvents'))}</p>`;
+    list.innerHTML=monthEvents.length?monthEvents.map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p></div><a class="btn alt" href="${eventUrl(e)}">${esc(l('monthEvent'))} ↗</a></article>`).join(''):`<p class="muted">${esc(l('emptyEvents'))}</p>`;
   }
   if(page==='calendar'){
     document.getElementById('calendar-prev')?.addEventListener('click',()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1);renderCalendar()});
@@ -341,7 +437,7 @@
       batch.push({file:photo.file,album:photo.album});
     }
     galleryPhotos=[...manual,...batch];
-    renderEvents();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
+    renderHome();renderEvents();renderEventDetail();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
 
   });
 })();
