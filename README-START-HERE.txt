@@ -2,7 +2,7 @@ SPIRALCACTUS — CURRENT WEBSITE GUIDE (15 OCTOBER 2026)
 ==================================================
 
 PUBLIC WEBSITE
-https://spiralcactus-brussels.github.io/spiral-cactus/
+https://spiralcactus.be/
 
 EDITING THE SITE — ONE FREE DASHBOARD
 https://app.pagescms.org/
@@ -58,7 +58,7 @@ CONTACT FORM
 GOOGLE & DOMAINS
 - Sitemap: /sitemap.xml covers all 11 main public pages.
 - Open https://search.google.com/search-console/ and add the URL-prefix:
-  https://spiralcactus-brussels.github.io/spiral-cactus/
+  https://spiralcactus.be/
 - Verify ownership through an HTML tag or verification file, submit
   sitemap.xml, and request indexing of the homepage.
 - Do not edit the domain or CNAME, absolute canonical links, OG URLs,

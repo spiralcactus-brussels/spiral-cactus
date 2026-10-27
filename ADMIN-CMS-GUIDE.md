@@ -23,7 +23,7 @@ Artists remain editable inside the event's DJ Lineup. There's no duplicate artis
 2. Click **Upload** in that folder, or drag photographs into the media uploader if offered.
 3. In Finder, select multiple optimized JPG or WebP photographs in one selection.
 4. Wait for **every file** to show in the media list. This is the whole publishing action: no JSON edits, no secondary album editor, no extra Save.
-5. After a successful GitHub Pages deployment, see the photos in https://spiralcactus-brussels.github.io/spiral-cactus/gallery.html (choose the album filter).
+5. After a successful GitHub Pages deployment, see the photos in https://spiralcactus.be/gallery.html (choose the album filter).
 
 The public Gallery automatically discovers files stored in an event's folder on every GitHub Pages Jekyll build. It produces `content/gallery-auto.json` from `site.static_files`. Older individual captions in `content/gallery.json` and previous batch data in `content/gallery-albums.json` are preserved but removed from the Pages CMS sidebar. The unassigned file `assets/gallery/DSC_0030.JPG` is retained, not automatically associated with any event.
 

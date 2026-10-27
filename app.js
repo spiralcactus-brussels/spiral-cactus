@@ -100,7 +100,7 @@
             _template:'table',
             _honey:'',
             source:'SpiralCactus website contact form',
-            _url:'https://spiralcactus-brussels.github.io/spiral-cactus/contact.html'
+            _url:'https://spiralcactus.be/contact.html'
           })
         });
         const result=await response.json();
