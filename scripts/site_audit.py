@@ -8,11 +8,13 @@ from urllib.parse import urlsplit, unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus.be/"
-check_domain = "spiralcactus.be"\nPAGES = ["index.html","discover.html","events.html","event.html",
+check_domain = "spiralcactus.be"
+PAGES = ["index.html","discover.html","events.html","event.html",
          "event-acid-edition.html","event-first-rave.html",
          "calendar.html","gallery.html","radio.html","artists.html",
          "blog.html","shop.html","contact.html","members.html"]
-assert (ROOT / "CNAME").read_text().strip() == check_domain, "GitHub Pages custom domain mismatch"\nerrors = []
+assert (ROOT / "CNAME").read_text().strip() == check_domain, "GitHub Pages custom domain mismatch"
+errors = []
 warnings = []
 checks = []
 
