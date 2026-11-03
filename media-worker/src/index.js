@@ -50,7 +50,7 @@ async function gallery(request,env,url) {
   });
   return reply(request,{items,nextCursor:result.truncated?result.cursor:null});
 }
-async function serveMedia(request,env,key) {
+async function serveMedia(request,env,key,download=false) {
   if(!validKey(key))return reply(request,{error:"Not found"},404);
   const range=request.headers.get("Range");
   const item=await env.MEDIA_BUCKET.get(key,range?{range:request.headers}:undefined);
@@ -59,7 +59,8 @@ async function serveMedia(request,env,key) {
   item.writeHttpMetadata(h);
   const ext=key.split(".").pop();
   h.set("Content-Type",MIME[ext]||"application/octet-stream");
-  h.set("Content-Disposition","inline");
+  const originalName = key.split("/").pop().replace(/[^a-zA-Z0-9._-]/g,"_");
+  h.set("Content-Disposition",download ? 'attachment; filename="'+originalName+'"' : "inline");
   h.set("Accept-Ranges","bytes");
   h.set("ETag",item.httpEtag);
   h.set("Cache-Control","public, max-age=31536000, immutable");
@@ -130,7 +131,9 @@ export default {
       if(url.pathname==="/health")return reply(request,{ok:true,service:"SpiralCactus media"});
       if(url.pathname==="/api/gallery"&&request.method==="GET")return await gallery(request,env,url);
       if(url.pathname.startsWith("/media/")&&["GET","HEAD"].includes(request.method))
-        return await serveMedia(request,env,url.pathname.slice(7));
+        return await serveMedia(request,env,url.pathname.slice(7),false);
+      if(url.pathname.startsWith("/download/")&&["GET","HEAD"].includes(request.method))
+        return await serveMedia(request,env,url.pathname.slice(10),true);
       if(url.pathname.startsWith("/api/"))return await api(request,env,url);
       return reply(request,{error:"Not found"},404);
     }catch(e) {
