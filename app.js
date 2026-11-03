@@ -5,9 +5,9 @@
   const locales = {en:'en-GB', fr:'fr-BE', nl:'nl-BE'};
   const i18n = window.SC_TRANSLATIONS || {};
   const dynamic = {
-    en:{tickets:'Tickets',photos:'Photos & videos',poster:'Lineup poster',past:'Past event',upcoming:'Upcoming event',artists:'On the lineup',emptyEvents:'No events in this month.',readMore:'Read more',emptyBlog:'The first stories are coming soon.',monthEvent:'Event',submitError:'Please complete all fields.',openPhoto:'Open photograph',closePhoto:'Close photograph',venue:'Venue',thisMonth:'This month',shopBuy:'Buy securely',ticketOnSite:'Buy tickets on this page',ticketHelp:'Secure checkout provided by WeTicket. If the embedded shop does not load, use the direct link.',ticketExternal:'Open ticket shop',shopNoLink:'Ordering will open when checkout is configured.'},
-    fr:{tickets:'Billetterie',photos:'Photos et vidéos',poster:'Affiche du line-up',past:'Événement passé',upcoming:'À venir',artists:'Au line-up',emptyEvents:'Aucun événement pour ce mois.',readMore:'Lire la suite',emptyBlog:'Les premiers articles arrivent bientôt.',monthEvent:'Événement',submitError:'Veuillez remplir tous les champs.',openPhoto:'Ouvrir la photo',closePhoto:'Fermer la photo',venue:'Lieu',thisMonth:'Ce mois-ci',shopBuy:'Acheter en toute sécurité',ticketOnSite:'Acheter des billets ici',ticketHelp:'Paiement sécurisé géré par WeTicket. Si la billetterie ne s’affiche pas, utilisez le lien direct.',ticketExternal:'Ouvrir la billetterie',shopNoLink:'Les commandes seront disponibles une fois le paiement configuré.'},
-    nl:{tickets:'Tickets',photos:'Foto’s en video’s',poster:'Line-up poster',past:'Voorbij',upcoming:'Binnenkort',artists:'Op de line-up',emptyEvents:'Geen evenementen in deze maand.',readMore:'Lees meer',emptyBlog:'De eerste verhalen verschijnen binnenkort.',monthEvent:'Evenement',submitError:'Vul alle velden in.',openPhoto:'Open foto',closePhoto:'Sluit foto',venue:'Locatie',thisMonth:'Deze maand',shopBuy:'Veilig kopen',ticketOnSite:'Koop tickets op deze pagina',ticketHelp:'Veilig afrekenen via WeTicket. Gebruik de rechtstreekse link als de ingebedde shop niet opent.',ticketExternal:'Open ticketshop',shopNoLink:'Bestellen is mogelijk zodra de betaalfunctie is ingesteld.'}
+    en:{tickets:'Tickets',photos:'Photos & videos',poster:'Lineup poster',past:'Past event',upcoming:'Upcoming event',artists:'On the lineup',emptyEvents:'No events in this month.',readMore:'Read more',emptyBlog:'The first stories are coming soon.',monthEvent:'Event',submitError:'Please complete all fields.',openPhoto:'Open photograph',closePhoto:'Close photograph',venue:'Venue',thisMonth:'This month',shopBuy:'Buy securely',ticketOnSite:'Buy tickets on this page',ticketHelp:'Secure checkout provided by WeTicket. If the embedded shop does not load, use the direct link.',ticketExternal:'Open ticket shop',shopNoLink:'Ordering will open when checkout is configured.',downloadMedia:'Download'},
+    fr:{tickets:'Billetterie',photos:'Photos et vidéos',poster:'Affiche du line-up',past:'Événement passé',upcoming:'À venir',artists:'Au line-up',emptyEvents:'Aucun événement pour ce mois.',readMore:'Lire la suite',emptyBlog:'Les premiers articles arrivent bientôt.',monthEvent:'Événement',submitError:'Veuillez remplir tous les champs.',openPhoto:'Ouvrir la photo',closePhoto:'Fermer la photo',venue:'Lieu',thisMonth:'Ce mois-ci',shopBuy:'Acheter en toute sécurité',ticketOnSite:'Acheter des billets ici',ticketHelp:'Paiement sécurisé géré par WeTicket. Si la billetterie ne s’affiche pas, utilisez le lien direct.',ticketExternal:'Ouvrir la billetterie',shopNoLink:'Les commandes seront disponibles une fois le paiement configuré.',downloadMedia:'Télécharger'},
+    nl:{tickets:'Tickets',photos:'Foto’s en video’s',poster:'Line-up poster',past:'Voorbij',upcoming:'Binnenkort',artists:'Op de line-up',emptyEvents:'Geen evenementen in deze maand.',readMore:'Lees meer',emptyBlog:'De eerste verhalen verschijnen binnenkort.',monthEvent:'Evenement',submitError:'Vul alle velden in.',openPhoto:'Open foto',closePhoto:'Sluit foto',venue:'Locatie',thisMonth:'Deze maand',shopBuy:'Veilig kopen',ticketOnSite:'Koop tickets op deze pagina',ticketHelp:'Veilig afrekenen via WeTicket. Gebruik de rechtstreekse link als de ingebedde shop niet opent.',ticketExternal:'Open ticketshop',shopNoLink:'Bestellen is mogelijk zodra de betaalfunctie is ingesteld.',downloadMedia:'Downloaden'}
   };
   const page = document.body.dataset.page;
   let current = 'en', events = [], posts = [], galleryPhotos = [], products = [], month = new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -445,16 +445,27 @@
     }catch(error){console.warn('External SpiralCactus media temporarily unavailable',error)}
     return gathered;
   }
+  function galleryDownloadUrl(file){
+    if(!allowedGalleryMedia(file))return '';
+    if(file.startsWith('assets/gallery/'))return file;
+    try{
+      const url=new URL(file);
+      url.pathname=url.pathname.replace(/^\/media\//,'/download/');
+      return url.href;
+    }catch(_){return ''}
+  }
   function renderGallery(){
     if(page!=='gallery')return;
     const grid=document.getElementById('gallery-grid');if(!grid)return;
     grid.innerHTML=galleryPhotos.filter(p=>allowedGalleryMedia(p?.file)).map(p=>{
       const caption=languageVal(p.caption||p.alt||'') || p.file.split('/').pop().replace(/[-_]/g,' ').replace(/\.[^.]+$/,'');
       const album=String(p.album||p.file.split('/').slice(-2,-1)[0]||'');
+      const down=galleryDownloadUrl(p.file);
+      const download=down ? ` <a class="gallery-download" href="${esc(down)}" download aria-label="${esc(l('downloadMedia'))} — ${esc(caption)}">↓ ${esc(l('downloadMedia'))}</a>` : '';
       if(p.kind==='video'){
-        return `<figure class="gallery-item gallery-video-item" data-album="${esc(album)}"><video controls playsinline preload="metadata" src="${esc(p.file)}" aria-label="${esc(caption)}"></video><figcaption>▶ ${esc(caption)}</figcaption></figure>`;
+        return `<figure class="gallery-item gallery-video-item" data-album="${esc(album)}"><video controls playsinline preload="metadata" src="${esc(p.file)}" aria-label="${esc(caption)}"></video><figcaption>▶ ${esc(caption)}${download}</figcaption></figure>`;
       }
-      return `<figure class="gallery-item" data-album="${esc(album)}"><button class="gallery-open" type="button" aria-label="${esc(l('openPhoto'))}"><img loading="lazy" decoding="async" src="${esc(p.file)}" alt="${esc(caption)}"></button><figcaption>${esc(caption)}</figcaption></figure>`;
+      return `<figure class="gallery-item" data-album="${esc(album)}"><button class="gallery-open" type="button" aria-label="${esc(l('openPhoto'))}"><img loading="lazy" decoding="async" src="${esc(p.file)}" alt="${esc(caption)}"></button><figcaption>${esc(caption)}${download}</figcaption></figure>`;
     }).join('');
   }
   function setupGallery(){
