@@ -64,15 +64,15 @@ async function call(method,path,body,auth=true){
 }
 async function start(album,type,name,size,variant,originalKey=""){
   const res=await call("POST","/api/upload/start",{album,type,name,size,variant,originalKey});
-  assert.equal(res.status,200,await res.text());return res.json();
+  if(res.status!==200)throw Error(await res.text());return res.json();
 }
 async function upload(result,bytes){
   const res=await call("PUT","/api/upload/part?key="+encodeURIComponent(result.key)+
     "&uploadId="+encodeURIComponent(result.uploadId)+"&part=1",bytes);
-  assert.equal(res.status,200,await res.text());
+  if(res.status!==200)throw Error(await res.text());
   const part=await res.json();
   const finish=await call("POST","/api/upload/finish",{key:result.key,uploadId:result.uploadId,parts:[part]});
-  assert.equal(finish.status,200,await finish.text());return finish.json();
+  if(finish.status!==200)throw Error(await finish.text());return finish.json();
 }
 const album="2026-10-16-acid-edition";
 assert.equal((await call("GET","/api/auth",undefined,false)).status,401);
