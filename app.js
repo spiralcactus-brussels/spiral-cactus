@@ -437,7 +437,7 @@
         const data=await response.json();
         for(const item of data.items||[]){
           if(!item||!allowedGalleryMedia(item.url)||!item.album)continue;
-          gathered.push({file:item.url,album:item.album,kind:item.type==='video'?'video':'photo',caption:item.name||''});
+          gathered.push({file:item.url,album:item.album,kind:item.type==='video'?'video':'photo',caption:item.name||'',downloadUrl:item.downloadUrl||'',hasOriginal:item.hasOriginal===true});
         }
         cursor=data.nextCursor;
         if(!cursor)break;
@@ -445,12 +445,19 @@
     }catch(error){console.warn('External SpiralCactus media temporarily unavailable',error)}
     return gathered;
   }
-  function galleryDownloadUrl(file){
+  function galleryDownloadUrl(item){
+    const file=item?.file;
     if(!allowedGalleryMedia(file))return '';
     if(file.startsWith('assets/gallery/'))return file;
     try{
-      const url=new URL(file);
-      url.pathname=url.pathname.replace(/^\/media\//,'/download/');
+      const base=new URL(window.SC_MEDIA_CONFIG.apiBase);
+      const url=new URL(item.downloadUrl||file);
+      if(base.protocol!=='https:'||url.origin!==base.origin)return '';
+      if(item.downloadUrl){
+        if(!/^\/download\/albums\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\/(originals|photos|videos)\/[a-z0-9._-]+$/i.test(url.pathname))return '';
+      }else{
+        url.pathname=url.pathname.replace(/^\/media\//,'/download/');
+      }
       return url.href;
     }catch(_){return ''}
   }
@@ -460,8 +467,9 @@
     grid.innerHTML=galleryPhotos.filter(p=>allowedGalleryMedia(p?.file)).map(p=>{
       const caption=languageVal(p.caption||p.alt||'') || p.file.split('/').pop().replace(/[-_]/g,' ').replace(/\.[^.]+$/,'');
       const album=String(p.album||p.file.split('/').slice(-2,-1)[0]||'');
-      const down=galleryDownloadUrl(p.file);
-      const download=down ? ` <a class="gallery-download" href="${esc(down)}" download aria-label="${esc(l('downloadMedia'))} — ${esc(caption)}">↓ ${esc(l('downloadMedia'))}</a>` : '';
+      const down=galleryDownloadUrl(p);
+      const downloadLabel=l('downloadMedia')+(p.hasOriginal?' HD':'');
+      const download=down ? ` <a class="gallery-download" href="${esc(down)}" download aria-label="${esc(downloadLabel)} — ${esc(caption)}">↓ ${esc(downloadLabel)}</a>` : '';
       if(p.kind==='video'){
         return `<figure class="gallery-item gallery-video-item" data-album="${esc(album)}"><video controls playsinline preload="metadata" src="${esc(p.file)}" aria-label="${esc(caption)}"></video><figcaption>▶ ${esc(caption)}${download}</figcaption></figure>`;
       }
