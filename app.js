@@ -411,18 +411,49 @@
     }).join('');
     empty.hidden=valid.length>0;
   }
-  // Photo entries are authored in content/gallery.json, never injected as raw template syntax.
-  function allowedGalleryImage(file){
-    return typeof file==='string' &&
-      /^assets\/gallery\/[a-z0-9_./ :()-]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(file) &&
-      !file.includes('..');
+  // Local Jekyll album photos coexist with remote Cloudflare R2 photos/videos.
+  function allowedGalleryMedia(file){
+    if(typeof file!=='string'||file.includes('..'))return false;
+    if(/^assets\/gallery\/[a-z0-9_./ :()-]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(file))return true;
+    try{
+      const base=new URL(window.SC_MEDIA_CONFIG?.apiBase||'');
+      const url=new URL(file);
+      return base.protocol==='https:' && url.origin===base.origin &&
+        /^\/media\/albums\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\/(photos|videos)\/[a-z0-9._-]+$/i.test(url.pathname);
+    }catch(_){return false}
+  }
+  async function loadExternalGallery(){
+    if(page!=='gallery'||!window.SC_MEDIA_CONFIG?.apiBase)return [];
+    const gathered=[];
+    try{
+      const base=new URL(window.SC_MEDIA_CONFIG.apiBase);
+      if(base.protocol!=='https:')return [];
+      let cursor=null;
+      for(let step=0;step<50;step++){
+        const url=new URL('/api/gallery',base);
+        if(cursor)url.searchParams.set('cursor',cursor);
+        const response=await fetch(url.href,{cache:'no-store'});
+        if(!response.ok)throw Error('Media API: '+response.status);
+        const data=await response.json();
+        for(const item of data.items||[]){
+          if(!item||!allowedGalleryMedia(item.url)||!item.album)continue;
+          gathered.push({file:item.url,album:item.album,kind:item.type==='video'?'video':'photo',caption:item.name||''});
+        }
+        cursor=data.nextCursor;
+        if(!cursor)break;
+      }
+    }catch(error){console.warn('External SpiralCactus media temporarily unavailable',error)}
+    return gathered;
   }
   function renderGallery(){
     if(page!=='gallery')return;
     const grid=document.getElementById('gallery-grid');if(!grid)return;
-    grid.innerHTML=galleryPhotos.filter(p=>allowedGalleryImage(p?.file)).map(p=>{
+    grid.innerHTML=galleryPhotos.filter(p=>allowedGalleryMedia(p?.file)).map(p=>{
       const caption=languageVal(p.caption||p.alt||'') || p.file.split('/').pop().replace(/[-_]/g,' ').replace(/\.[^.]+$/,'');
       const album=String(p.album||p.file.split('/').slice(-2,-1)[0]||'');
+      if(p.kind==='video'){
+        return `<figure class="gallery-item gallery-video-item" data-album="${esc(album)}"><video controls playsinline preload="metadata" src="${esc(p.file)}" aria-label="${esc(caption)}"></video><figcaption>▶ ${esc(caption)}</figcaption></figure>`;
+      }
       return `<figure class="gallery-item" data-album="${esc(album)}"><button class="gallery-open" type="button" aria-label="${esc(l('openPhoto'))}"><img loading="lazy" decoding="async" src="${esc(p.file)}" alt="${esc(caption)}"></button><figcaption>${esc(caption)}</figcaption></figure>`;
     }).join('');
   }
@@ -466,8 +497,9 @@
     loadJson('content/gallery.json'),
     loadJson('content/gallery-albums.json'),
     loadJson('content/gallery-auto.json'),
-    loadJson('content/shop.json')
-  ]).then(([ev,po,photos,albums,autoPhotos,merch])=>{
+    loadJson('content/shop.json'),
+    loadExternalGallery()
+  ]).then(([ev,po,photos,albums,autoPhotos,merch,externalMedia])=>{
     events=Array.isArray(ev)?ev:[];
     posts=Array.isArray(po)?po:[];
     products=Array.isArray(merch)?merch:[];
@@ -494,7 +526,7 @@
       seen.add(photo.file.toLowerCase());
       batch.push({file:photo.file,album:photo.album});
     }
-    galleryPhotos=[...manual,...batch];
+    galleryPhotos=[...manual,...batch,...externalMedia.filter(x=>!seen.has(x.file.toLowerCase()))];
     renderHome();renderEvents();renderEventDetail();renderArtists();renderBlog();renderCalendar();renderGallery();renderShop();setupGallery();
 
   });
