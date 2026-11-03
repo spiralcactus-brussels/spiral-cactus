@@ -75,7 +75,7 @@ for name in PAGES:
         if path and not (ROOT/path).is_file():
             errors.append(f"{name}: broken {attr}={url}")
 
-for js in ("app.js","radio.js","i18n.js","members.js","members-config.js","member-dashboard.js"):
+for js in ("app.js","radio.js","i18n.js","members.js","members-config.js","member-dashboard.js","media-admin.js","media-config.js","media-worker/src/index.js"):
     result=subprocess.run(["node","--check",str(ROOT/js)],capture_output=True,text=True)
     check(result.returncode==0,f"{js}: syntax check")
     if result.returncode:errors.append(result.stderr[:1500])
