@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>SpiralCactus | Media Manager</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#08090c;color:#f5f5f0}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 5%,#a0ea1420,transparent 40%),#08090c}
+main{max-width:1090px;padding:32px 20px 80px;margin:auto}h1{font-size:clamp(35px,6vw,66px);letter-spacing:-.07em;margin:12px 0}
+h1 span,.brand b{color:#b7ff22}.brand{font-weight:900;letter-spacing:.12em;text-decoration:none;color:white}
+p{line-height:1.65;color:#b9bfc8}.lead{max-width:740px}
+.panel{border:1px solid #343b36;background:#12171a;border-radius:12px;margin:23px 0;padding:23px}
+label{display:block;font-size:13px;font-weight:750;letter-spacing:.02em;margin:14px 0 8px}
+input,select,button{font:inherit}input,select{width:100%;padding:13px 14px;border-radius:8px;background:#08090c;color:#fff;border:1px solid #475049}
+button,.link{border:1px solid #b7ff22;border-radius:8px;background:#b7ff22;color:#151b10;font-weight:800;cursor:pointer;padding:12px 18px;display:inline-block;text-decoration:none}
+button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:transparent;color:#b7ff22}.danger{border-color:#e0857c;color:#e0857c;background:none}
+.top{display:flex;justify-content:space-between;align-items:center;gap:20px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}.drop{padding:38px 15px;border:2px dashed #677b4c;text-align:center;border-radius:10px;background:#101a13}
+.drop.over{background:#273b19;border-color:#b7ff22}.drop p{margin:6px 0 0}.upload-buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+#files-list{margin:15px 0;padding:0 0 0 20px;max-height:240px;overflow:auto;color:#bfc9b0}
+#status{white-space:pre-wrap;line-height:1.5}#status[data-error=true]{color:#ff9b92}#progress{width:100%;height:12px;accent-color:#b7ff22}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-top:15px}
+.media-tile{border:1px solid #3c423d;border-radius:9px;overflow:hidden;padding:8px;min-width:0}
+.media-tile img,.media-tile video{width:100%;height:120px;object-fit:cover;display:block;background:#050505}
+.media-tile small{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:8px 0;color:#bfc7b7}
+.media-tile button{font-size:12px;padding:7px 10px}.hint{font-size:12px;color:#a2b099}.hidden{display:none}
+@media(max-width:650px){.columns{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+</style></head>
+<body><main>
+<div class="top"><a class="brand" href="index.html">SPIRAL<b>CACTUS</b> / MEDIA</a><a class="link secondary" href="gallery.html">Voir la galerie ↗</a></div>
+<h1>MEDIA <span>MANAGER</span></h1>
+<p class="lead">Toutes les photos et vidéos de SpiralCactus, organisées par événement. Importez les fichiers originaux ou un ZIP : les photos seront optimisées dans votre navigateur et les vidéos envoyées par morceaux. Le site reste hébergé sur GitHub Pages.</p>
+<section class="panel"><h2>1 · Connexion sécurisée</h2>
+<div class="columns">
+<div><label for="api-base">Adresse de votre serveur médias Cloudflare</label><input id="api-base" type="url" placeholder="https://spiralcactus-media.xxxxx.workers.dev" autocomplete="url"></div>
+<div><label for="admin-token">Mot de passe d'administration</label><input id="admin-token" type="password" placeholder="Mot de passe configuré dans Cloudflare" autocomplete="off"></div>
+</div>
+<div class="upload-buttons"><button id="connect" type="button">Tester la connexion</button><span id="connection-status" role="status"></span></div>
+<p class="hint">Le mot de passe reste dans cette page ; il n'est pas envoyé à GitHub. L'adresse du serveur est conservée uniquement dans ce navigateur.</p>
+</section>
+<section class="panel"><h2>2 · Choisir l'événement</h2>
+<label for="album">Album photo / vidéo</label><select id="album"><option value="">Chargement des événements…</option></select>
+<p class="hint">L'album sélectionné reçoit uniquement ses propres photos et vidéos. Les événements sont récupérés de votre site.</p></section>
+<section class="panel"><h2>3 · Importer vos médias</h2>
+<div class="drop" id="dropzone"><strong>Glissez les photos, vidéos ou un ZIP ici</strong><p>Ou utilisez le bouton ci-dessous. Sélection multiple possible.</p></div>
+<div class="upload-buttons">
+<label class="link" for="media-files" style="margin:0">Sélectionner des fichiers</label>
+<input class="hidden" type="file" id="media-files" multiple accept="image/*,video/*,.zip">
+<button type="button" id="upload" disabled>Publier les fichiers</button>
+</div>
+<ol id="files-list"></ol>
+<progress id="progress" max="100" value="0" class="hidden"></progress>
+<p id="status" role="status"></p>
+<p class="hint">Photos : redimensionnement automatique (long côté max. 1920 px), WebP, suppression des données EXIF. Vidéos : MP4 H.264/AAC conseillé pour la compatibilité. Les vidéos restent en qualité originale, sans transcodage. Les très gros fichiers sont envoyés en morceaux de 8 Mo.</p>
+</section>
+<section class="panel"><h2>4 · Médias déjà publiés</h2>
+<div class="upload-buttons"><button type="button" id="refresh" class="secondary">Actualiser l'album</button><a id="open-gallery" class="link secondary" href="gallery.html">Voir sur le site ↗</a></div>
+<div id="media-grid" class="media-grid"></div>
+</section>
+</main>
+<script src="https://unpkg.com/@zip.js/zip.js@2.8.23/dist/zip.min.js" defer></script>
+<script src="media-config.js" defer></script>
+<script src="media-admin.js" defer></script>
+</body></html>
