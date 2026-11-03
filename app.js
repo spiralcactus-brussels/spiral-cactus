@@ -161,7 +161,7 @@
     const ticket=inPageTickets
       ? `<button class="btn" type="button" data-open-ticketshop>${esc(l('ticketOnSite'))} ↓</button>`
       : (!isPast(e) && safePaymentUrl(e.ticket)?`<a class="btn" href="${esc(safePaymentUrl(e.ticket))}" target="_blank" rel="noopener noreferrer">${esc(l('tickets'))} ↗</a>`:'');
-    return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="${eventUrl(e)}">${esc(t('eventsViewDetail'))}</a></div>`;
+    return `<span class="eyebrow">${esc(fullDate(e.date))} · ${esc(isPast(e)?l('past'):l('upcoming'))}</span><h3>${esc(languageVal(e.name))}</h3><p class="meta">${esc(e.venue||'')}${e.start?' · '+esc(e.start)+(e.end?'—'+esc(e.end):''):''}</p><p>${esc(languageVal(e.description))}</p><p class="muted artist-lineup">${esc(artistNames(e))}</p><div class="buttons">${ticket}<a class="btn alt" href="${eventUrl(e)}">${esc(t('eventsViewDetail'))}</a></div>`;
   }
 
   // Only embed known hosted payment providers. No card details are handled by GitHub Pages.
@@ -304,7 +304,7 @@
     const checkout=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('eventDetailTicketShop'))+'</a>':'';
     const dates='<div><span class="eyebrow">'+esc(t('eventInfoWhen'))+'</span><strong>'+esc(fullDate(e.date))+'</strong></div>'
       +'<div><span class="eyebrow">'+esc(t('eventInfoWhere'))+'</span><strong>'+esc(e.venue||'')+'</strong></div>'
-      +'<div><span class="eyebrow">'+esc(t('eventInfoHours'))+'</span><strong>'+esc((e.start||'')+(e.end?' — '+e.end:''))+'</strong></div>';
+      +(e.start?'<div><span class="eyebrow">'+esc(t('eventInfoHours'))+'</span><strong>'+esc(e.start+(e.end?' — '+e.end:''))+'</strong></div>':'');
     root.innerHTML='<div class="detail-hero"><div class="detail-head"><span class="eyebrow">'+esc(historical?l('past'):l('upcoming'))+' / '+esc(t('eventDetailsTitle'))+'</span>'
       +'<h1>'+esc(heading)+'</h1><p class="lead">'+esc(descr)+'</p><div class="detail-date-line">'+dates+'</div>'
       +'<div class="buttons">'+checkout+ctas+'</div>'
@@ -390,7 +390,7 @@
     }
     grid.innerHTML=html;
     const monthEvents=events.filter(e=>localDate(e.date).getFullYear()===y&&localDate(e.date).getMonth()===m).sort((a,b)=>a.date.localeCompare(b.date));
-    list.innerHTML=monthEvents.length?monthEvents.map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(e.venue)} · ${esc(e.start)}—${esc(e.end)}</p></div><a class="btn alt" href="${eventUrl(e)}">${esc(l('monthEvent'))} ↗</a></article>`).join(''):`<p class="muted">${esc(l('emptyEvents'))}</p>`;
+    list.innerHTML=monthEvents.length?monthEvents.map(e=>`<article class="archive-card"><div><span class="eyebrow">${esc(fullDate(e.date))}</span><h3>${esc(languageVal(e.name))}</h3><p>${esc(e.venue||'')}${e.start?' · '+esc(e.start)+(e.end?'—'+esc(e.end):''):''}</p></div><a class="btn alt" href="${eventUrl(e)}">${esc(l('monthEvent'))} ↗</a></article>`).join(''):`<p class="muted">${esc(l('emptyEvents'))}</p>`;
   }
   if(page==='calendar'){
     document.getElementById('calendar-prev')?.addEventListener('click',()=>{month=new Date(month.getFullYear(),month.getMonth()-1,1);renderCalendar()});
@@ -519,7 +519,11 @@
     loadJson('content/shop.json'),
     loadExternalGallery()
   ]).then(([ev,po,photos,albums,autoPhotos,merch,externalMedia])=>{
-    events=Array.isArray(ev)?ev:[];
+    events=Array.isArray(ev)?ev.map(e=>{
+      if(!e || !e.date || !e.id || e.gallery)return e;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(e.date)||!/^[a-z0-9-]{1,100}$/.test(e.id))return e;
+      return {...e,gallery:e.date+'-'+e.id};
+    }):[];
     posts=Array.isArray(po)?po:[];
     products=Array.isArray(merch)?merch:[];
     // Both gallery workflows coexist:
