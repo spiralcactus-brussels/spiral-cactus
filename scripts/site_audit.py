@@ -89,7 +89,10 @@ for event in events:
     poster=event.get("poster","")
     if poster and not poster.startswith(("http://","https://")):
         check((ROOT/poster).is_file(),f"{event['id']}: poster file exists")
-    check(bool(event.get("gallery")),f"{event['id']}: gallery ID")
+    # Gallery album is optional when drafting a new event in Pages CMS.
+    # The site derives a stable fallback from the date and unique event ID.
+    gallery_id=event.get("gallery") or f"{event['date']}-{event['id']}"
+    check(bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}-[a-z0-9-]{1,100}",gallery_id)),f"{event['id']}: gallery ID format")
 check(all(str(r.get("url","")).startswith("https://soundcloud.com/") for r in radio),"Radio SoundCloud sources")
 check(isinstance(gallery,list) and isinstance(oldalbums,list),"Gallery legacy files valid")
 for group in oldalbums:
@@ -142,7 +145,7 @@ for path in assets:
         warnings.append("Gallery photo is a large camera original (>3.5 MB), compress for Pages CMS before using")
 
 listed=[p for p in (ROOT/"assets/gallery").rglob("*") if p.suffix.lower() in (".jpg",".jpeg",".png",".webp",".avif")]
-folders=[x for x in listed if x.parent.name in {e["gallery"] for e in events}]
+folders=[x for x in listed if x.parent.name in {e.get("gallery") or f"{e['date']}-{e['id']}" for e in events}]
 print(f"Gallery: {len(gallery)} individually registered entries, {sum(len(x.get('photos',[])) for x in oldalbums)} legacy batch entries, {len(folders)} photos in known event folders, {len(listed)-len(folders)} unassigned")
 if not folders and not gallery and not any(a.get("photos") for a in oldalbums):
     warnings.append("Live event photo gallery has no registered pictures")
