@@ -15,3 +15,5 @@ jobs:
           node-version: 22
       - name: Verify links, translations, JavaScript, images and sitemap
         run: python3 scripts/site_audit.py
+      - name: Test R2 media API (mock bucket)
+        run: node scripts/media_api_test.mjs
