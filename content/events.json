@@ -94,13 +94,18 @@
   {
     "id": "bankizz-collab",
     "name": {
-      "en": "Collaboration Party with Bankizz Records"
+      "en": "Collaboration Party with Bankizz Records",
+      "fr": "Soirée en collaboration avec Bankizz Records",
+      "nl": "Samenwerkingsfeest met Bankizz Records"
     },
     "date": "2026-11-20",
     "venue": "Barrio Brussels",
     "description": {
-      "en": "Spiral Cactus × Bankizz Records join forces on 20 November 2026 at Barrio Brussels** for a special underground electronic music collaboration. Expect a night rooted in Brussels rave culture, alternative sounds and independent electronic music. **Line-up and tickets coming soon.**"
+      "en": "Spiral Cactus × Bankizz Records join forces on 20 November 2026 at Barrio Brussels for a special underground electronic music collaboration. Expect a night rooted in Brussels rave culture, alternative sounds and independent electronic music. Line-up and tickets coming soon.",
+      "fr": "Spiral Cactus × Bankizz Records s'associent le 20 novembre 2026 au Barrio Brussels pour une soirée spéciale de musiques électroniques underground. Une nuit ancrée dans la culture rave bruxelloise, les sonorités alternatives et la musique électronique indépendante. Line-up et billetterie prochainement.",
+      "nl": "Spiral Cactus × Bankizz Records bundelen hun krachten op 20 november 2026 in Barrio Brussels voor een bijzondere avond vol underground elektronische muziek. Verwacht een nacht geworteld in de Brusselse ravecultuur, alternatieve sounds en onafhankelijke elektronische muziek. Line-up en tickets volgen binnenkort."
     },
-    "poster": "assets/posters/monochrome-cosmic-collaboration-party-flyer.png"
+    "poster": "assets/posters/monochrome-cosmic-collaboration-party-flyer.png",
+    "gallery": "2026-11-20-bankizz-collab"
   }
 ]
