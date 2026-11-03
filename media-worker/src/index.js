@@ -2,12 +2,12 @@
    Public: listing and media playback. Private: upload/delete with Worker secret.
    DO NOT put SC_MEDIA_ADMIN_TOKEN in GitHub or in browser source. */
 const SLUG = /^\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]{0,90}$/;
-const ALBUM_KEY = /^albums\/\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]{0,90}\/(photos|videos)\/[a-z0-9][a-z0-9._-]{0,190}$/;
+const ALBUM_KEY = /^albums\/\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]{0,90}\/(photos|videos|originals)\/[a-z0-9][a-z0-9._-]{0,190}$/;
 const TYPES = {
-  "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif",
+  "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif", "image/heic":"heic", "image/heif":"heif",
   "video/mp4": "mp4", "video/webm": "webm", "video/quicktime": "mov"
 };
-const MIME = {jpg:"image/jpeg",png:"image/png",webp:"image/webp",avif:"image/avif",mp4:"video/mp4",webm:"video/webm",mov:"video/quicktime"};
+const MIME = {jpg:"image/jpeg",png:"image/png",webp:"image/webp",avif:"image/avif",heic:"image/heic",heif:"image/heif",mp4:"video/mp4",webm:"video/webm",mov:"video/quicktime"};
 const origins = new Set([
   "https://spiralcactus.be", "https://www.spiralcactus.be",
   "https://spiralcactus-brussels.github.io"
@@ -42,16 +42,26 @@ async function gallery(request,env,url) {
   const wanted=url.searchParams.get("event");
   if(wanted&&!SLUG.test(wanted))return reply(request,{error:"Invalid album"},400);
   const prefix=wanted?"albums/"+wanted+"/":"albums/";
-  const result=await env.MEDIA_BUCKET.list({prefix,cursor,limit:500});
-  const items=result.objects.filter(o=>validKey(o.key)).map(o=>{
+  // Metadata allows a thumbnail to point to its original HD, independently of pagination.
+  const result=await env.MEDIA_BUCKET.list({prefix,cursor,limit:500,include:["customMetadata"]});
+  const items=result.objects.filter(o=>validKey(o.key)&&!/\/originals\//.test(o.key)).map(o=>{
     const seg=o.key.split("/");
-    return {album:seg[1],type:seg[2]==="videos"?"video":"photo",name:seg[3].replace(/^[0-9]{13}-[a-f0-9-]{36}-/,""),
-      key:o.key,size:o.size,url:new URL("/media/"+o.key,request.url).href};
+    const meta=o.customMetadata||{};
+    const originalKey=typeof meta.originalKey==="string" && validKey(meta.originalKey) &&
+      meta.originalKey.startsWith("albums/"+seg[1]+"/originals/") ? meta.originalKey:null;
+    const name=(typeof meta.displayName==="string" && meta.displayName.trim())||
+      seg[3].replace(/^[0-9]{13}-[a-f0-9-]{36}-/,"");
+    return {
+      album:seg[1],type:seg[2]==="videos"?"video":"photo",name,
+      key:o.key,size:o.size,url:new URL("/media/"+o.key,request.url).href,
+      downloadUrl:new URL("/download/"+(originalKey||o.key),request.url).href,
+      hasOriginal:!!originalKey
+    };
   });
   return reply(request,{items,nextCursor:result.truncated?result.cursor:null});
 }
 async function serveMedia(request,env,key,download=false) {
-  if(!validKey(key))return reply(request,{error:"Not found"},404);
+  if(!validKey(key)||(!download&&key.includes("/originals/")))return reply(request,{error:"Not found"},404);
   const range=request.headers.get("Range");
   const item=await env.MEDIA_BUCKET.get(key,range?{range:request.headers}:undefined);
   if(!item)return new Response("Not found",{status:404,headers:cors(request)});
@@ -76,13 +86,28 @@ async function api(request,env,url) {
     const x=await request.json();
     const album=String(x.album||""),type=String(x.type||"");
     if(!SLUG.test(album)||!TYPES[type])return reply(request,{error:"Album ou format de fichier invalide."},400);
-    const kind=type.startsWith("image/")?"photos":"videos";
+    const isImage=type.startsWith("image/");
+    const variant=String(x.variant||"preview");
+    if(isImage && !["preview","original"].includes(variant))return reply(request,{error:"Image variant invalide"},400);
+    if(!isImage && variant!=="preview")return reply(request,{error:"Video variant invalide"},400);
+    const kind=!isImage?"videos":(variant==="original"?"originals":"photos");
     const size=Number(x.size);
     if(!Number.isFinite(size)||size<1||size>5*1024**4)return reply(request,{error:"Taille invalide."},400);
     const ext=TYPES[type];
     const name=fileName(String(x.name||"media").replace(/\.[a-z0-9]{1,6}$/i,""));
+    const originalKey=typeof x.originalKey==="string"?x.originalKey:"";
+    if(originalKey && (!isImage || variant!=="preview" || !validKey(originalKey) ||
+      !originalKey.startsWith("albums/"+album+"/originals/")))
+      return reply(request,{error:"Fichier original HD invalide"},400);
+    if(originalKey && !await env.MEDIA_BUCKET.head(originalKey))
+      return reply(request,{error:"Fichier original HD introuvable"},400);
     const key="albums/"+album+"/"+kind+"/"+Date.now()+"-"+crypto.randomUUID()+"-"+name+"."+ext;
-    const upload=await env.MEDIA_BUCKET.createMultipartUpload(key,{httpMetadata:{contentType:type,cacheControl:"public, max-age=31536000, immutable"}});
+    const metadata={displayName:String(x.displayName||x.name||"media").slice(0,120)};
+    if(originalKey)metadata.originalKey=originalKey;
+    const upload=await env.MEDIA_BUCKET.createMultipartUpload(key,{
+      httpMetadata:{contentType:type,cacheControl:"public, max-age=31536000, immutable"},
+      customMetadata:metadata
+    });
     return reply(request,{key,uploadId:upload.uploadId});
   }
   if(url.pathname==="/api/upload/part"&&request.method==="PUT") {
@@ -115,7 +140,15 @@ async function api(request,env,url) {
   if(url.pathname==="/api/media"&&request.method==="DELETE") {
     const key=url.searchParams.get("key");
     if(!validKey(key))return reply(request,{error:"Invalid object key"},400);
-    await env.MEDIA_BUCKET.delete(key);
+    const stored=await env.MEDIA_BUCKET.head(key);
+    const parent=key.split("/").slice(0,2).join("/");
+    const originalKey=stored?.customMetadata?.originalKey;
+    if(key.includes("/photos/")&&typeof originalKey==="string"&&validKey(originalKey)&&
+      originalKey.startsWith(parent+"/originals/")){
+      await env.MEDIA_BUCKET.delete([key,originalKey]);
+    }else{
+      await env.MEDIA_BUCKET.delete(key);
+    }
     return reply(request,{ok:true});
   }
   return reply(request,{error:"Endpoint not found"},404);
