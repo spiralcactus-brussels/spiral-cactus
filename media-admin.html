@@ -30,7 +30,7 @@ button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:transparent;
 <body><main>
 <div class="top"><a class="brand" href="index.html">SPIRAL<b>CACTUS</b> / MEDIA</a><a class="link secondary" href="gallery.html">Voir la galerie ↗</a></div>
 <h1>MEDIA <span>MANAGER</span></h1>
-<p class="lead">Toutes les photos et vidéos de SpiralCactus, organisées par événement. Importez les fichiers originaux ou un ZIP : les photos seront optimisées dans votre navigateur et les vidéos envoyées par morceaux. Le site reste hébergé sur GitHub Pages.</p>
+<p class="lead">Toutes les photos et vidéos de SpiralCactus, organisées par événement. Importez les fichiers originaux ou un ZIP : le système conserve chaque photographie HD et crée un aperçu rapide pour la galerie. Les vidéos originales sont envoyées par morceaux. Le site reste hébergé sur GitHub Pages.</p>
 <section class="panel"><h2>1 · Connexion sécurisée</h2>
 <div class="columns">
 <div><label for="api-base">Adresse de votre serveur médias Cloudflare</label><input id="api-base" type="url" placeholder="https://spiralcactus-media.xxxxx.workers.dev" autocomplete="url"></div>
@@ -52,7 +52,7 @@ button:disabled{opacity:.5;cursor:not-allowed}.secondary{background:transparent;
 <ol id="files-list"></ol>
 <progress id="progress" max="100" value="0" class="hidden"></progress>
 <p id="status" role="status"></p>
-<p class="hint">Photos : redimensionnement automatique (long côté max. 1920 px), WebP, suppression des données EXIF. Vidéos : MP4 H.264/AAC conseillé pour la compatibilité. Les vidéos restent en qualité originale, sans transcodage. Les très gros fichiers sont envoyés en morceaux de 8 Mo.</p>
+<p class="hint">Photos : deux fichiers enregistrés automatiquement (original HD inchangé + aperçu WebP optimisé, 1920 px). Attention : l'original HD peut contenir des métadonnées EXIF, notamment GPS ; vérifiez les fichiers avant publication. Vidéos : qualité originale conservée, MP4 H.264/AAC recommandé pour la lecture. Les gros fichiers sont envoyés par morceaux de 8 Mo.</p>
 </section>
 <section class="panel"><h2>4 · Médias déjà publiés</h2>
 <div class="upload-buttons"><button type="button" id="refresh" class="secondary">Actualiser l'album</button><a id="open-gallery" class="link secondary" href="gallery.html">Voir sur le site ↗</a></div>
