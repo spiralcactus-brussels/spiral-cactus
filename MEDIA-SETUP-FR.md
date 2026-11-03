@@ -7,7 +7,7 @@
 - API sécurisée : Cloudflare Worker, source media-worker/src/index.js
 - Administration : https://spiralcactus.be/media-admin.html
 - Galerie existante : images historiques et nouveaux médias ensemble
-- Photos : compression automatique WebP et suppression des données EXIF
+- Photos : 2 versions stockées dans R2 (aperçu WebP optimisé + original HD téléchargeable)
 - ZIP : extraction locale progressive, sans ajout du ZIP dans GitHub
 - Vidéos : envoi multipart par blocs de 8 Mo; lecture via byte ranges
 
@@ -67,7 +67,10 @@ Les fichiers ne passent PAS dans le dépôt GitHub.
 
 ## Limites et compatibilité
 
-- Photos : 1920px max, WebP, orientation corrigée, EXIF supprimé.
+- Aperçus photos : 1920px max, WebP, orientation corrigée, EXIF supprimé.
+- Originaux HD : octets originaux conservés sans recompression, disponibles via Télécharger HD.
+  ATTENTION : certains originaux contiennent encore des métadonnées EXIF ou GPS.
+  Supprimez les informations de géolocalisation sensibles avant publication.
 - ZIP : extraction une photo à la fois, compatible jusqu'à 2000 éléments
   reconnus; les vidéos de plus de 200 Mo dans un ZIP doivent être
   sélectionnées directement à côté du ZIP.
@@ -91,7 +94,8 @@ Les fichiers ne passent PAS dans le dépôt GitHub.
 
 - Test syntaxe GitHub Actions Prelaunch QA
 - Test /health du Worker et bouton Tester la connexion dans l'admin
-- Test 1 photo et 1 vidéo MP4 dans Acid Edition
+- Test 1 photo : vérifier l'aperçu WebP et le téléchargement HD original
+- Test 1 vidéo MP4 : vérifier la lecture et le téléchargement
 - Vérifier l'affichage mobile et le filtre d'événement
 - Puis importer Reel selection .zip dans le même album
 
