@@ -134,15 +134,12 @@
       }
     }
   }
-  async function uploadOne(file,note){
-    const type=mime(file);
-    if(!type)throw Error("Format non pris en charge : "+basename(file.name));
-    const isImage=type.startsWith("image/");
-    const target=isImage?await optimizePhoto(file):file;
-    if(isImage && !["image/jpeg","image/webp"].includes(target.type))
-      throw Error("Image non optimisée correctement.");
+  async function uploadBinary(target,note,variant="preview",originalKey="",displayName=""){
+    const type=mime(target);
+    if(!type)throw Error("Format non pris en charge : "+basename(target.name));
     const info=await jsonRequest("POST","/api/upload/start",{
-      album:$("album").value,name:target.name,type:target.type,size:target.size
+      album:$("album").value,name:target.name,type,
+      size:target.size,variant,originalKey,displayName:displayName||target.name
     });
     const partSize=8*1024*1024,parts=[];
     try{
@@ -153,12 +150,40 @@
           "&uploadId="+encodeURIComponent(info.uploadId)+"&part="+i,target.slice(start,end));
         parts.push(part);
       }
-      await jsonRequest("POST","/api/upload/finish",{key:info.key,uploadId:info.uploadId,parts});
+      return await jsonRequest("POST","/api/upload/finish",{key:info.key,uploadId:info.uploadId,parts});
     }catch(e){
       await jsonRequest("POST","/api/upload/cancel",{key:info.key,uploadId:info.uploadId}).catch(()=>{});
       throw e;
     }
   }
+  async function uploadOne(file,note){
+    const type=mime(file);
+    if(!type)throw Error("Format non pris en charge : "+basename(file.name));
+    if(!type.startsWith("image/")){
+      const video = new File([file],file.name,{type});
+      await uploadBinary(video,"vidéo originale : "+note,"preview","",""+file.name);
+      return;
+    }
+    // Create the small gallery rendition locally, but retain every pixel of the HD original.
+    const preview=await optimizePhoto(file);
+    if(!["image/webp","image/jpeg"].includes(preview.type))
+      throw Error("Impossible d'optimiser la photo "+file.name);
+    const original = new File([file],file.name,{type});
+    status("Préparation de la photo HD : "+note);
+    const uploadedOriginal=await uploadBinary(original,"original HD : "+note,"original","",file.name);
+    try{
+      await uploadBinary(preview,"aperçu optimisé : "+note,"preview",uploadedOriginal.key,file.name);
+    }catch(e){
+      // Avoid charging for an invisible original if its preview upload fails.
+      try{
+        await jsonRequest("DELETE","/api/media?key="+encodeURIComponent(uploadedOriginal.key));
+      }catch(cleanup){
+        console.warn("Could not remove orphan original",cleanup);
+      }
+      throw e;
+    }
+  }
+
   async function expandZip(file,submit){
     if(!window.zip?.ZipReader)throw Error("La bibliothèque ZIP ne s'est pas chargée. Rechargez cette page.");
     const reader=new zip.ZipReader(new zip.BlobReader(file));
@@ -234,6 +259,14 @@
           const video=document.createElement("video");video.src=item.url;video.preload="none";video.controls=true;div.append(video);
         }
         const caption=document.createElement("small");caption.textContent=item.name;div.append(caption);
+        if(item.downloadUrl){
+          const down=document.createElement("a");
+          down.className="link secondary";
+          down.textContent=item.hasOriginal?"↓ Télécharger HD":"↓ Télécharger";
+          down.href=item.downloadUrl;down.target="_blank";down.rel="noopener noreferrer";
+          down.style.cssText="font-size:12px;padding:7px 9px;margin:0 4px 8px 0";
+          div.append(down);
+        }
         const remove=document.createElement("button");remove.textContent="Supprimer";remove.className="danger";
         remove.addEventListener("click",async()=>{
           if(!confirm("Supprimer définitivement "+item.name+" ?"))return;
