@@ -1,23 +1,24 @@
 [
   {
     "id": "acid-edition",
-    "date": "2026-10-16",
-    "start": "22:00",
-    "end": "07:00",
-    "venue": "Barrio Brussels",
-    "gallery": "2026-10-16-acid-edition",
-    "ticket": "https://spiral-cactus.weticket.io/brussels-rave-night-acid-edition-1",
-    "poster": "assets/posters/The final poster .png",
     "name": {
       "en": "Brussels Rave Night: Acid Edition",
       "fr": "Brussels Rave Night : Acid Edition",
       "nl": "Brussels Rave Night: Acid Edition"
     },
+    "date": "2026-10-16",
+    "start": "22:00",
+    "end": "07:00",
+    "venue": "Barrio Brussels",
     "description": {
       "en": "Jungle, tekno, acidcore, hardcore and industrial hard techno. A full-spectrum underground night.",
       "fr": "Jungle, tekno, acidcore, hardcore et hard techno industrielle. Une nuit underground sans compromis.",
       "nl": "Jungle, tekno, acidcore, hardcore en industriële hardtechno. Een compromisloze undergroundnacht."
     },
+    "poster": "assets/posters/The final poster .png",
+    "gallery": "2026-10-16-acid-edition",
+    "ticket": "https://spiral-cactus.weticket.io/brussels-rave-night-acid-edition-1",
+    "ticketEmbed": "https://spiral-cactus.weticket.io/brussels-rave-night-acid-edition-1/shop",
     "artists": [
       {
         "name": "Pingu BKZ",
@@ -43,59 +44,63 @@
         "name": "Minopolska",
         "genre": "Hard Techno / Industrial"
       }
-    ],
-    "ticketEmbed": "https://spiral-cactus.weticket.io/brussels-rave-night-acid-edition-1/shop"
+    ]
   },
   {
     "id": "first-rave",
-    "date": "2026-08-28",
-    "start": "22:00",
-    "end": "07:00",
-    "venue": "Barrio Brussels",
-    "gallery": "2026-08-28-brussels-rave-night",
-    "ticket": "",
-    "poster": "https://weticket.ams3.digitaloceanspaces.com/event/spiral-cactus-presents-brussels-rave-night__by_spiral-cactus__cover_photo-019f3839-2629-716f-a41b-aedef7a7c59b.png",
     "name": {
       "en": "Brussels Rave Night",
       "fr": "Brussels Rave Night",
       "nl": "Brussels Rave Night"
     },
+    "date": "2026-08-28",
+    "start": "22:00",
+    "end": "07:00",
+    "venue": "Barrio Brussels",
     "description": {
       "en": "Our first Brussels Rave Night, featuring Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber and Hard Core, with six artists from the underground scene.",
       "fr": "Notre première Brussels Rave Night, entre Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber et Hard Core, réunissant six artistes de la scène underground.",
       "nl": "Onze eerste Brussels Rave Night met Jungle, Drum & Bass, Neo Tekno, Hardcore Gabber en Hard Core en zes artiesten uit de undergroundscene."
     },
+    "poster": "https://weticket.ams3.digitaloceanspaces.com/event/spiral-cactus-presents-brussels-rave-night__by_spiral-cactus__cover_photo-019f3839-2629-716f-a41b-aedef7a7c59b.png",
+    "gallery": "2026-08-28-brussels-rave-night",
     "artists": [
       {
         "name": "Nawatt",
-        "genre": "",
         "crew": "AKU · TeknoDealers"
       },
       {
         "name": "MEGO",
-        "genre": "",
         "crew": "Structure Béton · C2C"
       },
       {
         "name": "Terahmet",
-        "genre": "",
         "crew": "Goulag"
       },
       {
         "name": "Soul3d",
-        "genre": "",
         "crew": "Oldschool Waves · Gazmatek · Exiles"
       },
       {
         "name": "Pingu BKZ",
-        "genre": "",
         "crew": "Bankizz Label"
       },
       {
         "name": "Obvyss",
-        "genre": "",
         "crew": "Drum&Beer · Alternative Area"
       }
     ]
+  },
+  {
+    "id": "bankizz-collab",
+    "name": {
+      "en": "Collaboration Party with Bankizz Records"
+    },
+    "date": "2026-11-20",
+    "venue": "Barrio Brussels",
+    "description": {
+      "en": "Spiral Cactus × Bankizz Records join forces on 20 November 2026 at Barrio Brussels** for a special underground electronic music collaboration. Expect a night rooted in Brussels rave culture, alternative sounds and independent electronic music. **Line-up and tickets coming soon.**"
+    },
+    "poster": "assets/posters/monochrome-cosmic-collaboration-party-flyer.png"
   }
 ]
