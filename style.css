@@ -488,3 +488,8 @@ body[data-page="event"] .ticket-embed{max-width:950px;margin:0 auto 80px}
 
 /* Event videos share the event photo grid; video ranges stream from R2. */
 .gallery-video-item video{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:#050608}
+
+/* Direct per-photo/video download control for both local and R2 media. */
+.gallery-item figcaption{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.gallery-download{display:inline-flex;align-items:center;white-space:nowrap;font-weight:750;color:var(--lime);text-decoration:none;padding:3px 0}
+.gallery-download:hover{text-decoration:underline}
