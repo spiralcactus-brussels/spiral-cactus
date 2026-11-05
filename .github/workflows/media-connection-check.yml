@@ -32,4 +32,23 @@ jobs:
               exit 1
             fi
           done
-          echo "Cloudflare R2 Worker public endpoints are responding correctly."
+          echo "Checking browser preflight for Authorization header"
+          preflight_status=$(curl --silent --show-error --max-time 15 -X OPTIONS \
+            -H "Origin: https://spiralcactus.be" \
+            -H "Access-Control-Request-Method: GET" \
+            -H "Access-Control-Request-Headers: authorization" \
+            -D /tmp/preflight-headers -o /tmp/preflight-response \
+            -w "%{http_code}" "$BASE/api/auth")
+          cat /tmp/preflight-headers
+          test "$preflight_status" = "204" || { echo "::error::CORS preflight HTTP $preflight_status"; exit 1; }
+          grep -iq "access-control-allow-origin: https://spiralcactus.be" /tmp/preflight-headers || { echo "::error::Missing CORS origin header"; exit 1; }
+          grep -iq "access-control-allow-headers:.*Authorization" /tmp/preflight-headers || { echo "::error::Missing Authorization preflight header"; exit 1; }
+          echo "Checking rejected login with an invalid, non-secret test credential"
+          wrong_status=$(curl --silent --show-error --max-time 15 \
+            -H "Origin: https://spiralcactus.be" \
+            -H "Authorization: Bearer intentionally-invalid-test-secret-000000" \
+            -D /tmp/auth-headers -o /tmp/auth-response -w "%{http_code}" "$BASE/api/auth")
+          echo "Invalid login -> HTTP $wrong_status (expected 401)"
+          test "$wrong_status" = "401" || { echo "::error::Unexpected login response HTTP $wrong_status"; exit 1; }
+          grep -iq "access-control-allow-origin: https://spiralcactus.be" /tmp/auth-headers || { echo "::error::Authentication response lacks CORS header"; exit 1; }
+          echo "Cloudflare Worker, R2, browser CORS and login protection passed."
