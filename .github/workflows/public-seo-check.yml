@@ -1,0 +1,36 @@
+name: SpiralCactus public SEO availability
+on:
+  push:
+    paths:
+      - robots.txt
+      - sitemap.xml
+      - index.html
+      - .github/workflows/public-seo-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check public website, robots.txt and XML sitemap
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in "/" "/sitemap.xml" "/robots.txt"; do
+            url="https://spiralcactus.be${path}"
+            http=$(curl --silent --show-error --location --max-time 25 \
+              --user-agent "Googlebot" --output /tmp/seo-response --write-out "%{http_code}" "$url") || {
+                echo "::error::Cannot reach $url"
+                exit 1
+              }
+            echo "$url -> HTTP $http"
+            test "$http" = "200" || { echo "::error::HTTP $http for $url"; exit 1; }
+            case "$path" in
+              /) grep -qi "<title>" /tmp/seo-response || exit 1 ;;
+              /sitemap.xml) grep -q "<urlset" /tmp/seo-response || exit 1 ;;
+              /robots.txt) grep -q "Sitemap: https://spiralcactus.be/sitemap.xml" /tmp/seo-response || exit 1 ;;
+            esac
+          done
+          echo "Public indexing basics are accessible."
