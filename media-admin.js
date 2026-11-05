@@ -87,13 +87,30 @@
       opt.textContent=(event.name?.fr||event.name?.en||event.id)+" · "+event.date;
       $("album").append(opt);
     }
-    $("album").value=events.find(e=>e.id==="acid-edition")?.gallery||$("album").value;
+    const savedAlbum=localStorage.getItem("sc-media-album");
+    const defaultAlbum=events.find(e=>e.id==="acid-edition")?.gallery;
+    if(savedAlbum&&[...$("album").options].some(opt=>opt.value===savedAlbum)){
+      $("album").value=savedAlbum;
+    }else if(defaultAlbum){
+      $("album").value=defaultAlbum;
+    }
     updateGalleryLink();
   }).catch(()=>status("Impossible de charger la liste des événements.",true));
   const updateGalleryLink=()=>{
     $("open-gallery").href="gallery.html?event="+encodeURIComponent($("album").value);
   };
-  $("album").addEventListener("change",()=>{updateGalleryLink(); if(ready)refreshAlbum();});
+  $("album").addEventListener("change",()=>{
+    if(processing)return;
+    localStorage.setItem("sc-media-album",$("album").value);
+    updateGalleryLink();
+    // Never carry a previous party's selected files into a newly selected album.
+    selected=[];
+    $("media-files").value="";
+    $("files-list").replaceChildren();
+    $("upload").disabled=true;
+    status("Événement sélectionné : "+$("album").selectedOptions[0]?.textContent+". Sélectionnez les nouvelles photos ou vidéos.");
+    if(ready)refreshAlbum();
+  });
   function updateSelection(files){
     selected=[...files];
     $("files-list").replaceChildren();
@@ -237,7 +254,7 @@
   $("upload").addEventListener("click",async()=>{
     if(!ready||processing)return;
     if(!$("album").value){status("Choisissez d'abord un événement.",true);return}
-    processing=true;$("upload").disabled=true;$("connect").disabled=true;
+    processing=true;$("upload").disabled=true;$("connect").disabled=true;$("album").disabled=true;
     $("progress").classList.remove("hidden");
     let done=0,fail=0;
     try {
@@ -257,7 +274,15 @@
         (done?" Les médias sont consultables dans la galerie de l'événement.":""),
         fail>0);
     }finally{
-      processing=false;$("upload").disabled=selected.length===0;$("connect").disabled=false;
+      processing=false;$("connect").disabled=false;$("album").disabled=false;
+      // A successfully published batch must not remain queued for the next event.
+      // Keep the file selection only after failures so the user can investigate or retry.
+      if(fail===0){
+        selected=[];
+        $("media-files").value="";
+        $("files-list").replaceChildren();
+      }
+      $("upload").disabled=!ready||selected.length===0;
       if(done)refreshAlbum();
     }
   });
