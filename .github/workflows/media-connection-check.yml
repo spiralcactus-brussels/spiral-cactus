@@ -1,0 +1,35 @@
+name: Cloudflare media connection check
+on:
+  push:
+    paths:
+      - media-config.js
+      - .github/workflows/media-connection-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify Worker API, R2 access and login protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://raspy-butterfly-c811.spiralcactus24.workers.dev"
+          echo "Checking public Worker at $BASE"
+          for entry in "health:200" "api/gallery:200" "api/auth:401"; do
+            endpoint="${entry%:*}"
+            expected="${entry##*:}"
+            http_status=$(curl --silent --show-error --location --max-time 15 \
+              --header "Origin: https://spiralcactus.be" \
+              --output /tmp/worker-response --write-out "%{http_code}" \
+              "$BASE/$endpoint") || { echo "::error::Unable to reach /$endpoint"; exit 1; }
+            echo "/$endpoint -> HTTP $http_status (expected $expected)"
+            cat /tmp/worker-response; echo
+            if [ "$http_status" != "$expected" ]; then
+              echo "::error::Cloudflare Worker /$endpoint returned HTTP $http_status, expected $expected"
+              exit 1
+            fi
+          done
+          echo "Cloudflare R2 Worker public endpoints are responding correctly."
