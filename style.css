@@ -139,53 +139,12 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 .blog-card .blog-cover{aspect-ratio:16/9;max-height:none;object-fit:cover;margin:0 0 16px}
 
 
-/* SpiralCactus members: account portal and upcoming community program */
-.member-home-cta{padding-top:45px;padding-bottom:90px}
-.member-home-inner{border:1px solid #586c31;background:linear-gradient(110deg,#181e17,#101315);padding:30px 35px;display:flex;align-items:center;gap:25px;justify-content:space-between}
-.member-home-inner h2{font:800 clamp(38px,5vw,68px)/1 var(--display);margin:12px 0}
-.member-home-inner p{color:var(--muted);max-width:590px;margin:0}
-.member-home-inner .btn{white-space:nowrap}
-.member-intro{padding-bottom:38px}
-.member-intro h1{font:800 clamp(56px,8.5vw,122px)/.9 var(--display);margin:16px 0 25px;max-width:1000px}
-.member-intro>.lead{max-width:770px}
-.member-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:45px}
-.member-benefit{background:#141820;border:1px solid var(--line);padding:25px;min-height:212px}
-.member-benefit .num{font-weight:800;color:var(--lime)}
-.member-benefit h2{font:800 33px/1.04 var(--display);margin:16px 0 8px}
-.member-benefit p{color:var(--muted);margin:0;font-size:14px}
-.member-area{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.74fr);gap:28px;padding-top:24px;padding-bottom:95px;align-items:start}
-.member-card,.member-news-side{border:1px solid var(--line);background:#12151b;padding:31px}
-.member-card h2,.member-news-side h2{font:800 clamp(38px,5vw,58px)/1 var(--display);margin:0 0 25px}
-.member-news-side{background:linear-gradient(155deg,#172016,#101319)}
-.member-news-side .eyebrow{color:var(--lime)}
-.member-news-side p{color:var(--muted)}
-.member-tabs{display:flex;gap:6px;margin-bottom:22px}
-.member-tab{background:#1b1e26;border:1px solid var(--line);color:var(--text);cursor:pointer;padding:11px 16px;flex:1;font-weight:800}
-.member-tab.selected{border-color:var(--lime);color:var(--lime)}
-#member-auth-form,#member-recovery-form,#member-profile-form{display:grid;gap:16px}
-.member-card label{display:grid;gap:6px;font-size:13px;font-weight:700}
-.member-card input:not([type=checkbox]){border:1px solid #525863;background:#090b0e;color:var(--text);padding:14px 13px;width:100%;border-radius:3px}
-.member-choice{display:flex!important;flex-direction:row;align-items:flex-start;gap:10px!important;font-weight:400!important;color:var(--muted);line-height:1.55}
-.member-choice input{width:18px;height:18px;flex-shrink:0;accent-color:var(--lime);margin:3px 0}
-.member-status{margin:12px 0 0;padding:12px 14px;border:1px solid #55663d;background:#1f281a;color:#d9f5ae}
-.member-status[data-state=error]{border-color:#985343;background:#2d1919;color:#ffc6ad}
-.member-link-button{background:none;border:none;color:var(--lime);font:700 13px Inter,Arial,sans-serif;cursor:pointer;text-decoration:underline;padding:14px 0 0;text-align:left}
-.member-privacy{margin-top:23px;color:var(--muted)}
-.member-identity{font-size:20px;font-weight:700;overflow-wrap:anywhere}
-.member-muted{padding:16px;border-left:2px solid var(--lime);background:#1b2022;color:var(--muted)}
-#member-newsletter-embed iframe{width:100%;height:440px;border:0;background:#fff}
-@media(max-width:850px){.member-area{grid-template-columns:1fr}.member-benefits{grid-template-columns:1fr}.member-benefit{min-height:0}.member-home-inner{align-items:flex-start;flex-direction:column}.member-card,.member-news-side{padding:23px}}
-@media(max-width:480px){.member-intro h1{font-size:59px}.member-home-inner{padding:23px}.member-benefit h2{font-size:28px}}
-
 /* Experiences is a section inside Discover Us, accessible with #experiences. */
 .discover-experiences{border-top:1px solid var(--line);padding-top:64px;padding-bottom:100px;scroll-margin-top:82px}
 .discover-experiences .experiences-heading{font:800 clamp(54px,9vw,110px)/.96 var(--display);margin:14px 0 20px}
 .discover-experiences > .lead{max-width:900px;margin-bottom:35px}
 .discover-experiences .mission-panel{margin-top:60px}
 @media(max-width:800px){.discover-experiences{padding-top:52px;padding-bottom:65px}.discover-experiences .experiences-heading{font-size:clamp(52px,11vw,80px)}}
-
-/* Keep sign-up tab visibly inactive until email confirmation is deliverable. */
-.member-tab:disabled{cursor:not-allowed;opacity:.55}
 
 /* Two clear editorial chapters for Discover Us: present -> future. */
 .discover-today{padding-top:74px;padding-bottom:100px;scroll-margin-top:80px}
@@ -217,90 +176,16 @@ body,.site-header,.links,.pill,.btn,.card,.archive-card,.eventbox,.manifesto,
 @media(max-width:800px){.discover-today{padding-top:45px;padding-bottom:66px}.discover-future-opening{padding-top:64px}.discover-today h1,.discover-future-heading{font-size:clamp(61px,12vw,96px)}.discover-values-grid{grid-template-columns:1fr}.discover-value{min-height:0}.discover-future-note{grid-template-columns:1fr;gap:8px}.discover-philosophy{margin-top:65px}}
 @media(max-width:480px){.discover-chapter-marker{margin-bottom:28px}.discover-today h1,.discover-future-heading{font-size:clamp(54px,12.5vw,74px)}.discover-value{padding:19px}}
 
-/* Only personal member accounts are offered until the email services are configured. */
-body[data-page="members"] .member-area{grid-template-columns:minmax(0,1fr);max-width:860px;margin-inline:auto}
-body[data-page="members"] .member-news-side[hidden]{display:none!important}
-
 /* Clear title hierarchy: only the two chapter titles use full display scale. */
 .discover-experiences .experiences-heading{font:800 clamp(43px,6vw,78px)/1.02 var(--display);letter-spacing:.01em}
 @media(max-width:800px){.discover-experiences .experiences-heading{font-size:clamp(42px,8.2vw,67px)}}
 @media(max-width:480px){.discover-experiences .experiences-heading{font-size:clamp(38px,10vw,56px)}}
-
-/* SpiralCactus member dashboard — signed-in only. */
-body[data-page="members"].member-logged-in .member-intro{display:none}
-body[data-page="members"].member-logged-in .member-area{max-width:1220px;grid-template-columns:minmax(0,1fr);padding-top:55px}
-body[data-page="members"].member-logged-in .member-card{background:linear-gradient(140deg,#151a1b,#111319);padding:38px}
-body[data-page="members"].member-logged-in #member-area-heading{font-size:clamp(46px,5.8vw,82px);margin-bottom:35px}
-.member-dashboard-head{display:flex;gap:22px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:30px}
-.member-avatar{height:86px;width:86px;border-radius:50%;display:grid;place-items:center;background:var(--lime);font:800 29px/1 var(--modular);color:#10140e;flex-shrink:0}
-.member-dashboard-welcome{flex:1;min-width:0}
-.member-dashboard-welcome .eyebrow{margin:0 0 8px}
-.member-greeting{font-size:clamp(28px,3.7vw,50px);margin:0 0 8px}
-.member-identity{font-size:14px;margin:0;color:#e0e4e6}
-.member-since{margin:4px 0 0;color:var(--muted);font-size:13px}
-.member-signout-top{margin:0 0 0 auto;white-space:nowrap;align-self:flex-start}
-.member-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:25px 0 32px}
-.member-stat{padding:25px 22px;background:#0c1112;border:1px solid #303a36;display:grid;gap:10px}
-.member-stat-num{font:800 clamp(40px,5vw,68px)/1 var(--display);color:var(--lime)}
-.member-stat>span:last-child{font-size:11px;letter-spacing:.12em;font-weight:800;color:#bcc3c6}
-.member-dash-nav{display:flex;gap:2px;border-bottom:1px solid #3c4543;flex-wrap:wrap}
-.member-dash-nav button{appearance:none;border:0;border-bottom:3px solid transparent;background:transparent;color:#b5bdbe;padding:17px 20px;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.1em}
-.member-dash-nav button.selected,.member-dash-nav button[aria-selected=true]{color:var(--lime);border-bottom-color:var(--lime)}
-.member-dash-nav button:hover{color:#fff}
-.member-dash-panel{padding:40px 0 12px}
-.member-panel-header .eyebrow{margin:0}
-.member-panel-header h3{font-size:clamp(30px,4.5vw,52px);margin:10px 0 22px}
-.member-panel-second{margin-top:45px;border-top:1px solid var(--line);padding-top:28px}
-.member-event-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.member-event-card{display:grid;grid-template-columns:114px minmax(0,1fr);gap:17px;border:1px solid var(--line);background:#101419;padding:15px;align-items:start}
-.member-event-poster{width:114px;aspect-ratio:3/4;object-fit:cover;background:#26282e;border:1px solid #30363c;border-radius:2px}
-.member-event-body{min-width:0}
-.member-event-tag{font-size:10px;font-weight:800;color:var(--lime);letter-spacing:.15em}
-.member-event-name{font:800 clamp(22px,2.3vw,31px)/1.06 var(--display);margin:9px 0}
-.member-event-meta{font-size:12px;color:#c1c7c8;line-height:1.6;margin:0 0 9px}
-.member-event-note{font-size:12px;color:#9ea9a9;margin:8px 0}
-.member-event-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
-.member-event-actions .btn{font-size:10px;padding:10px 11px;letter-spacing:.06em}
-.member-saved{background:transparent;color:var(--lime);border-color:var(--lime)}
-.member-event-actions button:disabled{opacity:.55;cursor:wait}
-.member-empty{padding:25px;border:1px dashed #4a5351;background:#101616;color:#c0c7c7;grid-column:1/-1;margin:0}
-.member-all-events{margin-top:23px}
-.member-explainer{color:var(--muted);max-width:800px;margin:-8px 0 25px;line-height:1.65}
-.member-ticket-placeholder{border:1px solid #435b38;background:radial-gradient(circle at 95% 5%,#b7ff2216,transparent 52%),#111914;padding:clamp(25px,4vw,55px);max-width:900px}
-.member-ticket-symbol{font:800 100px/.8 var(--display);color:var(--lime);margin:15px 0}
-.member-ticket-placeholder h3{font-size:clamp(40px,5vw,74px);margin:15px 0 18px}
-.member-ticket-placeholder p{color:#c9d0cb;max-width:690px;line-height:1.75}
-.member-ticket-placeholder .btn{margin-top:12px}
-.member-profile-panel{max-width:720px}
-.member-profile-panel form{padding:22px;border:1px solid var(--line);background:#0b0f11}
-@media(max-width:850px){
-  .member-event-list{grid-template-columns:1fr}
-  .member-dash-nav button{padding:14px 12px;flex:1 1 45%}
-}
-@media(max-width:620px){
-  body[data-page="members"].member-logged-in .member-area{padding:25px 14px 50px}
-  body[data-page="members"].member-logged-in .member-card{padding:20px}
-  .member-dashboard-head{flex-wrap:wrap;gap:13px}
-  .member-avatar{height:60px;width:60px;font-size:23px}
-  .member-signout-top{margin:0 0 0 auto}
-  .member-summary{gap:7px}
-  .member-stat{padding:13px 10px;gap:5px}
-  .member-stat-num{font-size:37px}
-  .member-stat>span:last-child{font-size:9px;letter-spacing:.04em}
-  .member-event-card{grid-template-columns:86px minmax(0,1fr);gap:12px;padding:12px}
-  .member-event-poster{width:86px}
-  .member-dash-panel{padding-top:28px}
-}
-@media(max-width:380px){.member-event-card{grid-template-columns:1fr}.member-event-poster{width:100%;max-width:130px}}
-
 
 /* Release 01 — event-led editorial site, usable on desktop and mobile. */
 .site-header{z-index:60}
 .site-header nav{max-width:1400px}
 .site-header .links{gap:clamp(14px,1.6vw,27px);align-items:center}
 .site-header .links>a{font-size:12px}
-.site-header .links>a[href="members.html"]{border:1px solid #617d3b;color:var(--lime);padding:11px 15px}
-.site-header .links>a[href="members.html"]:hover{background:#b7ff2220}
 .nav-more{position:relative;flex-shrink:0}
 .nav-more summary{list-style:none;cursor:pointer;color:#bfc1c7;font-size:12px;font-weight:800;letter-spacing:.1em;padding:10px 12px;border:1px solid #333c3d;user-select:none}
 .nav-more summary::-webkit-details-marker{display:none}
@@ -415,7 +300,6 @@ body[data-page="members"].member-logged-in #member-area-heading{font-size:clamp(
 body[data-page="event"] .ticket-embed{max-width:950px;margin:0 auto 80px}
 @media(max-width:1180px){
  .site-header .links{gap:8px}
- .site-header .links>a[href="members.html"]{border:1px solid #617d3b}
  .nav-more{width:100%}
  .nav-more summary{padding:13px;margin-top:5px}
  .nav-extra{position:static;margin-top:8px;width:100%;box-shadow:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}

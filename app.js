@@ -299,8 +299,7 @@
       +(a.genre||a.crew?'<small>'+esc(a.genre||a.crew)+'</small>':'')+'</div></li>').join('');
     const calendarAction=!historical && eventCalendar(e)
       ? '<button class="btn alt" id="event-calendar" type="button">'+esc(t('eventDetailCalendar'))+'</button>' : '';
-    const ctas=calendarAction+'<a class="btn alt" href="gallery.html?event='+encodeURIComponent(e.gallery)+'">'+esc(t('eventDetailPhotos'))+'</a>'
-      +(!historical?'<a class="btn alt" href="members.html">'+esc(t('memberProfileTab'))+' ↗</a>':'');
+    const ctas=calendarAction+'<a class="btn alt" href="gallery.html?event='+encodeURIComponent(e.gallery)+'">'+esc(t('eventDetailPhotos'))+'</a>';
     const checkout=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('eventDetailTicketShop'))+'</a>':'';
     const dates='<div><span class="eyebrow">'+esc(t('eventInfoWhen'))+'</span><strong>'+esc(fullDate(e.date))+'</strong></div>'
       +'<div><span class="eyebrow">'+esc(t('eventInfoWhere'))+'</span><strong>'+esc(e.venue||'')+'</strong></div>'

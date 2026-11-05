@@ -12,7 +12,7 @@ check_domain = "spiralcactus.be"
 PAGES = ["index.html","discover.html","events.html","event.html",
          "event-acid-edition.html","event-first-rave.html",
          "calendar.html","gallery.html","radio.html","artists.html",
-         "blog.html","shop.html","contact.html","members.html"]
+         "blog.html","shop.html","contact.html"]
 assert (ROOT / "CNAME").read_text().strip() == check_domain, "GitHub Pages custom domain mismatch"
 errors = []
 warnings = []
@@ -75,7 +75,7 @@ for name in PAGES:
         if path and not (ROOT/path).is_file():
             errors.append(f"{name}: broken {attr}={url}")
 
-for js in ("app.js","radio.js","i18n.js","members.js","members-config.js","member-dashboard.js","media-admin.js","media-config.js","media-worker/src/index.js"):
+for js in ("app.js","radio.js","i18n.js","media-admin.js","media-config.js","media-worker/src/index.js"):
     result=subprocess.run(["node","--check",str(ROOT/js)],capture_output=True,text=True)
     check(result.returncode==0,f"{js}: syntax check")
     if result.returncode:errors.append(result.stderr[:1500])
@@ -159,12 +159,6 @@ if not json.loads((ROOT/"content/blog.json").read_text()):
     warnings.append("Blog has no published articles")
 if not json.loads((ROOT/"content/shop.json").read_text()):
     warnings.append("Shop has no published products (expected until checkout is configured)")
-# A signup form needs to be exposed; Supabase itself authorizes account creation.
-member_js=(ROOT/"members.js").read_text()
-member_config=(ROOT/"members-config.js").read_text()
-check("registrationOpen: true" in member_config, "Members: sign-up form enabled")
-check("auth.signUp(" in member_js and "auth.signInWithPassword(" in member_js, "Members: signup and login actions present")
-check("/auth/v1/settings" not in member_js, "Members: no fragile browser authentication-settings gate")
 # Release 01: all visible navigation routes, dynamic event details and fallbacks.
 home=(ROOT/"index.html").read_text()
 detail=(ROOT/"event.html").read_text()
@@ -178,18 +172,15 @@ check('id="featured-event"' in event_page and 'id="event-list"' in event_page, "
 for name in PAGES:
     page_html=(ROOT/name).read_text()
     check('<details class="nav-more">' in page_html, f"{name}: secondary navigation works")
-    check('href="members.html"' in page_html, f"{name}: membership access remains visible")
+    check('href="members.html"' not in page_html, f"{name}: no removed membership link")
 check(len({e["id"] for e in events})==len(events), "Events have unique IDs for landing-page links")
 check(all(re.fullmatch(r"[a-z0-9-]{1,100}",e["id"]) for e in events), "Event IDs safe for deep links")
 
-dashboard_js=(ROOT/"member-dashboard.js").read_text()
-member_page=(ROOT/"members.html").read_text()
-check('src="member-dashboard.js"' in member_page, "Members: dashboard script loaded")
-check(all('id="member-panel-'+p+'"' in member_page for p in ("overview","events","tickets","profile")), "Members: four personalized dashboard tabs")
-check("member_saved_events" in dashboard_js, "Members: saved event integration uses secure database")
-check("Tickets are currently issued by WeTicket" in member_page, "Members: ticket status is explicit and not fabricated")
-check((ROOT/"member-dashboard.js").is_file(), "Members: dashboard script file exists")
-
+# Membership portal has been removed. Editorial Community remains public.
+for old_member_file in ("members.html", "members.js", "members-config.js", "member-dashboard.js"):
+    check(not (ROOT/old_member_file).exists(), f"{old_member_file}: member portal removed")
+check('href="members.html"' not in app, "Event detail: no member dashboard action")
+check('member-home-cta' not in home, "Homepage: no signup call to action")
 
 check("eventCalendar(e)" in (ROOT/"app.js").read_text(), "Event detail: timezone-aware calendar action")
 check("DTSTART;TZID=Europe/Brussels" in (ROOT/"app.js").read_text(), "Event calendars: Brussels local timezone")

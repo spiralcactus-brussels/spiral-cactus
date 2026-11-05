@@ -64,7 +64,6 @@ body[data-page=event] .detail-artist-list strong{font-size:clamp(27px,3vw,39px)}
 .site-header .links>a[href="radio.html"]{order:2}
 .site-header .links>a[href="discover.html"]{order:3}
 .site-header .links>a[href="artists.html"]{order:4}
-.site-header .links>a[href="members.html"]{order:5}
 .site-header .links>.nav-more{order:6}
 @media(max-width:1180px){.site-header .links:not(.opened){display:none}.site-header .links.opened{display:flex}}
 
