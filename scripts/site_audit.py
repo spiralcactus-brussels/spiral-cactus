@@ -9,6 +9,11 @@ from urllib.parse import urlsplit, unquote
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://spiralcactus.be/"
 check_domain = "spiralcactus.be"
+# Public crawler discovery: keep public pages crawlable and advertise the sitemap.
+robots_file = ROOT / "robots.txt"
+assert robots_file.is_file(), "robots.txt missing: sitemap discovery is not advertised"
+robots_text = robots_file.read_text()
+assert "User-agent: *" in robots_text and "Sitemap: https://spiralcactus.be/sitemap.xml" in robots_text, "robots.txt sitemap/crawler rules incorrect"
 PAGES = ["index.html","discover.html","events.html","event.html",
          "event-acid-edition.html","event-first-rave.html",
          "calendar.html","gallery.html","radio.html","artists.html",
