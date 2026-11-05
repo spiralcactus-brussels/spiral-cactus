@@ -28,17 +28,33 @@
   async function jsonRequest(method,path,payload){
     const headers={...credentials()};
     if(payload!==undefined)headers["Content-Type"]="application/json";
-    const response=await fetch(checkBase()+path,{
-      method,headers,body:payload===undefined?undefined:JSON.stringify(payload),cache:"no-store"
-    });
+    let response;
+    try {
+      response=await fetch(checkBase()+path,{
+        method,headers,body:payload===undefined?undefined:JSON.stringify(payload),cache:"no-store"
+      });
+    }catch(error){
+      throw new Error("Impossible de joindre le serveur depuis ce navigateur (réseau ou CORS). Vérifie l'URL Cloudflare.",{cause:error});
+    }
     const data=await response.json().catch(()=>({}));
-    if(!response.ok)throw Error(data.error||("HTTP "+response.status));
+    if(!response.ok){
+      const error=new Error(data.error||("Réponse HTTP "+response.status));
+      error.httpStatus=response.status;
+      throw error;
+    }
     return data;
   }
   async function connect(){
     try {
+      const base=checkBase();
+      $("connection-status").textContent="Vérification…";
+      const probe=await fetch(base+"/health",{cache:"no-store"});
+      const health=await probe.json().catch(()=>({}));
+      if(!probe.ok||health.service!=="SpiralCactus media"){
+        throw new Error("Serveur accessible, mais l'API SpiralCactus n'est pas reconnue. Vérifie le code Worker déployé.");
+      }
       await jsonRequest("GET","/api/auth");
-      ready=true;localStorage.setItem("sc-media-api",checkBase());
+      ready=true;localStorage.setItem("sc-media-api",base);
       $("connection-status").textContent="✓ Connecté à Cloudflare";
       $("connection-status").style.color="#b7ff22";
       $("upload").disabled=selected.length===0;
@@ -46,9 +62,17 @@
       refreshAlbum();
     }catch(e){
       ready=false;$("upload").disabled=true;
-      $("connection-status").textContent="Connexion impossible";
       $("connection-status").style.color="#ff9b92";
-      status(e.message,true);
+      if(e.httpStatus===401){
+        $("connection-status").textContent="Mot de passe refusé (401)";
+        status("Le serveur fonctionne, mais le mot de passe n'a pas été accepté. Dans Cloudflare : Worker → Settings → Variables and Secrets → SC_MEDIA_ADMIN_TOKEN (type Secret, environnement Production). En cas de doute, remplace le secret par un nouveau mot de passe d'au moins 32 caractères, enregistre et déploie. Utilise exactement ce mot de passe ici.",true);
+      }else if(e.httpStatus===403){
+        $("connection-status").textContent="Origine refusée (403)";
+        status("Le Worker refuse l'origine de la page. Ouvre bien l'administration sur https://spiralcactus.be/media-admin.html.",true);
+      }else{
+        $("connection-status").textContent="Connexion impossible";
+        status("Diagnostic : "+(e.message||"Erreur inconnue"),true);
+      }
     }
   }
   const currentAPI=(window.SC_MEDIA_CONFIG?.apiBase||"").trim();
