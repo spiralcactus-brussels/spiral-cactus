@@ -109,7 +109,7 @@
     "gallery": "2026-11-20-bankizz-collab",
     "start": "22:00",
     "end": "07:00",
-    "ticket": "https://spiral-cactus.weticket.io/",
+    "ticket": "https://spiral-cactus.weticket.io/spiral-cactus-bankizz-records-present-interzone",
     "artists": [
       {
         "name": "Hyzno & Pingu BKZ"
@@ -135,6 +135,7 @@
       {
         "name": "Entrax"
       }
-    ]
+    ],
+    "ticketEmbed": "https://spiral-cactus.weticket.io/spiral-cactus-bankizz-records-present-interzone/shop"
   }
 ]
