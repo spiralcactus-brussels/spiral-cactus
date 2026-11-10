@@ -99,17 +99,18 @@
       "nl": "Spiral Cactus × Bankizz Records presenteren INTERZONE"
     },
     "date": "2026-11-20",
+    "start": "22:00",
+    "end": "07:00",
     "venue": "Barrio Brussels",
     "description": {
       "en": "Spiral Cactus × Bankizz Records present INTERZONE, a collaboration built around the meeting point between different corners of the harder underground electronic scene. From hard techno and acid to DnB, neuro and jump-up, through acidcore, mentalcore, hardcore and breakcore, INTERZONE moves across styles while keeping a clear direction. The night brings both Brussels collectives together around sound, energy and progression, shifting between heavy bass, fast percussion, distorted textures and hypnotic pressure.",
       "fr": "Spiral Cactus × Bankizz Records présentent INTERZONE, une collaboration construite à la rencontre de différents univers de la scène électronique underground la plus intense. De la hard techno et de l’acid à la DnB, la neuro et au jump-up, en passant par l’acidcore, la mentalcore, le hardcore et le breakcore, INTERZONE traverse les styles tout en gardant une direction claire. La soirée réunit les deux collectifs bruxellois autour du son, de l’énergie et de la progression, entre basses lourdes, percussions rapides, textures distordues et pression hypnotique.",
       "nl": "Spiral Cactus × Bankizz Records presenteren INTERZONE, een samenwerking op het kruispunt van verschillende hoeken van de hardere underground elektronische scene. Van hard techno en acid tot DnB, neuro en jump-up, via acidcore, mentalcore, hardcore en breakcore beweegt INTERZONE tussen stijlen zonder zijn richting te verliezen. De avond brengt beide Brusselse collectieven samen rond sound, energie en opbouw, met zware bassen, snelle percussie, vervormde texturen en hypnotische druk."
     },
-    "poster": "assets/posters/monochrome-cosmic-collaboration-party-flyer.png",
+    "poster": "assets/posters/copy-of-black-and-white-modern-techno-party-instagram-story.png",
     "gallery": "2026-11-20-bankizz-collab",
-    "start": "22:00",
-    "end": "07:00",
     "ticket": "https://spiral-cactus.weticket.io/spiral-cactus-bankizz-records-present-interzone",
+    "ticketEmbed": "https://spiral-cactus.weticket.io/spiral-cactus-bankizz-records-present-interzone/shop",
     "artists": [
       {
         "name": "Hyzno & Pingu BKZ"
@@ -135,7 +136,6 @@
       {
         "name": "Entrax"
       }
-    ],
-    "ticketEmbed": "https://spiral-cactus.weticket.io/spiral-cactus-bankizz-records-present-interzone/shop"
+    ]
   }
 ]
