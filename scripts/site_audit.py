@@ -15,7 +15,7 @@ assert robots_file.is_file(), "robots.txt missing: sitemap discovery is not adve
 robots_text = robots_file.read_text()
 assert "User-agent: *" in robots_text and "Sitemap: https://spiralcactus.be/sitemap.xml" in robots_text, "robots.txt sitemap/crawler rules incorrect"
 PAGES = ["index.html","discover.html","events.html","event.html",
-         "event-acid-edition.html","event-first-rave.html",
+         "event-acid-edition.html","event-first-rave.html","event-hard-frequencies.html",
          "calendar.html","gallery.html","radio.html","artists.html",
          "blog.html","shop.html","contact.html"]
 assert (ROOT / "CNAME").read_text().strip() == check_domain, "GitHub Pages custom domain mismatch"
