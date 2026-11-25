@@ -1,5 +1,43 @@
 [
   {
+    "id": "hard-frequencies",
+    "name": {
+      "en": "Brussels Rave Night: Hard Frequencies",
+      "fr": "Brussels Rave Night : Hard Frequencies",
+      "nl": "Brussels Rave Night: Hard Frequencies"
+    },
+    "date": "2026-12-11",
+    "start": "22:00",
+    "end": "07:00",
+    "venue": "Barrio Brussels",
+    "description": {
+      "en": "Get ready for a night of heavy kicks, intense frequencies and pure underground energy! On December 11, Spiral Cactus takes over Barrio Brussels for 9 hours of uncompromising electronic music, featuring Hardcore, Mentalcore, Gabber, Acidtekno, Acidcore, Hardtekno and dark, industrial sounds. From hypnotic acid sequences to the hardest beats, let yourself be carried away on a musical journey through the most intense sides of the underground electronic music scene. No mainstream. No compromises. Just the raw energy of the underground.",
+      "fr": "Préparez-vous pour une nuit de kicks puissants, de fréquences intenses et de pure énergie underground ! Le 11 décembre, Spiral Cactus investit le Barrio Brussels pour 9 heures de musique électronique sans compromis, entre Hardcore, Mentalcore, Gabber, Acidtekno, Acidcore, Hardtekno et sonorités sombres et industrielles. Des séquences acid hypnotiques aux rythmes les plus percutants, embarquez pour un voyage à travers les facettes les plus intenses de la scène électronique underground. Pas de mainstream. Pas de compromis. Juste l’énergie brute de l’underground.",
+      "nl": "Maak je klaar voor een nacht vol zware kicks, intense frequenties en pure undergroundenergie! Op 11 december neemt Spiral Cactus Barrio Brussels over voor 9 uur compromisloze elektronische muziek, met Hardcore, Mentalcore, Gabber, Acidtekno, Acidcore, Hardtekno en donkere, industriële sounds. Van hypnotiserende acidsequenties tot de hardste beats: laat je meeslepen op een muzikale reis door de meest intense kanten van de elektronische undergroundscene. Geen mainstream. Geen compromissen. Alleen de rauwe energie van de underground."
+    },
+    "poster": "",
+    "gallery": "2026-12-11-hard-frequencies",
+    "ticket": "https://spiral-cactus.weticket.io/brussels-rave-night-hard-frequencies",
+    "artists": [
+      {
+        "name": "TERAMETH × ENTRAX × RZL",
+        "genre": "22:00–01:00 · B2B · Hardcore / Mentalcore / Gabber"
+      },
+      {
+        "name": "GANJAFLEXX × SOUL3D",
+        "genre": "01:00–04:00 · B2B · Acidtekno / Acidcore"
+      },
+      {
+        "name": "MINOPOLSKA",
+        "genre": "04:00–05:30 · Hardtekno"
+      },
+      {
+        "name": "INSOLENCE",
+        "genre": "05:30–07:00 · Dark / Insolent Techno"
+      }
+    ]
+  },
+  {
     "id": "acid-edition",
     "name": {
       "en": "Brussels Rave Night: Acid Edition",
