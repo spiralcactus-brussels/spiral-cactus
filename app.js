@@ -186,7 +186,7 @@
   // Release 01: a unified, event-first homepage and shareable event detail view.
   // Published editions get event-specific previews on social networks.
   // Future editions still work with the generic detail route until promoted.
-  const staticEventPages=new Set(['acid-edition','first-rave']);
+  const staticEventPages=new Set(['acid-edition','first-rave','hard-frequencies']);
   const eventUrl=e=>staticEventPages.has(e.id)
     ? 'event-'+e.id+'.html'
     : 'event.html?id='+encodeURIComponent(e.id);
