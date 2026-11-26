@@ -240,7 +240,17 @@
     const detail='<a class="btn alt" href="'+eventUrl(e)+'">'+esc(t(isUpcoming?'homeEventMore':'homePastEdition'))+'</a>';
     const ticket=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('homeTickets'))+'</a>':'';
     const update=isUpcoming?'':'<div class="home-stage-coming"><span class="eyebrow">'+esc(t('homeComingLabel'))+'</span><p>'+esc(t('homeComingText'))+'</p></div>';
-    return '<div class="home-feature-poster">'+posterImage(e,'home-feature-image','eager')+'</div>'
+    // The full portrait poster is kept on the event detail page. On the homepage,
+    // a readable artwork-backed hero avoids cropping the party title away.
+    const visual=e.id==='hard-frequencies' && e.poster
+      ? '<a class="home-feature-poster home-feature-poster--hard-frequencies" href="'+eventUrl(e)+'" aria-label="'+esc(title)+'">'
+        +'<img class="home-feature-image" src="'+esc(e.poster)+'" alt="" loading="eager" decoding="async">'
+        +'<div class="home-feature-visual-copy"><span class="home-feature-visual-kicker">SPIRAL CACTUS PRESENTS</span>'
+        +'<strong class="home-feature-visual-title">BRUSSELS<br>RAVE NIGHT</strong>'
+        +'<span class="home-feature-visual-subtitle">HARD FREQUENCIES</span>'
+        +'<span class="home-feature-visual-meta">11.12.2026 / BARRIO BRUSSELS</span></div></a>'
+      : '<div class="home-feature-poster">'+posterImage(e,'home-feature-image','eager')+'</div>';
+    return visual
       +'<div class="home-feature-copy">'+update+'<p class="eyebrow">'+esc(category)+'</p>'
       +'<h2>'+esc(title)+'</h2><p class="home-feature-meta">'+esc(dateAndVenue(e))+'</p>'
       +'<div class="home-feature-actions">'+ticket+detail+'</div></div>';
