@@ -123,3 +123,90 @@ body[data-page="index"] .home-stage:hover .home-feature-image{
     margin-inline:auto;
   }
 }
+
+
+/* HARD FREQUENCIES HOMEPAGE — responsive banner derived from the official poster. */
+body[data-page="index"] .home-feature-poster--hard-frequencies{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:350px;
+  overflow:hidden;
+  color:#f7f6ec;
+  text-decoration:none;
+  background:#080a0b;
+}
+body[data-page="index"] .home-feature-poster--hard-frequencies .home-feature-image{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 36%;
+  filter:blur(1.7px) brightness(.46) contrast(1.18) saturate(.82);
+  transform:scale(1.04);
+}
+body[data-page="index"] .home-feature-poster--hard-frequencies::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(180deg,rgba(0,0,0,.32),rgba(4,8,7,.40) 40%,rgba(4,8,6,.83));
+  pointer-events:none;
+}
+body[data-page="index"] .home-feature-visual-copy{
+  position:relative;
+  z-index:2;
+  width:100%;
+  padding:22px clamp(14px,3vw,34px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  text-align:center;
+  text-shadow:0 2px 18px rgba(0,0,0,.65);
+}
+body[data-page="index"] .home-feature-visual-kicker{
+  font:800 11px/1.2 Inter,Arial,sans-serif;
+  letter-spacing:.22em;
+}
+body[data-page="index"] .home-feature-visual-title{
+  font:900 clamp(43px,5.9vw,73px)/.87 var(--display);
+  letter-spacing:-.025em;
+  color:#f7f7ef;
+  text-transform:uppercase;
+}
+body[data-page="index"] .home-feature-visual-subtitle{
+  display:block;
+  max-width:100%;
+  padding:12px clamp(14px,3vw,28px) 11px;
+  background:var(--lime);
+  color:#070907;
+  font:900 clamp(19px,2.4vw,27px)/1 var(--modular);
+  letter-spacing:-.02em;
+  text-transform:uppercase;
+  text-shadow:none;
+}
+body[data-page="index"] .home-feature-visual-meta{
+  font:800 11px/1.1 Inter,Arial,sans-serif;
+  letter-spacing:.14em;
+}
+body[data-page="index"] .home-feature-poster--hard-frequencies:focus-visible{
+  outline:3px solid var(--lime);
+  outline-offset:-4px;
+}
+body[data-page="index"] .home-stage:hover .home-feature-poster--hard-frequencies .home-feature-image{
+  transform:scale(1.04);
+}
+@media(max-width:560px){
+  body[data-page="index"] .home-feature-poster--hard-frequencies{height:310px}
+  body[data-page="index"] .home-feature-visual-copy{gap:12px}
+  body[data-page="index"] .home-feature-visual-title{font-size:clamp(39px,12vw,62px)}
+  body[data-page="index"] .home-feature-visual-subtitle{font-size:clamp(17px,5vw,25px)}
+  body[data-page="index"] .home-feature-visual-kicker,
+  body[data-page="index"] .home-feature-visual-meta{font-size:10px}
+}
