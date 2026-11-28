@@ -39,10 +39,10 @@ function renderHardFrequencies(){
  el('hf-radio-count-label').textContent=c.count;
  list.innerHTML=hardFrequencies.artists.map((slot,i)=>{
   const rawGenre=String(slot.genre||'');
-  const matched=rawGenre.match(/^(\\d{2}:\\d{2}[–-]\\d{2}:\\d{2})\\s*·\\s*(.*)$/);
+  const matched=rawGenre.match(/^(\d{2}:\d{2}[–-]\d{2}:\d{2})\s*·\s*(.*)$/);
   const time=matched?matched[1]:'';
   const genre=matched?matched[2]:rawGenre;
-  const acts=String(slot.name).split(/\\s*×\\s*/).filter(Boolean);
+  const acts=String(slot.name).split(/\s*×\s*/).filter(Boolean);
   const buttons=acts.map(name=>{
    const index=items.findIndex(item=>hfArtistKey(item.artist)===hfArtistKey(name));
    if(index>=0)return '<button type="button" class="hf-radio-play" data-hf-index="'+index+'" title="'+escapeHtml(items[index].title)+'"><span>'+escapeHtml(name)+'</span><strong>'+escapeHtml(c.listen)+'</strong></button>';
