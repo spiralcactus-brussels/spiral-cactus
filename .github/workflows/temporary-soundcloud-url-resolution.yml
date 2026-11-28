@@ -8,23 +8,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Inspect public track metadata
+      - name: Extract public SoundCloud hydration metadata
         shell: bash
         run: |
           python3 - <<'PY'
-          import urllib.request, re, json, html
+          import urllib.request, re, json
           for label,url in [('ENTRAX','https://soundcloud.com/noe-huvenne/tracks'),('TERAHMET','https://soundcloud.com/math-o-declercq/tracks')]:
               print('===',label,'===')
               req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
               try:
                   content=urllib.request.urlopen(req,timeout=22).read().decode('utf-8','replace')
-                  print('HTML LENGTH',len(content))
-                  for match in re.findall(r'<title[^>]*>(.*?)</title>',content,re.S|re.I)[:1]: print('TITLE',html.unescape(match[:200]))
-                  for marker in ('__sc_hydration', 'track_list', 'og:title', 'soundcloud.com/'+url.split('/')[3]+'/'):
-                      print('MARKER',marker,'COUNT',content.count(marker))
-                  matches=list(dict.fromkeys(re.findall(r'https?://(?:www\\.)?soundcloud\\.com/[^"\\s<>\\\\]+',html.unescape(content))))
-                  print('URLS',json.dumps(matches[:25],ensure_ascii=False))
-                  at=content.find('__sc_hydration')
-                  if at>=0: print('HYDRATION HEAD',content[at:at+2500].replace('\\n',' ')[:2500])
+                  match=re.search(r'__sc_hydration\\s*=\\s*(\\[.*?\\]);',content,re.S)
+                  print('HYDRATION FOUND',bool(match))
+                  if match:
+                      records=json.loads(match.group(1))
+                      print('TYPES',[a.get('hydratable') for a in records])
+                      for record in records:
+                          name=record.get('hydratable')
+                          data=record.get('data')
+                          if name not in ('features','anonymousId','experiments','locale','clientId'):
+                              print('RECORD',name,'TYPE',type(data).__name__,'KEYS',list(data.keys())[:30] if isinstance(data,dict) else 'NA')
+                              if isinstance(data,dict):
+                                  print('SELECT',json.dumps({k:data.get(k) for k in ('id','username','permalink','permalink_url','track_count','playlist_count','title','kind','uri') if k in data},ensure_ascii=False))
+                              if isinstance(data,list):
+                                  print('LIST_HEAD',json.dumps(data[:2],ensure_ascii=False)[:500])
               except Exception as e: print('ERROR',str(e))
           PY
