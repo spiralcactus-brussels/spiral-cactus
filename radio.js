@@ -42,7 +42,7 @@ const hfCopy={
 const hfArtistKey=s=>String(s||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
 const hfExternalSources={
  terameth:'https://on.soundcloud.com/umyv5NWO87b38yBsZB',
- entrax:'https://soundcloud.com/noe-huvenne'
+ entrax:'https://on.soundcloud.com/hZPLPbmZfruOXu0zEh'
 };
 
 function renderHardFrequencies(){
