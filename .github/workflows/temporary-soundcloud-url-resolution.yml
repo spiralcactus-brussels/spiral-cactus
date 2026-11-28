@@ -1,21 +1,30 @@
-name: Resolve SoundCloud preview links (temporary)
+name: Inspect artist SoundCloud profiles (temporary)
 on:
   push:
     paths:
       - '.github/workflows/temporary-soundcloud-url-resolution.yml'
-  workflow_dispatch:
 jobs:
-  soundcloud-links:
+  inspect:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Resolve two artist-provided SoundCloud links
+      - name: Inspect public track metadata
         shell: bash
         run: |
-          for pair in 'ENTRAX|https://on.soundcloud.com/hZPLPbmZfruOXu0zEh' 'TERAHMET|https://on.soundcloud.com/1yiu9aixukxrySTL2U'; do
-            name="${pair%%|*}"
-            link="${pair#*|}"
-            echo "=== START ${name} ==="
-            curl --location --silent --show-error --max-time 25 -A 'Mozilla/5.0' --output /dev/null --write-out 'STATUS:%{http_code} FINAL:%{url_effective} REDIRECTS:%{num_redirects}\\n' "$link" || true
-            echo "=== END ${name} ==="
-          done
+          python3 - <<'PY'
+          import urllib.request, re, json, html
+          for label,url in [('ENTRAX','https://soundcloud.com/noe-huvenne/tracks'),('TERAHMET','https://soundcloud.com/math-o-declercq/tracks')]:
+              print('===',label,'===')
+              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
+              try:
+                  content=urllib.request.urlopen(req,timeout=22).read().decode('utf-8','replace')
+                  print('HTML LENGTH',len(content))
+                  for match in re.findall(r'<title[^>]*>(.*?)</title>',content,re.S|re.I)[:1]: print('TITLE',html.unescape(match[:200]))
+                  for marker in ('__sc_hydration', 'track_list', 'og:title', 'soundcloud.com/'+url.split('/')[3]+'/'):
+                      print('MARKER',marker,'COUNT',content.count(marker))
+                  matches=list(dict.fromkeys(re.findall(r'https?://(?:www\\.)?soundcloud\\.com/[^"\\s<>\\\\]+',html.unescape(content))))
+                  print('URLS',json.dumps(matches[:25],ensure_ascii=False))
+                  at=content.find('__sc_hydration')
+                  if at>=0: print('HYDRATION HEAD',content[at:at+2500].replace('\\n',' ')[:2500])
+              except Exception as e: print('ERROR',str(e))
+          PY
