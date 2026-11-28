@@ -1,0 +1,21 @@
+name: Resolve SoundCloud preview links (temporary)
+on:
+  push:
+    paths:
+      - '.github/workflows/temporary-soundcloud-url-resolution.yml'
+  workflow_dispatch:
+jobs:
+  soundcloud-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Resolve two artist-provided SoundCloud links
+        shell: bash
+        run: |
+          for pair in 'ENTRAX|https://on.soundcloud.com/hZPLPbmZfruOXu0zEh' 'TERAHMET|https://on.soundcloud.com/1yiu9aixukxrySTL2U'; do
+            name="${pair%%|*}"
+            link="${pair#*|}"
+            echo "=== START ${name} ==="
+            curl --location --silent --show-error --max-time 25 -A 'Mozilla/5.0' --output /dev/null --write-out 'STATUS:%{http_code} FINAL:%{url_effective} REDIRECTS:%{num_redirects}\\n' "$link" || true
+            echo "=== END ${name} ==="
+          done
