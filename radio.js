@@ -17,9 +17,27 @@ let items=[],selected=0,started=false,widget=null,soundCount=0,soundIndex=0,fini
 /* Event-led temporary takeover: sourced from the actual event line-up and the verified radio catalog. */
 let hardFrequencies=null;
 const hfCopy={
- en:{kicker:'RADIO TAKEOVER / 11 DEC 2026',heading:'MEET THE LINEUP',intro:'Listen to the DJs joining us at Barrio Brussels on 11 December. Choose an artist and tune in directly through Spiral Radio.',event:'EXPLORE THE EVENT ↗',tickets:'GET TICKETS ↗',list:'LISTEN TO THE ARTISTS',count:'4 PERFORMANCE SLOTS / 7 DJS',listen:'LISTEN TO SET ▶',pending:'SET COMING SOON'},
- fr:{kicker:'RADIO SPÉCIALE / 11 DÉC 2026',heading:'DÉCOUVREZ LE LINE-UP',intro:'Découvrez les DJs qui seront au Barrio Brussels le 11 décembre. Choisissez un artiste et écoutez son set directement sur Spiral Radio.',event:'VOIR L’ÉVÉNEMENT ↗',tickets:'BILLETTERIE ↗',list:'ÉCOUTEZ LES ARTISTES',count:'4 CRÉNEAUX / 7 DJS',listen:'ÉCOUTER LE SET ▶',pending:'SET À VENIR'},
- nl:{kicker:'RADIO TAKEOVER / 11 DEC 2026',heading:'ONTDEK DE LINE-UP',intro:'Luister naar de DJs die op 11 december naar Barrio Brussels komen. Kies een artiest en beluister de set op Spiral Radio.',event:'BEKIJK HET EVENT ↗',tickets:'TICKETS ↗',list:'BELUISTER DE ARTIESTEN',count:'4 TIJDSBLOKKEN / 7 DJS',listen:'LUISTER NAAR SET ▶',pending:'SET VOLGT BINNENKORT'}
+ en:{
+  kicker:'BEFORE THE RAVE / 11 DEC 2026',
+  heading:'DISCOVER THE DJS',
+  intro:"Get to know the artists playing Hard Frequencies on 11 December. Explore their existing tracks, previous mixes and SoundCloud profiles — these are examples of their sound, not the sets they will play at the event.",
+  event:'VIEW THE EVENT ↗', tickets:'GET TICKETS ↗', list:'EXPLORE THE ARTISTS', count:'7 DJS · MUSIC & PROFILES',
+  listen:'HEAR THEIR MUSIC ▶', external:'EXPLORE ON SOUNDCLOUD ↗', pending:'ARTIST MUSIC UNAVAILABLE', explainer:"Artist discovery only — previous recordings and releases, not a recording or playlist of the upcoming party."
+ },
+ fr:{
+  kicker:'AVANT LA SOIRÉE / 11 DÉC 2026',
+  heading:'DÉCOUVREZ LES DJS',
+  intro:"Faites connaissance avec les artistes de Hard Frequencies du 11 décembre. Découvrez leurs morceaux, anciens mixes et profils SoundCloud : ce sont des exemples de leur univers musical, pas les sets qu'ils joueront pendant la soirée.",
+  event:"VOIR L'ÉVÉNEMENT ↗", tickets:'BILLETTERIE ↗', list:'DÉCOUVREZ LES ARTISTES', count:'7 DJS · MUSIQUE & PROFILS',
+  listen:'ÉCOUTER LEUR MUSIQUE ▶', external:'DÉCOUVRIR SUR SOUNDCLOUD ↗', pending:'AUCUN EXTRAIT DISPONIBLE', explainer:"Découverte des artistes uniquement : anciens enregistrements et productions, pas les sets de la soirée à venir."
+ },
+ nl:{
+  kicker:'VOOR DE RAVE / 11 DEC 2026',
+  heading:'ONTDEK DE DJS',
+  intro:'Maak kennis met de artiesten van Hard Frequencies op 11 december. Ontdek eerder uitgebrachte tracks, oude mixes en SoundCloud-profielen — dit zijn voorbeelden van hun muziek, niet de sets die ze op het feest zullen draaien.',
+  event:'BEKIJK HET EVENT ↗', tickets:'TICKETS ↗', list:'ONTDEK DE ARTIESTEN', count:'7 DJS · MUZIEK & PROFIELEN',
+  listen:'LUISTER NAAR HUN MUZIEK ▶', external:'BEKIJK OP SOUNDCLOUD ↗', pending:'GEEN MUZIEK BESCHIKBAAR', explainer:'Enkel om de artiesten te ontdekken: oudere opnames en releases, niet de sets van het komende feest.'
+ }
 };
 const hfArtistKey=s=>String(s||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
 const hfExternalSources={
@@ -30,9 +48,8 @@ const hfExternalSources={
 function renderHardFrequencies(){
  const feature=el('hf-radio'),list=el('hf-radio-list');
  if(!feature||!list||!hardFrequencies)return;
- const startAt=Date.parse(hardFrequencies.date+'T00:00:00+01:00');
- // Stop showing the feature after the overnight event, without deleting normal radio mixes.
- if(!Number.isFinite(startAt)||Date.now()>startAt+36*3600000){feature.hidden=true;return;}
+ const showEnd=Date.parse(hardFrequencies.date+'T00:00:00+01:00')+36*3600000;
+ if(!Number.isFinite(showEnd)||Date.now()>showEnd){feature.hidden=true;return;}
  const c=hfCopy[lang()]||hfCopy.en;
  feature.hidden=false;
  el('hf-radio-kicker').textContent=c.kicker;
@@ -42,20 +59,25 @@ function renderHardFrequencies(){
  el('hf-radio-tickets').textContent=c.tickets;
  el('hf-radio-list-label').textContent=c.list;
  el('hf-radio-count-label').textContent=c.count;
- list.innerHTML=hardFrequencies.artists.map((slot,i)=>{
-  const rawGenre=String(slot.genre||'');
-  const matched=rawGenre.match(/^(\d{2}:\d{2}[–-]\d{2}:\d{2})\s*·\s*(.*)$/);
-  const time=matched?matched[1]:'';
-  const genre=matched?matched[2]:rawGenre;
-  const acts=String(slot.name).split(/\s*×\s*/).filter(Boolean);
-  const buttons=acts.map(name=>{
-   const index=items.findIndex(item=>hfArtistKey(item.artist)===hfArtistKey(name));
-   if(index>=0)return '<button type="button" class="hf-radio-play" data-hf-index="'+index+'" title="'+escapeHtml(items[index].title)+'"><span>'+escapeHtml(name)+'</span><strong>'+escapeHtml(c.listen)+'</strong></button>';
-   const external=hfExternalSources[hfArtistKey(name)];
-   if(external)return '<a class="hf-radio-play hf-radio-external" href="'+escapeHtml(external)+'" target="_blank" rel="noopener noreferrer"><span>'+escapeHtml(name)+'</span><strong>'+escapeHtml(({en:'SOUNDCLOUD ↗',fr:'SOUNDCLOUD ↗',nl:'SOUNDCLOUD ↗'})[lang()])+'</strong></a>';
-   return '<div class="hf-radio-pending"><span>'+escapeHtml(name)+'</span><small>'+escapeHtml(c.pending)+'</small></div>';
-  }).join('');
-  return '<article class="hf-radio-slot"><div class="hf-radio-meta"><span>0'+(i+1)+' / 04</span><span>'+escapeHtml(time)+'</span></div><h3>'+escapeHtml(slot.name)+'</h3><p class="hf-radio-genre">'+escapeHtml(genre)+'</p><div class="hf-radio-artists">'+buttons+'</div></article>';
+ el('hf-radio-explainer').textContent=c.explainer;
+ // Individual artist cards (not timed B2B slots): this is a sound-discovery guide, not a setlist.
+ const lineup=[...new Map(hardFrequencies.artists.flatMap(slot=>String(slot.name).split(/\s*×\s*/).filter(Boolean).map(name=>[hfArtistKey(name),name.trim()]))).values()];
+ el('hf-radio-count-label').textContent=lineup.length+' DJS · '+(lang()==='fr'?'MUSIQUE & PROFILS':lang()==='nl'?'MUZIEK & PROFIELEN':'MUSIC & PROFILES');
+ list.innerHTML=lineup.map((name,i)=>{
+  const index=items.findIndex(item=>hfArtistKey(item.artist)===hfArtistKey(name));
+  const external=hfExternalSources[hfArtistKey(name)];
+  let action;
+  if(index>=0){
+    const t=items[index];
+    const label=String(t.description||t.genre||'');
+    action='<button type="button" class="hf-radio-play" data-hf-index="'+index+'" title="'+escapeHtml(t.title)+'"><span>'+escapeHtml(c.listen)+'</span><strong>▶</strong></button>'
+     +'<p class="hf-radio-track">'+escapeHtml(t.title)+'<small>'+escapeHtml(label)+'</small></p>';
+  }else if(external){
+    action='<a class="hf-radio-play hf-radio-external" href="'+escapeHtml(external)+'" target="_blank" rel="noopener noreferrer"><span>'+escapeHtml(c.external)+'</span><strong>↗</strong></a>';
+  }else{
+    action='<div class="hf-radio-pending"><span>'+escapeHtml(c.pending)+'</span></div>';
+  }
+  return '<article class="hf-radio-slot"><div class="hf-radio-meta"><span>ARTIST '+String(i+1).padStart(2,'0')+'</span><span>SPIRAL CACTUS</span></div><h3>'+escapeHtml(name)+'</h3><div class="hf-radio-artists">'+action+'</div></article>';
  }).join('');
 }
 el('hf-radio-list')?.addEventListener('click',e=>{
