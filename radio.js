@@ -77,7 +77,7 @@ function renderHardFrequencies(){
   }else{
     action='<div class="hf-radio-pending"><span>'+escapeHtml(c.pending)+'</span></div>';
   }
-  return '<article class="hf-radio-slot"><div class="hf-radio-meta"><span>ARTIST '+String(i+1).padStart(2,'0')+'</span><span>SPIRAL CACTUS</span></div><h3>'+escapeHtml(name)+'</h3><div class="hf-radio-artists">'+action+'</div></article>';
+  return '<article class="hf-radio-slot"><div class="hf-radio-meta"><span>DJ '+String(i+1).padStart(2,'0')+'</span><span>11 DEC · LINEUP</span></div><h3>'+escapeHtml(name)+'</h3><div class="hf-radio-artists">'+action+'</div></article>';
  }).join('');
 }
 el('hf-radio-list')?.addEventListener('click',e=>{
