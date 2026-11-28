@@ -106,7 +106,7 @@ try{
  const [raw,events]=await Promise.all([response.json(),eventsResponse.json()]);
  if(!Array.isArray(raw)||!Array.isArray(events))throw Error('Invalid radio or event data');
  // A DJ must have appeared on a real SpiralCactus lineup to be eligible.
- const guestArtists=new Set(events.flatMap(e=>Array.isArray(e.artists)?e.artists.map(a=>a.name):[]).filter(Boolean).map(a=>a.toLowerCase()));
+ const guestArtists=new Set(events.flatMap(e=>Array.isArray(e.artists)?e.artists.flatMap(a=>String(a.name||'').split(/\s*[×&]\s*/)):[]).filter(Boolean).map(a=>a.trim().toLowerCase()));
  items=raw.filter(t=>t&&typeof t.title==='string'&&typeof t.artist==='string'&&guestArtists.has(t.artist.toLowerCase())&&validUrl(t.url)&&(t.format==='track'||t.format==='playlist'));
  if(!items.length)throw Error('Empty guest playlist');
  filter.querySelectorAll('option:not([value="all"])').forEach(option=>option.remove());
