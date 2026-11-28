@@ -22,6 +22,11 @@ const hfCopy={
  nl:{kicker:'RADIO TAKEOVER / 11 DEC 2026',heading:'ONTDEK DE LINE-UP',intro:'Luister naar de DJs die op 11 december naar Barrio Brussels komen. Kies een artiest en beluister de set op Spiral Radio.',event:'BEKIJK HET EVENT ↗',tickets:'TICKETS ↗',list:'BELUISTER DE ARTIESTEN',count:'4 TIJDSBLOKKEN / 7 DJS',listen:'LUISTER NAAR SET ▶',pending:'SET VOLGT BINNENKORT'}
 };
 const hfArtistKey=s=>String(s||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+const hfExternalSources={
+ terameth:'https://on.soundcloud.com/umyv5NWO87b38yBsZB',
+ entrax:'https://soundcloud.com/noe-huvenne'
+};
+
 function renderHardFrequencies(){
  const feature=el('hf-radio'),list=el('hf-radio-list');
  if(!feature||!list||!hardFrequencies)return;
@@ -46,6 +51,8 @@ function renderHardFrequencies(){
   const buttons=acts.map(name=>{
    const index=items.findIndex(item=>hfArtistKey(item.artist)===hfArtistKey(name));
    if(index>=0)return '<button type="button" class="hf-radio-play" data-hf-index="'+index+'" title="'+escapeHtml(items[index].title)+'"><span>'+escapeHtml(name)+'</span><strong>'+escapeHtml(c.listen)+'</strong></button>';
+   const external=hfExternalSources[hfArtistKey(name)];
+   if(external)return '<a class="hf-radio-play hf-radio-external" href="'+escapeHtml(external)+'" target="_blank" rel="noopener noreferrer"><span>'+escapeHtml(name)+'</span><strong>'+escapeHtml(({en:'SOUNDCLOUD ↗',fr:'SOUNDCLOUD ↗',nl:'SOUNDCLOUD ↗'})[lang()])+'</strong></a>';
    return '<div class="hf-radio-pending"><span>'+escapeHtml(name)+'</span><small>'+escapeHtml(c.pending)+'</small></div>';
   }).join('');
   return '<article class="hf-radio-slot"><div class="hf-radio-meta"><span>0'+(i+1)+' / 04</span><span>'+escapeHtml(time)+'</span></div><h3>'+escapeHtml(slot.name)+'</h3><p class="hf-radio-genre">'+escapeHtml(genre)+'</p><div class="hf-radio-artists">'+buttons+'</div></article>';
