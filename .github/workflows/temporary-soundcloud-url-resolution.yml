@@ -1,4 +1,4 @@
-name: Inspect artist SoundCloud profiles (temporary)
+name: Inspect artist SoundCloud tracks (temporary)
 on:
   push:
     paths:
@@ -8,29 +8,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Extract public SoundCloud hydration metadata
+      - name: List public artist recordings and playlists
         shell: bash
         run: |
           python3 - <<'PY'
-          import urllib.request, re, json
-          for label,url in [('ENTRAX','https://soundcloud.com/noe-huvenne/tracks'),('TERAHMET','https://soundcloud.com/math-o-declercq/tracks')]:
-              print('===',label,'===')
-              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0'})
-              try:
-                  content=urllib.request.urlopen(req,timeout=22).read().decode('utf-8','replace')
-                  match=re.search(r'__sc_hydration\s*=\s*(\[.*?\]);',content,re.S)
-                  print('HYDRATION FOUND',bool(match))
-                  if match:
-                      records=json.loads(match.group(1))
-                      print('TYPES',[a.get('hydratable') for a in records])
-                      for record in records:
-                          name=record.get('hydratable')
-                          data=record.get('data')
-                          if name not in ('features','anonymousId','experiments','locale','clientId'):
-                              print('RECORD',name,'TYPE',type(data).__name__,'KEYS',list(data.keys())[:30] if isinstance(data,dict) else 'NA')
-                              if isinstance(data,dict):
-                                  print('SELECT',json.dumps({k:data.get(k) for k in ('id','username','permalink','permalink_url','track_count','playlist_count','title','kind','uri') if k in data},ensure_ascii=False))
-                              if isinstance(data,list):
-                                  print('LIST_HEAD',json.dumps(data[:2],ensure_ascii=False)[:500])
-              except Exception as e: print('ERROR',str(e))
+          import urllib.request, urllib.parse, json
+          client='QhVEWrrJKvW4uSU5u5EoI0FTXYUGzy5k'
+          for artist,uid in [('ENTRAX',276353605),('TERAHMET',189100640)]:
+              for category in ('tracks','playlists_without_albums'):
+                  params=urllib.parse.urlencode(dict(client_id=client,limit=20,offset=0))
+                  url=f'https://api-v2.soundcloud.com/users/{uid}/{category}?{params}'
+                  print('===',artist,category,'===')
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'application/json'})
+                      resp=urllib.request.urlopen(req,timeout=22)
+                      data=json.load(resp)
+                      items=data.get('collection',[]) if isinstance(data,dict) else data
+                      print('COUNT',len(items))
+                      for t in items[:18]:
+                          if not isinstance(t,dict):continue
+                          print(json.dumps({k:t.get(k) for k in ['id','title','permalink_url','kind','duration','playback_count','access','track_count','genre','sharing'] if k in t},ensure_ascii=False))
+                  except Exception as e: print('ERROR',str(e))
           PY
