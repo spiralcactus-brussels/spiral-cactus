@@ -1,5 +1,29 @@
 [
   {
+    "id": "entrax-morse-2026",
+    "artist": "Entrax",
+    "title": "Entrax — Morse",
+    "url": "https://soundcloud.com/noe-huvenne/morse-vf",
+    "format": "track",
+    "genre": "Electronic",
+    "description": "Original track · 4m 47s",
+    "source": "Entrax official SoundCloud",
+    "credit": "Entrax",
+    "event": "11 December 2026"
+  },
+  {
+    "id": "terahmet-faites-mieux",
+    "artist": "Terahmet",
+    "title": "TerahMet — FAITES MIEUX",
+    "url": "https://soundcloud.com/math-o-declercq/faite-mieux",
+    "format": "track",
+    "genre": "Techno",
+    "description": "Original track · 3m 32s",
+    "source": "TerahMet official SoundCloud",
+    "credit": "TerahMet",
+    "event": "11 December 2026"
+  },
+  {
     "id": "soul3d-waves",
     "artist": "Soul3d",
     "title": "Soul3d — Oldschool Waves Sessions",
