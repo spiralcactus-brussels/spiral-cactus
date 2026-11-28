@@ -239,7 +239,7 @@
     const title=languageVal(e.name);
     const detail='<a class="btn alt" href="'+eventUrl(e)+'">'+esc(t(isUpcoming?'homeEventMore':'homePastEdition'))+'</a>';
     const ticket=shop?'<a class="btn" href="'+esc(shop)+'" target="_blank" rel="noopener noreferrer">'+esc(t('homeTickets'))+'</a>':'';
-    const radioPreviewCta=(isUpcoming&&e.id==='hard-frequencies')?'<a class="btn alt" href="radio.html#hf-radio">'+esc(({en:'LISTEN TO THE LINEUP ↗',fr:'ÉCOUTER LE LINE-UP ↗',nl:'BELUISTER DE LINE-UP ↗'})[current]||'LISTEN TO THE LINEUP ↗')+'</a>':'';
+    const radioPreviewCta=(isUpcoming&&e.id==='hard-frequencies')?'<a class="btn alt" href="radio.html#hf-radio">'+esc(({en:'DISCOVER THE DJS ↗',fr:'DÉCOUVRIR LES DJS ↗',nl:'ONTDEK DE DJS ↗'})[current]||'LISTEN TO THE LINEUP ↗')+'</a>':'';
     const update=isUpcoming?'':'<div class="home-stage-coming"><span class="eyebrow">'+esc(t('homeComingLabel'))+'</span><p>'+esc(t('homeComingText'))+'</p></div>';
     // The full portrait poster is kept on the event detail page. On the homepage,
     // a readable artwork-backed hero avoids cropping the party title away.
