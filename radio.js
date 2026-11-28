@@ -40,11 +40,6 @@ const hfCopy={
  }
 };
 const hfArtistKey=s=>String(s||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-const hfExternalSources={
- terameth:'https://on.soundcloud.com/1yiu9aixukxrySTL2U',
- entrax:'https://on.soundcloud.com/hZPLPbmZfruOXu0zEh'
-};
-
 function renderHardFrequencies(){
  const feature=el('hf-radio'),list=el('hf-radio-list');
  if(!feature||!list||!hardFrequencies)return;
@@ -65,15 +60,12 @@ function renderHardFrequencies(){
  el('hf-radio-count-label').textContent=lineup.length+' DJS · '+(lang()==='fr'?'MUSIQUE & PROFILS':lang()==='nl'?'MUZIEK & PROFIELEN':'MUSIC & PROFILES');
  list.innerHTML=lineup.map((name,i)=>{
   const index=items.findIndex(item=>hfArtistKey(item.artist)===hfArtistKey(name));
-  const external=hfExternalSources[hfArtistKey(name)];
   let action;
   if(index>=0){
     const t=items[index];
     const label=String(t.description||t.genre||'');
     action='<button type="button" class="hf-radio-play" data-hf-index="'+index+'" title="'+escapeHtml(t.title)+'"><span>'+escapeHtml(c.listen)+'</span><strong>▶</strong></button>'
      +'<p class="hf-radio-track">'+escapeHtml(t.title)+'<small>'+escapeHtml(label)+'</small></p>';
-  }else if(external){
-    action='<a class="hf-radio-play hf-radio-external" href="'+escapeHtml(external)+'" target="_blank" rel="noopener noreferrer"><span>'+escapeHtml(c.external)+'</span><strong>↗</strong></a>';
   }else{
     action='<div class="hf-radio-pending"><span>'+escapeHtml(c.pending)+'</span></div>';
   }
