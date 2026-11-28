@@ -48,6 +48,30 @@
     "event": "16 October 2026"
   },
   {
+    "id": "insolence-melaudica-2025",
+    "artist": "Insolence",
+    "title": "Melaudica Invites (Acidcore Set) — Insolence",
+    "url": "https://soundcloud.com/insolence_music/drak-art-insolence-281125",
+    "format": "track",
+    "genre": "Acidcore / Techno",
+    "description": "Recorded DJ set · November 2025",
+    "source": "INSOLENCE official SoundCloud",
+    "credit": "INSOLENCE",
+    "event": "11 December 2026"
+  },
+  {
+    "id": "insolence-echotek",
+    "artist": "Insolence",
+    "title": "INSOLENCE — ECHOTEK Contest",
+    "url": "https://soundcloud.com/insolence_music/insolence-echotek-contest",
+    "format": "track",
+    "genre": "Hard Techno / Acid",
+    "description": "Contest DJ set",
+    "source": "INSOLENCE official SoundCloud",
+    "credit": "INSOLENCE",
+    "event": "11 December 2026"
+  },
+  {
     "id": "nawatt-dkemist",
     "artist": "Nawatt",
     "title": "Nawatt B2B D-Kemist — Tekno Dealers Set",
